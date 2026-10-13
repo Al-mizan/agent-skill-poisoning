@@ -126,11 +126,15 @@ _Avoid_: API key, auth credential
 
 **Attack Success Rate (ASR)**:
 The percentage of attack attempts that successfully achieve the adversary's objective (e.g., executing a target tool, leaking secrets, or violating policy).
-_Avoid_: Compromise rate, hack rate
+_Avoid_: Compromise rate, hack rate, Unauthorized Tool Action Rate (UTAR)
+
+**Skill Selection Rate (SSR)**:
+The percentage of evaluation trials in which an agent's planning module selects a target or poisoned skill from the registry prior to tool execution.
+_Avoid_: Selection hijacking rate, routing rate
 
 **Benign Utility Retention (BUR)**:
 The percentage of benign tasks successfully completed without false-positive refusal or execution degradation when defenses are enabled.
-_Avoid_: Clean accuracy, task preservation
+_Avoid_: Clean accuracy, task preservation, Task Success Rate (TSR)
 
 **Defense Robustness Rate (DRR)**:
 The quantitative reduction in Attack Success Rate achieved by a defense against adaptive or secondary attack mutations.
@@ -161,6 +165,10 @@ _Avoid_: Function definition poisoning, schema tampering
 **Two-Channel Injection**:
 An attack splitting adversarial instructions across separate communication channels—such as the user prompt and tool metadata—that assemble into an active exploit only upon execution.
 _Avoid_: Dual-payload attack, multi-vector injection
+
+**Cross-Artifact Injection**:
+A supply-chain attack where instructions in a `SKILL.md` manifest coerce the agent into invoking or modifying bundled auxiliary scripts, configurations, or reference files that complete the exploit chain.
+_Avoid_: Mixed skill attack, script-split injection
 
 **Front-Loaded Inducement**:
 The deliberate placement of coercive instructions at the beginning of a tool or skill description to preemptively bias agent selection heuristics.
@@ -197,6 +205,10 @@ _Avoid_: Skill collision, routing confusion
 **Governance Evasion**:
 Techniques—such as polymorphic payloads, dynamic imports, or steganographic instructions—used to bypass static analysis and marketplace security vetting.
 _Avoid_: Store bypass, vetting evasion
+
+**Rug-Pull Update**:
+An install- or update-stage supply-chain attack where a previously benign skill or tool server introduces malicious instructions or payloads in a subsequent version update.
+_Avoid_: Delayed poisoning, post-install mutation
 
 ## Cross-Lingual Alignment & Safety Disparities
 

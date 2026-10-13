@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  pilot-bench:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    network_mode: none
+    volumes:
+      - ../../results:/app/results
+    command: ["--dry-run", "--agents", "gemini", "groq"]
