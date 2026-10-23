@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "mode": "architecture",
+  "style": 1,
+  "text_policy": "strict",
+  "width": 1680,
+  "height": 800,
+  "title": "Cross-Lingual Agent Skill Poisoning: Threat Lifecycle & Defense Seam",
+  "subtitle": "Five-stage attack progression through untrusted supply chains to runtime policy enforcement",
+  "containers": [
+    {
+      "id": "supply-chain",
+      "x": 35,
+      "y": 95,
+      "width": 1610,
+      "height": 215,
+      "label": "Untrusted Supply Chain (Stages 1\u20134)",
+      "subtitle": "Adversary authors contextual injection, evades static marketplace scanners, and mutates skill post-vetting",
+      "stroke": "#fed7aa",
+      "fill": "#fffaf5"
+    },
+    {
+      "id": "runtime-defense",
+      "x": 35,
+      "y": 355,
+      "width": 1610,
+      "height": 345,
+      "label": "Agent Runtime (Stage 5 & Defense Seam)",
+      "subtitle": "Autonomous agent planning loop intercepts malicious tool invocation via deterministic policy enforcement",
+      "stroke": "#cbd5e1",
+      "fill": "#f8fafc"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "stage1",
+      "kind": "review_card",
+      "x": 55,
+      "y": 155,
+      "width": 320,
+      "height": 130,
+      "type_label": "ATTACK STAGE 1",
+      "label": "1. Authoring",
+      "description": "Contextual injection crafted in EN, Bangla, or Banglish code-mixed registers",
+      "technology": "Register Poisoning",
+      "fill": "#fff7ed",
+      "stroke": "#f97316"
+    },
+    {
+      "id": "stage2",
+      "kind": "review_card",
+      "x": 471,
+      "y": 155,
+      "width": 320,
+      "height": 130,
+      "type_label": "ATTACK STAGE 2",
+      "label": "2. Registry",
+      "description": "Published to skill marketplace, evades English-calibrated static scanners",
+      "technology": "Scanner Evasion",
+      "fill": "#fff7ed",
+      "stroke": "#f97316"
+    },
+    {
+      "id": "stage3",
+      "kind": "review_card",
+      "x": 887,
+      "y": 155,
+      "width": 320,
+      "height": 130,
+      "type_label": "ATTACK STAGE 3",
+      "label": "3. Install",
+      "description": "Installed into agent registry, inherits ambient user permissions",
+      "technology": "Privilege Inheritance",
+      "fill": "#fff7ed",
+      "stroke": "#f97316"
+    },
+    {
+      "id": "stage4",
+      "kind": "review_card",
+      "x": 1303,
+      "y": 155,
+      "width": 320,
+      "height": 130,
+      "type_label": "ATTACK STAGE 4",
+      "label": "4. Update",
+      "description": "Rug-pull update mutates a previously vetted skill",
+      "technology": "Rug-Pull Mutation",
+      "fill": "#fff7ed",
+      "stroke": "#ea580c"
+    },
+    {
+      "id": "user-task",
+      "kind": "review_card",
+      "x": 55,
+      "y": 440,
+      "width": 320,
+      "height": 125,
+      "type_label": "AUTHENTIC INPUT",
+      "label": "Benign User Task",
+      "description": "Authentic user workflow prompt without malicious payload (PDF, Git, Email)",
+      "technology": "Clean User Prompt",
+      "fill": "#eff6ff",
+      "stroke": "#3b82f6"
+    },
+    {
+      "id": "stage5",
+      "kind": "review_card",
+      "x": 471,
+      "y": 440,
+      "width": 320,
+      "height": 125,
+      "type_label": "RUNTIME STAGE 5",
+      "label": "5. Planning & Tool Selection",
+      "description": "Model reasoning plane selects poisoned skill manifest & proposes tool call",
+      "technology": "LLM Planning Loop",
+      "fill": "#fff7ed",
+      "stroke": "#f97316"
+    },
+    {
+      "id": "policy-module",
+      "kind": "review_card",
+      "x": 887,
+      "y": 440,
+      "width": 320,
+      "height": 125,
+      "type_label": "DEFENSE SEAM (ADR-0002)",
+      "label": "Policy Enforcement Module",
+      "description": "Deterministic validation of capability tokens, path invariants, and workspace boundaries",
+      "technology": "Language-Invariant Gate",
+      "fill": "#f0fdfa",
+      "stroke": "#0d9488"
+    },
+    {
+      "id": "authorized",
+      "kind": "review_card",
+      "x": 1303,
+      "y": 420,
+      "width": 320,
+      "height": 105,
+      "type_label": "COMPLIANT PATH (GREEN)",
+      "label": "Authorized Execution",
+      "description": "Compliant action proceeds within authorized sandbox boundary without canary trigger",
+      "technology": "Workspace Sandboxed",
+      "fill": "#f0fdf4",
+      "stroke": "#16a34a"
+    },
+    {
+      "id": "deny",
+      "kind": "review_card",
+      "x": 1303,
+      "y": 555,
+      "width": 320,
+      "height": 105,
+      "type_label": "VIOLATION BLOCKED (RED)",
+      "label": "Deterministic Deny",
+      "description": "Unauthorized tool call or path traversal blocked deterministically before execution",
+      "technology": "Invariant Violation Blocked",
+      "fill": "#fef2f2",
+      "stroke": "#dc2626"
+    }
+  ],
+  "arrows": [
+    {
+      "id": "flow-1-2",
+      "source": "stage1",
+      "target": "stage2",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "data"
+    },
+    {
+      "id": "flow-2-3",
+      "source": "stage2",
+      "target": "stage3",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "data"
+    },
+    {
+      "id": "flow-3-4",
+      "source": "stage3",
+      "target": "stage4",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "data"
+    },
+    {
+      "id": "flow-user-stage5",
+      "source": "user-task",
+      "target": "stage5",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "read",
+      "label": "Assign Task"
+    },
+    {
+      "id": "flow-stage4-stage5",
+      "source": "stage4",
+      "target": "stage5",
+      "source_port": "bottom",
+      "target_port": "top",
+      "corridor_y": [
+        332
+      ],
+      "flow": "data",
+      "label": "Poisoned Skill Injected"
+    },
+    {
+      "id": "flow-stage5-policy",
+      "source": "stage5",
+      "target": "policy-module",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "control"
+    },
+    {
+      "id": "flow-policy-auth",
+      "source": "policy-module",
+      "target": "authorized",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "write",
+      "label": "Pass"
+    },
+    {
+      "id": "flow-policy-deny",
+      "source": "policy-module",
+      "target": "deny",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "feedback",
+      "label": "Block"
+    }
+  ],
+  "legend_orientation": "horizontal",
+  "legend_x": 55,
+  "legend_y": 735,
+  "legend": [
+    {
+      "flow": "data",
+      "label": "Attack Lifecycle Flow (Orange)"
+    },
+    {
+      "flow": "read",
+      "label": "Benign Task Flow (Blue)"
+    },
+    {
+      "flow": "control",
+      "label": "Agent Reasoning / Dispatch (Purple)"
+    },
+    {
+      "flow": "write",
+      "label": "Authorized Execution (Green)"
+    },
+    {
+      "flow": "feedback",
+      "label": "Deterministic Deny (Red)"
+    }
+  ],
+  "footer": "Research Poster \u00b7 Cross-Lingual Agent Skill Poisoning \u00b7 ADR-0002 Defense Architecture",
+  "footer_x": 55,
+  "footer_y": 775
+}
