@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "54c19a92-dcbc-4428-b4df-892eb9a7035e",
+  "status": "current",
+  "command": "deliver",
+  "type": "explainer",
+  "input": "/mnt/workspace/research/.archify/explainer-xling-skill-poisoning-20261024-183637/candidate.archify.md",
+  "output": "/mnt/workspace/research/.archify/explainer-xling-skill-poisoning-20261024-183637/explainer.html",
+  "specification": {
+    "sha256": "c62e1e417a8c3aa399a85956d64ae271205d9b0d59d5750dc36072350bd3302a",
+    "bytes": 6539
+  },
+  "artifact": {
+    "sha256": "42f7902b9e3e3ddd41f03e598bf4d1f0ab8ff070ab69f8488c8bf235b19ed1cd",
+    "bytes": 928487
+  },
+  "explainer": {
+    "preparedSha256": "bc65e665edc379f4cd80e8659a6f30aa44768989f237fd3c80b63835887bf2e9",
+    "dependencies": [
+      {
+        "kind": "diagram-spec",
+        "id": "lifecycle-flow",
+        "inline": true,
+        "sha256": "3fab9f5e152c31d5c107a8d826fc053f9630748d70954dc9809c0df205286a71",
+        "bytes": 1168
+      },
+      {
+        "kind": "diagram-spec",
+        "id": "seam-sequence",
+        "inline": true,
+        "sha256": "56b79d72a5b2bf540f2199971f1ae589fd43d5840f1f00f7c13e37aeaf73727c",
+        "bytes": 1431
+      }
+    ]
+  }
+}

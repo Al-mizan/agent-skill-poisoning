@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "explainer",
+  "quality": "showcase",
+  "specification": {
+    "path": "/mnt/workspace/research/.archify/explainer-xling-skill-poisoning-20261024-183637/candidate.archify.md",
+    "sha256": "c62e1e417a8c3aa399a85956d64ae271205d9b0d59d5750dc36072350bd3302a",
+    "bytes": 6539
+  },
+  "artifact": {
+    "path": "/mnt/workspace/research/.archify/explainer-xling-skill-poisoning-20261024-183637/explainer.html",
+    "sha256": "42f7902b9e3e3ddd41f03e598bf4d1f0ab8ff070ab69f8488c8bf235b19ed1cd",
+    "bytes": 928487
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "not-run"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/mnt/workspace/research/.archify/explainer-xling-skill-poisoning-20261024-183637/explainer.finalize.json",
+    "summaryReceipt": "/mnt/workspace/research/.archify/explainer-xling-skill-poisoning-20261024-183637/explainer.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 1886,
+  "browserCheck": {
+    "requested": false,
+    "ran": false
+  }
+}

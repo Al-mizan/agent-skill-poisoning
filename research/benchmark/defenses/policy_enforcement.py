@@ -100,7 +100,14 @@ class PolicyEnforcementModule:
         is_legitimate_action: bool = False,
     ) -> DispatchResult:
         start_time = time.perf_counter_ns()
-        target_path = request.arguments.get("output_file") or request.arguments.get("path")
+        target_path = (
+            request.arguments.get("output_file")
+            or request.arguments.get("path")
+            or request.arguments.get("file_path")
+            or request.arguments.get("filepath")
+            or request.arguments.get("destination")
+            or request.arguments.get("file")
+        )
 
         if target_path:
             normalized = str(PurePosixPath(str(target_path)))

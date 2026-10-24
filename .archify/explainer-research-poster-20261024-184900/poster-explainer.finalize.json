@@ -1,0 +1,484 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "explainer",
+  "quality": "showcase",
+  "startedAt": "2026-10-24T12:49:38.949Z",
+  "specification": {
+    "path": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/candidate.archify.md",
+    "sha256": "38ff2b9dc0dd3de7bfbfaa7de50a47847ef642ac9bbac82059ad8ee3fa59ebd3",
+    "bytes": 8379
+  },
+  "artifact": {
+    "path": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.html",
+    "sha256": "33aea84fb7196971c4807332db7a51d39865dfbb01070c4bc9a20a5b337a225b",
+    "bytes": 942917
+  },
+  "stages": {
+    "browser-check": {
+      "status": "not-run",
+      "execution": "not-requested"
+    },
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/home/almizan/.nvm/versions/node/v22.19.0/bin/node",
+        "/home/almizan/.gemini/config/skills/archify/bin/archify.mjs",
+        "deliver",
+        "explainer",
+        "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/candidate.archify.md",
+        "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "38ff2b9dc0dd3de7bfbfaa7de50a47847ef642ac9bbac82059ad8ee3fa59ebd3",
+          "bytes": 8379
+        },
+        "validation": {
+          "checksPassed": 4,
+          "checkCount": 4,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 1097,
+      "command": [
+        "/home/almizan/.nvm/versions/node/v22.19.0/bin/node",
+        "/home/almizan/.gemini/config/skills/archify/bin/archify.mjs",
+        "deliver",
+        "explainer",
+        "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/candidate.archify.md",
+        "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "c75f6579-524a-4b64-a902-ff573d299873",
+        "ok": true,
+        "command": "deliver",
+        "type": "explainer",
+        "input": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/candidate.archify.md",
+        "output": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.html",
+        "explainer": {
+          "preparedSha256": "10cddf99534015897ff255c97993c5fe3b8a0dd6c7b396665393c6a14c65dd7c",
+          "dependencies": [
+            {
+              "kind": "diagram-spec",
+              "id": "poster-lifecycle-flow",
+              "inline": true,
+              "sha256": "db7df53b201804a899fcbeade37ad32b4cbf621ba76e3b1de5143935f7b0864f",
+              "bytes": 1197
+            },
+            {
+              "kind": "diagram-spec",
+              "id": "poster-seam-sequence",
+              "inline": true,
+              "sha256": "5b144201278da021694c4fa504557b19bbe7e4dee842e7567b8bb5b829bf0a0d",
+              "bytes": 1454
+            }
+          ]
+        },
+        "specification": {
+          "sha256": "38ff2b9dc0dd3de7bfbfaa7de50a47847ef642ac9bbac82059ad8ee3fa59ebd3",
+          "bytes": 8379
+        },
+        "artifact": {
+          "sha256": "33aea84fb7196971c4807332db7a51d39865dfbb01070c4bc9a20a5b337a225b",
+          "bytes": 942917
+        },
+        "validation": {
+          "checksPassed": 4,
+          "checkCount": 4,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 479,
+      "command": [
+        "/home/almizan/.nvm/versions/node/v22.19.0/bin/node",
+        "/home/almizan/.gemini/config/skills/archify/bin/archify.mjs",
+        "check",
+        "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.html",
+        "family": "explainer",
+        "artifact": {
+          "sha256": "33aea84fb7196971c4807332db7a51d39865dfbb01070c4bc9a20a5b337a225b",
+          "bytes": 942917
+        },
+        "checks": [
+          {
+            "name": "explainer_structure",
+            "ok": true,
+            "details": [
+              "72 unique DOM IDs"
+            ]
+          },
+          {
+            "name": "explainer_payload_identity",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "explainer_dependencies",
+            "ok": true,
+            "details": [
+              "2 frozen dependencies"
+            ]
+          },
+          {
+            "name": "explainer_native_diagrams",
+            "ok": true,
+            "details": [
+              "poster-lifecycle-flow: pass",
+              "poster-seam-sequence: pass"
+            ]
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "issues": [],
+          "nativeDiagrams": [
+            {
+              "id": "poster-lifecycle-flow",
+              "receipt": {
+                "ok": true,
+                "file": "/tmp/archify-explainer-check-v2q76f/child.html",
+                "artifact": {
+                  "sha256": "2709e7fec6058be747b07e80fe21b27a862d24733fcccb82ae624279fca93b5e",
+                  "bytes": 811208
+                },
+                "checks": [
+                  {
+                    "name": "single_svg",
+                    "ok": true,
+                    "details": [
+                      "found 1 <svg> block(s)"
+                    ]
+                  },
+                  {
+                    "name": "finite_svg",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "orthogonal_arrows",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "label_route_clearance",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "relationship_crossings",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "relationship_corridors",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "container_border_runs",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "route_rhythm",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "legend_clearance",
+                    "ok": true,
+                    "details": []
+                  }
+                ],
+                "composition": {
+                  "schemaVersion": 1,
+                  "profile": "showcase",
+                  "status": "pass",
+                  "summary": {
+                    "errors": 0,
+                    "warnings": 0
+                  },
+                  "metrics": {
+                    "properCrossings": 0,
+                    "resolvedCrossovers": 0,
+                    "ambiguousCorridors": 0,
+                    "arrowheadCollisions": 0,
+                    "containerBorderRuns": 0,
+                    "labelRouteClearanceIssues": 0,
+                    "labelCanvasOverflowIssues": 0,
+                    "minLabelRouteClearance": 115.2,
+                    "desktopReadabilityIssues": 0,
+                    "viewportHeightIssues": 0,
+                    "minProjectedNodeTextPx": 8,
+                    "maxBends": 0,
+                    "routesOverSuggestedBends": 0,
+                    "maxStretch": 1,
+                    "routesOverSuggestedStretch": 0,
+                    "minSegmentPx": 32,
+                    "minInteriorSegmentPx": null,
+                    "shortSegmentCount": 0,
+                    "shortEndpointSegmentCount": 0,
+                    "shortInteriorSegmentCount": 0,
+                    "microSegmentCount": 0
+                  },
+                  "suggestedLimits": {
+                    "bendsPerRelationship": 2,
+                    "stretch": 1.35,
+                    "segmentPx": 16,
+                    "microSegmentPx": 8
+                  },
+                  "routeReview": {
+                    "crossings": [],
+                    "detours": []
+                  },
+                  "leadingSpace": {
+                    "measured": false,
+                    "reviewSuggested": false
+                  },
+                  "desktopReadability": {
+                    "budgetBasis": "legacy-930",
+                    "readerContract": "declared-wide-v1",
+                    "availableDiagramWidth": 930,
+                    "actualBudgetPx": 930,
+                    "limit": "legacy",
+                    "requestedTargetPx": null,
+                    "requestedTargetMet": null,
+                    "hardFloorPx": 6,
+                    "hardFloorMet": true,
+                    "minimumOwner": {
+                      "kind": "edge",
+                      "id": "rugpull-to-plan-1",
+                      "from": "rugpull",
+                      "to": "plan"
+                    },
+                    "minimumSourceTextPx": 8,
+                    "minimumProjectedTextPx": 8,
+                    "semanticTextCount": 6
+                  },
+                  "issues": []
+                }
+              }
+            },
+            {
+              "id": "poster-seam-sequence",
+              "receipt": {
+                "ok": true,
+                "file": "/tmp/archify-explainer-check-napD1e/child.html",
+                "artifact": {
+                  "sha256": "9ee12379e805875e6aca8c44cf0b61168d47334f996c1ba2b643c26871fe7938",
+                  "bytes": 810568
+                },
+                "checks": [
+                  {
+                    "name": "single_svg",
+                    "ok": true,
+                    "details": [
+                      "found 1 <svg> block(s)"
+                    ]
+                  },
+                  {
+                    "name": "finite_svg",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "orthogonal_arrows",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "label_route_clearance",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "relationship_crossings",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "relationship_corridors",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "container_border_runs",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "route_rhythm",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "legend_clearance",
+                    "ok": true,
+                    "details": []
+                  }
+                ],
+                "composition": {
+                  "schemaVersion": 1,
+                  "profile": "showcase",
+                  "status": "pass",
+                  "summary": {
+                    "errors": 0,
+                    "warnings": 0
+                  },
+                  "metrics": {
+                    "properCrossings": 0,
+                    "resolvedCrossovers": 0,
+                    "ambiguousCorridors": 0,
+                    "arrowheadCollisions": 0,
+                    "containerBorderRuns": 0,
+                    "labelRouteClearanceIssues": 0,
+                    "labelCanvasOverflowIssues": 0,
+                    "minLabelRouteClearance": 28,
+                    "desktopReadabilityIssues": 0,
+                    "viewportHeightIssues": 0,
+                    "minProjectedNodeTextPx": 11,
+                    "maxBends": 0,
+                    "routesOverSuggestedBends": 0,
+                    "maxStretch": 1,
+                    "routesOverSuggestedStretch": 0,
+                    "minSegmentPx": 200.3,
+                    "minInteriorSegmentPx": null,
+                    "shortSegmentCount": 0,
+                    "shortEndpointSegmentCount": 0,
+                    "shortInteriorSegmentCount": 0,
+                    "microSegmentCount": 0
+                  },
+                  "suggestedLimits": {
+                    "bendsPerRelationship": 2,
+                    "stretch": 1.35,
+                    "segmentPx": 16,
+                    "microSegmentPx": 8
+                  },
+                  "routeReview": {
+                    "crossings": [],
+                    "detours": []
+                  },
+                  "leadingSpace": {
+                    "measured": false,
+                    "reviewSuggested": false
+                  },
+                  "sequenceColumnSpace": {
+                    "measured": true,
+                    "columnFit": "spread",
+                    "participantCount": 4,
+                    "occupiedRight": 880,
+                    "viewBoxLeft": 0,
+                    "canvasWidth": 920,
+                    "emptyRightPx": 40,
+                    "emptyRightRatio": 0.043,
+                    "typicalParticipantWidth": 175,
+                    "reviewSuggested": false
+                  },
+                  "desktopReadability": {
+                    "budgetBasis": "legacy-930",
+                    "readerContract": "declared-wide-v1",
+                    "availableDiagramWidth": 930,
+                    "actualBudgetPx": 930,
+                    "limit": "legacy",
+                    "requestedTargetPx": null,
+                    "requestedTargetMet": null,
+                    "hardFloorPx": 6,
+                    "hardFloorMet": true,
+                    "minimumOwner": {
+                      "kind": "edge",
+                      "id": "user-to-agent-1",
+                      "from": "user",
+                      "to": "agent"
+                    },
+                    "minimumSourceTextPx": 11,
+                    "minimumProjectedTextPx": 11,
+                    "semanticTextCount": 13
+                  },
+                  "issues": []
+                }
+              }
+            }
+          ]
+        },
+        "diagnostics": [],
+        "provenance": "current",
+        "deliveryReceiptId": "c75f6579-524a-4b64-a902-ff573d299873"
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": false,
+    "ran": false
+  },
+  "diagnostics": [],
+  "evidence": {
+    "receipt": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.finalize.json",
+    "summaryReceipt": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "finishedAt": "2026-10-24T12:49:40.638Z",
+  "durationMs": 1688,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-valid"
+  }
+}

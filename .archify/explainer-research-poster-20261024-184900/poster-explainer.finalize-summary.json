@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "explainer",
+  "quality": "showcase",
+  "specification": {
+    "path": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/candidate.archify.md",
+    "sha256": "38ff2b9dc0dd3de7bfbfaa7de50a47847ef642ac9bbac82059ad8ee3fa59ebd3",
+    "bytes": 8379
+  },
+  "artifact": {
+    "path": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.html",
+    "sha256": "33aea84fb7196971c4807332db7a51d39865dfbb01070c4bc9a20a5b337a225b",
+    "bytes": 942917
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "not-run"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.finalize.json",
+    "summaryReceipt": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 1688,
+  "browserCheck": {
+    "requested": false,
+    "ran": false
+  }
+}

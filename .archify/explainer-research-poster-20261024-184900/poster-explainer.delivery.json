@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "c75f6579-524a-4b64-a902-ff573d299873",
+  "status": "current",
+  "command": "deliver",
+  "type": "explainer",
+  "input": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/candidate.archify.md",
+  "output": "/mnt/workspace/research/.archify/explainer-research-poster-20261024-184900/poster-explainer.html",
+  "specification": {
+    "sha256": "38ff2b9dc0dd3de7bfbfaa7de50a47847ef642ac9bbac82059ad8ee3fa59ebd3",
+    "bytes": 8379
+  },
+  "artifact": {
+    "sha256": "33aea84fb7196971c4807332db7a51d39865dfbb01070c4bc9a20a5b337a225b",
+    "bytes": 942917
+  },
+  "explainer": {
+    "preparedSha256": "10cddf99534015897ff255c97993c5fe3b8a0dd6c7b396665393c6a14c65dd7c",
+    "dependencies": [
+      {
+        "kind": "diagram-spec",
+        "id": "poster-lifecycle-flow",
+        "inline": true,
+        "sha256": "db7df53b201804a899fcbeade37ad32b4cbf621ba76e3b1de5143935f7b0864f",
+        "bytes": 1197
+      },
+      {
+        "kind": "diagram-spec",
+        "id": "poster-seam-sequence",
+        "inline": true,
+        "sha256": "5b144201278da021694c4fa504557b19bbe7e4dee842e7567b8bb5b829bf0a0d",
+        "bytes": 1454
+      }
+    ]
+  }
+}

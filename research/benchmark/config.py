@@ -27,6 +27,8 @@ _load_dotenv()
 DATA_DIR = BENCHMARK_ROOT / "data"
 RESULTS_DIR = RESEARCH_ROOT / "results"
 PILOT_TASKS_FILE = DATA_DIR / "pilot_tasks.json"
+EXPANDED_TASKS_FILE = DATA_DIR / "xling_tasks_expanded.json"
+MULTI_DOMAIN_26_TASKS_FILE = DATA_DIR / "xling_tasks_26.json"
 PILOT_RUNS_LOG = RESULTS_DIR / "pilot_runs.jsonl"
 
 TARGET_SKILLS = [
