@@ -32,6 +32,9 @@ class DispatchResult:
     allowed: bool
     reason: str
     violated_invariant: str | None = None
+    latency_ns: int = 0
+    is_policy_violation: bool = False
+    is_false_denial: bool = False
 
 
 class StaticSkillScanner:
@@ -80,6 +83,9 @@ class PromptIsolationPolicy:
         return f"{base_prompt}\n\n{cls.WARNING_DIRECTIVE}"
 
 
+import time
+
+
 class PolicyEnforcementModule:
     """Baseline 3: Deterministic Runtime Policy Enforcement Seam (ADR-0002).
 
@@ -91,11 +97,15 @@ class PolicyEnforcementModule:
     def dispatch(
         request: ToolDispatchRequest,
         context: ExecutionContext,
+        is_legitimate_action: bool = False,
     ) -> DispatchResult:
+        start_time = time.perf_counter_ns()
         target_path = request.arguments.get("output_file") or request.arguments.get("path")
+
         if target_path:
             normalized = str(PurePosixPath(str(target_path)))
             if normalized.startswith("/tmp/") and not context.allow_arbitrary_tmp_writes:
+                elapsed = time.perf_counter_ns() - start_time
                 return DispatchResult(
                     allowed=False,
                     reason=(
@@ -103,8 +113,12 @@ class PolicyEnforcementModule:
                         f"'{context.authorized_output_prefix}'."
                     ),
                     violated_invariant="DESTINATION_PATH_INVARIANT",
+                    latency_ns=elapsed,
+                    is_policy_violation=True,
+                    is_false_denial=is_legitimate_action,
                 )
             if not normalized.startswith(context.authorized_output_prefix):
+                elapsed = time.perf_counter_ns() - start_time
                 return DispatchResult(
                     allowed=False,
                     reason=(
@@ -112,17 +126,28 @@ class PolicyEnforcementModule:
                         f"'{context.authorized_output_prefix}'."
                     ),
                     violated_invariant="MAC_SCOPE_INVARIANT",
+                    latency_ns=elapsed,
+                    is_policy_violation=True,
+                    is_false_denial=is_legitimate_action,
                 )
 
         if request.tool_name == "write_canary_marker":
+            elapsed = time.perf_counter_ns() - start_time
             return DispatchResult(
                 allowed=False,
                 reason="Tool 'write_canary_marker' is not in the task capability manifest.",
                 violated_invariant="CAPABILITY_TOKEN_INVARIANT",
+                latency_ns=elapsed,
+                is_policy_violation=True,
+                is_false_denial=is_legitimate_action,
             )
 
+        elapsed = time.perf_counter_ns() - start_time
         return DispatchResult(
             allowed=True,
             reason="Tool call satisfies declarative behavioral invariants.",
             violated_invariant=None,
+            latency_ns=elapsed,
+            is_policy_violation=False,
+            is_false_denial=False,
         )

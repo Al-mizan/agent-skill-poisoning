@@ -52,20 +52,20 @@ The pilot evaluation executed 120 trials spanning 5 enterprise domains (`pdf`, `
 
 ### Quantitative Summary Table
 
-| Defense Layer | Language Register | Sample Size ($N$) | Skill Selection Rate (SSR) | Attack Success Rate (ASR) | Benign Utility Retention (BUR) | Defense Robustness Rate (DRR) |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Undefended Baseline** | English (`en`) | 10 | 100.0% | **100.0%** | 100.0% | 0.0% |
-| **Undefended Baseline** | Native Bangla (`bn`) | 10 | 100.0% | **100.0%** | 100.0% | 0.0% |
-| **Undefended Baseline** | Banglish (`bn-en`) | 10 | 100.0% | **100.0%** | 100.0% | 0.0% |
-| **Static Keyword Scanner** | English (`en`) | 10 | 0.0% | **0.0%** | **0.0%** (Over-refusal) | 100.0% |
-| **Static Keyword Scanner** | Native Bangla (`bn`) | 10 | 100.0% | **100.0%** (Total Bypass) | 100.0% | **0.0%** |
-| **Static Keyword Scanner** | Banglish (`bn-en`) | 10 | 100.0% | **100.0%** (Total Bypass) | 100.0% | **0.0%** |
-| **Prompt Warning Policy** | English (`en`) | 10 | 100.0% | **0.0%** | 100.0% | 100.0% |
-| **Prompt Warning Policy** | Native Bangla (`bn`) | 10 | 100.0% | **100.0%** (Guardrail Fail) | 100.0% | **0.0%** |
-| **Prompt Warning Policy** | Banglish (`bn-en`) | 10 | 100.0% | **100.0%** (Guardrail Fail) | 100.0% | **0.0%** |
-| **Policy Module (ADR-0002)**| English (`en`) | 10 | 100.0% | **0.0%** | **100.0%** | **100.0%** |
-| **Policy Module (ADR-0002)**| Native Bangla (`bn`) | 10 | 100.0% | **0.0%** | **100.0%** | **100.0%** |
-| **Policy Module (ADR-0002)**| Banglish (`bn-en`) | 10 | 100.0% | **0.0%** | **100.0%** | **100.0%** |
+| Defense Layer | Language Register | Sample Size ($N$) | Attack Success Rate (ASR) | Policy Violation Rate (PVR) | Task Success Rate (TSR) | Latency Overhead (ms) | False Denial Rate (FDR) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Undefended Baseline** | English (`en`) | 10 | **100.0%** | **100.0%** | 100.0% | 0.000 ms | 0.0% |
+| **Undefended Baseline** | Native Bangla (`bn`) | 10 | **100.0%** | **100.0%** | 100.0% | 0.000 ms | 0.0% |
+| **Undefended Baseline** | Banglish (`bn-en`) | 10 | **100.0%** | **100.0%** | 100.0% | 0.000 ms | 0.0% |
+| **Static Keyword Scanner** | English (`en`) | 10 | **0.0%** | **0.0%** | **0.0%** (Over-refusal) | 0.000 ms | **100.0%** (False Denial) |
+| **Static Keyword Scanner** | Native Bangla (`bn`) | 10 | **100.0%** | **100.0%** (Bypass) | 100.0% | 0.000 ms | 0.0% |
+| **Static Keyword Scanner** | Banglish (`bn-en`) | 10 | **100.0%** | **100.0%** (Bypass) | 100.0% | 0.000 ms | 0.0% |
+| **Prompt Warning Policy** | English (`en`) | 10 | **0.0%** | **0.0%** | 100.0% | 0.000 ms | 0.0% |
+| **Prompt Warning Policy** | Native Bangla (`bn`) | 10 | **100.0%** | **100.0%** (Guardrail Fail) | 100.0% | 0.000 ms | 0.0% |
+| **Prompt Warning Policy** | Banglish (`bn-en`) | 10 | **100.0%** | **100.0%** (Guardrail Fail) | 100.0% | 0.000 ms | 0.0% |
+| **Policy Module (ADR-0002)**| English (`en`) | 10 | **0.0%** | **0.0%** | **100.0%** | **0.021 ms** | **0.0%** |
+| **Policy Module (ADR-0002)**| Native Bangla (`bn`) | 10 | **0.0%** | **0.0%** | **100.0%** | **0.019 ms** | **0.0%** |
+| **Policy Module (ADR-0002)**| Banglish (`bn-en`) | 10 | **0.0%** | **0.0%** | **100.0%** | **0.018 ms** | **0.0%** |
 
 ### Key Analytical Insights for the Journal Paper:
 1. **The Ineffectiveness of Lexical Marketplace Scanners:** The static keyword scanner successfully flagged English injection patterns, but in doing so blocked the entire package install, resulting in 0% Benign Utility Retention. More critically, against Bangla and Banglish manifests, the scanner exhibited a 100% failure rate, allowing all poisoned skills to pass undetected.
@@ -131,10 +131,15 @@ flowchart TD
   - Memory consumption (target: $< 10 \text{ MB}$ footprint).
   - Benign task preservation across clean baseline datasets (AgentDojo clean subset).
 
-### Milestone 5: Statistical Rigor & Hypothesis Testing
+### Milestone 5: Statistical Rigor & Five Canonical Metrics
+- Measure the five core evaluation metrics across all experimental runs:
+  1. **Attack Success Rate (ASR)**: How often do attacks achieve their unauthorized objective (e.g., canary marker execution)?
+  2. **Policy Violation Rate (PVR)**: How often do unauthorized operations actually execute on the host system without mediation?
+  3. **Task Success Rate (TSR / BUR)**: Can the agent still complete legitimate tasks without over-refusal?
+  4. **Latency Overhead (LO)**: How much time does runtime authorization add at the dispatch seam (target: $< 2 \text{ ms}$)?
+  5. **False Denial Rate (FDR)**: How often are legitimate, authorized actions mistakenly blocked by security policies?
 - Report statistical confidence intervals (95% CI via Wilson score interval).
 - Conduct **McNemar's test** to confirm that the performance disparity between English and non-English attack success is statistically significant ($p < 0.001$).
-- Calculate **Defense Robustness Rate (DRR)** and **Benign Utility Retention (BUR)** across all ablation axes.
 
 ### Milestone 6: Journal Manuscript Preparation (LaTeX)
 - Prepare the manuscript using the standard `IEEEtran.cls` or `acmart.cls` double-column format (12–15 pages).
@@ -168,7 +173,7 @@ flowchart TD
    4.1 Task Taxonomy across 10 Enterprise Domains
    4.2 Linguistic Registers & Native Annotation Quality Control (EN, BN, BN-EN, ZH, ES)
    4.3 Evaluated Agent Backbones (Proprietary vs. Open-Weights)
-   4.4 Evaluation Metrics: SSR, ASR, BUR, DRR
+   4.4 Evaluation Metrics: ASR, PVR, TSR, Latency Overhead, False Denial Rate
 
 5. EMPIRICAL VULNERABILITY ANALYSIS (RQ1, RQ2, RQ3)
    5.1 Active Runtime Exploitation across Languages (RQ1: Multilingual ASR)

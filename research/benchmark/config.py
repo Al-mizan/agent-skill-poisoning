@@ -1,11 +1,28 @@
 """Configuration for the Cross-Lingual Agent Skill Poisoning Pilot Benchmark."""
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 BENCHMARK_ROOT = Path(__file__).resolve().parent
 RESEARCH_ROOT = BENCHMARK_ROOT.parent
 WORKSPACE_ROOT = RESEARCH_ROOT.parent
+
+
+def _load_dotenv() -> None:
+    """Load key-value pairs from .env without external dependencies."""
+    for candidate in [WORKSPACE_ROOT / ".env", RESEARCH_ROOT / ".env", BENCHMARK_ROOT / ".env"]:
+        if candidate.exists():
+            for line in candidate.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    k, v = k.strip(), v.strip().strip("'\"")
+                    if k and k not in os.environ and v:
+                        os.environ[k] = v
+
+
+_load_dotenv()
 
 DATA_DIR = BENCHMARK_ROOT / "data"
 RESULTS_DIR = RESEARCH_ROOT / "results"
