@@ -87,7 +87,7 @@ import time
 
 
 class PolicyEnforcementModule:
-    """Baseline 3: Deterministic Runtime Policy Enforcement Seam (ADR-0002).
+    """Baseline 3: Deterministic Runtime Policy Enforcement Seam.
 
     Evaluates declarative behavioral invariants at the dispatch(request, context)
     seam independently of LLM reasoning or natural-language register.
