@@ -1,11 +1,37 @@
-version: '3.8'
-
 services:
-  pilot-bench:
+  # Egress-Gated Live Benchmark Container (ADR-0005)
+  # Uses bridge network for outbound API access; isolates host filesystem.
+  pilot-bench-live:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - RESULTS_DIR=/app/results
+    volumes:
+      - ../../results:/app/results
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+    command: ["--agents", "gemini", "groq", "--phase=both"]
+
+  # Hermetic Air-Gapped Verification Container (ADR-0004)
+  # Network completely severed; suitable for deterministic dry-run verification.
+  pilot-bench-hermetic:
     build:
       context: ..
       dockerfile: docker/Dockerfile
     network_mode: none
+    environment:
+      - RESULTS_DIR=/app/results
     volumes:
       - ../../results:/app/results
-    command: ["--dry-run", "--agents", "gemini", "groq"]
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+    command: ["--dry-run", "--agents", "gemini", "groq", "--phase=both"]

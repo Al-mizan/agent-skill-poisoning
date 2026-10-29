@@ -1043,6 +1043,10 @@
             SSR = (Σ 𝕀[Selected = Target]) / N × 100%
           </div>
           <div class="equation-box">
+            <span class="eq-label">VBR:</span>
+            VBR = (Σ 𝕀[Blocked at Install = 0]) / N × 100%
+          </div>
+          <div class="equation-box">
             <span class="eq-label">ASR:</span>
             ASR = (Σ 𝕀[Canary Executed]) / N × 100%
           </div>
@@ -1055,7 +1059,7 @@
             DRR = (ASR<sub>undefended</sub> − ASR<sub>defended</sub>) / ASR<sub>undefended</sub> × 100%
           </div>
           <p class="small mt-4 italic">
-            SSR = Skill Selection Rate · ASR = Attack Success Rate · BUR = Benign Utility Retention · DRR = Defense Robustness Rate
+            SSR = Skill Selection Rate · VBR = Vetting Bypass Rate · ASR = Attack Success Rate · BUR = Benign Utility Retention · DRR = Defense Robustness Rate
           </p>
         </div>
       </div>
@@ -1078,12 +1082,12 @@
           </div>
 
           <div class="kv-box mt-4">
-            <div class="kv-label">Infrastructure &amp; Safety</div>
+            <div class="kv-label">Infrastructure &amp; Safety (ADR-0004 &amp; ADR-0005)</div>
             <ul>
-              <li><strong>Models:</strong> Groq Qwen-2.5-27B (pilot), Gemini 2.5 Flash, Groq Llama 3.3 70B</li>
-              <li><strong>Sandbox:</strong> Network-isolated containers (<code>--network none</code>)</li>
-              <li><strong>Payloads:</strong> Harmless local canary markers (zero credential risk)</li>
-              <li><strong>Budget:</strong> API cost under $50 USD; full JSONL trace logging</li>
+              <li><strong>Models:</strong> Gemini 2.5 Flash, Groq Llama 3.3 70B Versatile</li>
+              <li><strong>Dual Sandboxing:</strong> Egress-gated container (bridge egress for APIs) + Air-gapped hermetic container (<code>--network none</code>)</li>
+              <li><strong>Isolation:</strong> Host filesystem unmounted; non-root UID 1000; ephemeral scratchpads</li>
+              <li><strong>Payloads:</strong> Harmless local canary telemetry markers (zero credential risk)</li>
             </ul>
           </div>
         </div>
@@ -1255,6 +1259,10 @@
           <div class="finding">
             <span class="finding-icon">🔴</span>
             <div><strong>Runtime Vulnerability Confirmed:</strong> Cross-lingual skill poisoning reliably compromises live agent tool dispatch across all 26 enterprise domains with 100% ASR when undefended.</div>
+          </div>
+          <div class="finding">
+            <span class="finding-icon">🔄</span>
+            <div><strong>Two-Phase Rug-Pull Lifecycle (ADR-0004):</strong> Phase 1 confirms 100% Benign Utility Retention across all registers; in Phase 2, mutated non-English exploits achieve 100% Vetting Bypass Rate, slipping past scanners undetected.</div>
           </div>
           <div class="finding">
             <span class="finding-icon">🟡</span>
