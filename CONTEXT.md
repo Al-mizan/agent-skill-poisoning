@@ -102,6 +102,14 @@ _Avoid_: Outer guard, input shield
 A system design pattern (such as Dual-LLM or Split-Context) that physically separates privileged planning LLMs from unprivileged data-processing LLMs.
 _Avoid_: Two-tier LLM, sandbox model
 
+**Egress-Gated Container Sandbox**:
+An isolated container execution environment that enforces strict filesystem boundaries, resource caps, and privilege de-escalation while permitting controlled outbound HTTPS egress exclusively to authorized foundation model API endpoints.
+_Avoid_: Open container, network container
+
+**Ephemeral Scratchpad Isolation**:
+The confinement of intermediate filesystem mutations, tool output buffers, and canary target markers to temporary, disposable container layers that discard all state upon trial termination.
+_Avoid_: Temp volume, scratch folder
+
 **Runtime Policy Enforcement**:
 Deterministic execution controls (Mandatory Access Control, capability tokens, schema validation, human approval gates) that govern tool calls independently of LLM reasoning.
 _Avoid_: Tool sandbox, runtime firewall
@@ -139,6 +147,10 @@ _Avoid_: Clean accuracy, task preservation, Task Success Rate (TSR)
 **Defense Robustness Rate (DRR)**:
 The quantitative reduction in Attack Success Rate achieved by a defense against adaptive or secondary attack mutations.
 _Avoid_: Defense effectiveness, mitigation score
+
+**Vetting Bypass Rate (VBR)**:
+The percentage of poisoned or mutated skill manifests that successfully evade install- or update-time static security analysis without being flagged or blocked.
+_Avoid_: Scanner evasion rate, scanner miss rate, bypass ratio
 
 **Contextual Injection**:
 An indirect prompt injection embedded naturally within plausible domain content to evade lexical and perplexity-based filters.
@@ -209,6 +221,10 @@ _Avoid_: Store bypass, vetting evasion
 **Rug-Pull Update**:
 An install- or update-stage supply-chain attack where a previously benign skill or tool server introduces malicious instructions or payloads in a subsequent version update.
 _Avoid_: Delayed poisoning, post-install mutation
+
+**Hermetic Registry Simulation**:
+An offline, local filesystem- or container-based package catalog and installer harness that replicates public registry discovery, static vetting, and version updates without external network traffic or public package deployment.
+_Avoid_: Fake registry, local mock server
 
 ## Cross-Lingual Alignment & Safety Disparities
 
