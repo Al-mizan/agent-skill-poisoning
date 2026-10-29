@@ -974,7 +974,7 @@
           <div class="methodology-banner" style="margin-bottom: 8px; text-align: center; background: #ffffff; border: 1.5px solid #1a3a5c; border-radius: 5px; padding: 2px; overflow: hidden; box-shadow: 0 1px 4px rgba(26, 58, 92, 0.1);">
             <img src="methodology.jpeg" alt="The Five-Stage Attack Lifecycle: Skill-Based Jailbreaking &amp; Policy Enforcement Seam" style="width: 100%; height: auto; max-height: 175px; object-fit: contain; display: block; margin: 0 auto; border-radius: 3px;">
             <div style="font-size: 9px; color: #1a3a5c; margin-top: 3px; font-weight: 700; letter-spacing: 0.2px;">
-              Fig 1: Five-Stage Cross-Lingual Attack Lifecycle 
+              Fig 1: Five-Stage Cross-Lingual Attack Lifecycle (Ethically Evaluated via ADR-0004 Hermetic Registry)
             </div>
           </div>
 
@@ -1085,6 +1085,7 @@
             <div class="kv-label">Infrastructure &amp; Safety (ADR-0004 &amp; ADR-0005)</div>
             <ul>
               <li><strong>Models:</strong> Gemini 2.5 Flash, Groq Llama 3.3 70B Versatile</li>
+              <li><strong>Ethical Registry:</strong> Zero public deployments (Menlo Report 2012); local filesystem simulation (ADR-0004)</li>
               <li><strong>Dual Sandboxing:</strong> Egress-gated container (bridge egress for APIs) + Air-gapped hermetic container (<code>--network none</code>)</li>
               <li><strong>Isolation:</strong> Host filesystem unmounted; non-root UID 1000; ephemeral scratchpads</li>
               <li><strong>Payloads:</strong> Harmless local canary telemetry markers (zero credential risk)</li>
