@@ -63,7 +63,8 @@
     text-align: center;
     line-height: 1.15;
     border: 3px solid #e8a820;
-    padding: 4px;
+    padding: 3px;
+    overflow: hidden;
   }
 
   .header-center {
@@ -209,6 +210,17 @@
   .label-green { background: #e6f9ed; color: #1a6b3c; border: 1px solid #a0deb8; }
   .label-blue { background: #e3f0ff; color: #1a3a5c; border: 1px solid #a0c8f0; }
   .label-purple { background: #f0e6ff; color: #4a2c7c; border: 1px solid #c8a0f0; }
+
+  code {
+    background: #eef2f8;
+    color: #1a3a5c;
+    font-family: 'JetBrains Mono', Consolas, 'SFMono-Regular', monospace;
+    font-size: 11.5px;
+    padding: 1.5px 6px;
+    border-radius: 4px;
+    border: 1px solid #c8d3e2;
+    font-weight: 600;
+  }
 
   /* ───── KEY/VALUE HIGHLIGHT BOXES ───── */
   .kv-box {
@@ -390,6 +402,73 @@
   .defense-tier.tier-fail .tier-name { color: #c75000; }
   .defense-tier.tier-partial .tier-name { color: #a07000; }
   .defense-tier.tier-pass .tier-name { color: #1a6b3c; }
+
+  /* ───── LITERATURE REVIEW TABLE ───── */
+  .lit-review-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5px;
+    line-height: 1.35;
+    margin-bottom: 2px;
+    background: #ffffff;
+    border: 1px solid #1a3a5c;
+  }
+
+  .lit-review-table thead th {
+    background: linear-gradient(135deg, #104278 0%, #0d2b52 100%);
+    color: #ffffff;
+    padding: 5px 4px;
+    font-weight: 700;
+    font-size: 8.8px;
+    text-align: center;
+    border: 1px solid #0d2b52;
+    letter-spacing: 0.2px;
+  }
+
+  .lit-review-table tbody td {
+    padding: 4px 5px;
+    border: 1px solid #cbd5e1;
+    vertical-align: top;
+    color: #1e293b;
+  }
+
+  .lit-review-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  .lit-review-table tbody tr:nth-child(odd) {
+    background: #ffffff;
+  }
+
+  .lit-review-table tbody tr:hover {
+    background: #f1f5f9;
+  }
+
+  .lit-review-table .ref-title {
+    font-weight: 700;
+    color: #0f2d59;
+    font-size: 8.5px;
+  }
+
+  .lit-review-table .ref-sub {
+    font-style: italic;
+    color: #334155;
+    margin-top: 2px;
+  }
+
+  .lit-review-table ul {
+    margin: 0;
+    padding-left: 11px;
+    list-style-type: disc;
+  }
+
+  .lit-review-table li {
+    margin-bottom: 2px;
+  }
+
+  .lit-review-table li:last-child {
+    margin-bottom: 0;
+  }
 
   /* ───── RESULTS TABLE ───── */
   .results-table {
@@ -689,7 +768,7 @@
   <!-- ════════ HEADER ════════ -->
   <div class="poster-header">
     <div class="header-logo">
-      <div>JU<br>Jahangirnagar<br>University</div>
+      <img src="ju_logo.png" alt="Jahangirnagar University Logo" style="width: 100%; height: 100%; object-fit: contain;">
     </div>
 
     <div class="header-center">
@@ -698,7 +777,7 @@
         Active Runtime Exploitation and Deterministic<br>Authorization in Tool-Using LLM Agents
       </h1>
       <div class="header-authors">
-        Al-mizan<sup>1</sup>, Eva<sup>1</sup> &nbsp;·&nbsp; Supervisor: Dr. Md. Rafsan Jani<sup>1</sup>
+        Al-mizan<sup>1</sup>, Fateema Binti Taher Eva<sup>1</sup> &nbsp;·&nbsp; Supervisor:  Md. Rafsan Jani<sup>1</sup>
       </div>
       <div class="header-affiliation">
         <sup>1</sup>Department of Computer Science &amp; Engineering, Jahangirnagar University, Savar, Dhaka, Bangladesh
@@ -717,66 +796,15 @@
     <!-- ──── LEFT COLUMN ──── -->
     <div class="col-left">
 
-      <!-- BACKGROUND -->
-      <div class="section">
-        <div class="section-title">Background</div>
-        <div class="section-body">
-          <p>
-            <strong>Context:</strong> Tool-using LLM agents extend capabilities via modular
-            <em>skill packages</em> (SKILL.md manifests, MCP configurations) that combine
-            executable function schemas with free-form natural-language instructions.
-          </p>
-          <p>
-            <strong>Problem:</strong> Because agents ingest untrusted skill text directly into
-            their reasoning loop, this creates <span class="label label-red">Control-Data Conflation</span>
-            — a semantic supply-chain attack surface where documentation becomes executable guidance.
-          </p>
-          <p>
-            <strong>Gap:</strong> All existing active exploitation benchmarks operate
-            <em>exclusively in English</em>, leaving cross-lingual manipulation unstudied.
-            Static audits show scanners flag non-English packages up to 5× more frequently
-            with <em>near-zero precision</em>, but whether such manifests actually hijack
-            runtime tool execution remains unmeasured.
-          </p>
-        </div>
-      </div>
-
-      <!-- MOTIVATION & CHALLENGES -->
-      <div class="section">
-        <div class="section-title accent-orange">Motivation &amp; Challenges</div>
-        <div class="section-body">
-          <div class="motivation-grid">
-            <div class="motivation-card challenge">
-              <div class="card-title">🔴 Challenge 1</div>
-              Safety alignment concentrated on English; multilingual models comprehend
-              non-English instructions but guardrails fail to intercept them.
-            </div>
-            <div class="motivation-card challenge">
-              <div class="card-title">🔴 Challenge 2</div>
-              Static keyword/YARA scanners calibrated for English syntax achieve
-              0% precision on non-Latin skill manifests.
-            </div>
-            <div class="motivation-card gap">
-              <div class="card-title">🟡 Gap 1</div>
-              No active runtime benchmark measures cross-lingual skill poisoning
-              across low-resource languages and code-mixed registers.
-            </div>
-            <div class="motivation-card gap">
-              <div class="card-title">🟡 Gap 2</div>
-              Language invariance of deterministic runtime policy enforcement
-              remains unmeasured.
-            </div>
-          </div>
-
-          <div class="mt-6">
-            <strong>Key Concepts:</strong>
-          </div>
-          <ul>
-            <li><span class="label label-purple">Linguistic Proficiency Paradox</span> Models comprehend multilingual instructions; safety filters do not.</li>
-            <li><span class="label label-blue">English Calibration Gap</span> Alignment and guardrails perform significantly better on English prompts.</li>
-          </ul>
-        </div>
-      </div>
+     <!-- BACKGROUND -->
+<div class="section">
+  <div class="section-title">Background</div>
+  <div class="section-body" style="font-size: 12.8px; line-height: 1.55;">
+    <p>
+      Tool-using LLM agents extend their capabilities through third-party skill artifacts (<code>SKILL.md</code>) that define instructions for a specific task with tool schemas, creating an instruction channel that attackers can use to trigger <strong>unauthorized tool use</strong> and <strong>malicious instructions</strong>. We investigate <span class="label label-red" style="font-size: 12px; padding: 2px 7px;">Cross-Lingual Skill Poisoning</span>, in which hidden tool-calling, malicious injection, or payloads written in multiple languages are embedded in benign-looking skills. We will build a benchmark paired with benign and poisoned skills using semantically matched <span class="label label-blue">English</span>, <span class="label label-orange">Bangla</span>, and <span class="label label-green">Banglish</span> instructions, and measure unauthorized-action proposals, scanner detection, and legitimate task completion under benign user prompt requests. We will compare three <strong>defense tiers</strong>: <strong>static scanning</strong>, <strong>prompt-level isolation</strong>, and a proposed deterministic <strong>Policy Enforcement Module</strong>. The study examines whether multilingual instruction-following capability exceeds security coverage across languages.
+    </p>
+  </div>
+</div>
 
       <!-- RESEARCH QUESTIONS -->
       <div class="section">
@@ -789,68 +817,148 @@
         </div>
       </div>
 
-      <!-- ATTACK FRAMEWORK -->
+      <!-- LITERATURE REVIEW & RELATED WORK -->
       <div class="section">
-        <div class="section-title accent-red">5-Stage Attack Lifecycle</div>
-        <div class="section-body">
-          <div class="framework-flow">
-            <!-- SUPPLY CHAIN LANE -->
-            <div class="flow-lane attack">
-              <div class="lane-label">Untrusted Supply Chain (Stages 1–4)</div>
-              <div class="flow-steps" style="margin-top: 4px;">
-                <div class="flow-step attack-step">
-                  <span class="step-num">①</span>
-                  <strong>Authoring</strong><br>
-                  <span class="small">Craft dual-intent skill in EN/BN/BN-EN</span>
-                </div>
-                <div class="flow-arrow attack-arrow">→</div>
-                <div class="flow-step attack-step">
-                  <span class="step-num">②</span>
-                  <strong>Registry</strong><br>
-                  <span class="small">Evade English-calibrated static scanners</span>
-                </div>
-                <div class="flow-arrow attack-arrow">→</div>
-                <div class="flow-step attack-step">
-                  <span class="step-num">③</span>
-                  <strong>Install</strong><br>
-                  <span class="small">Inherit ambient user permissions</span>
-                </div>
-                <div class="flow-arrow attack-arrow">→</div>
-                <div class="flow-step attack-step">
-                  <span class="step-num">④</span>
-                  <strong>Rug-Pull</strong><br>
-                  <span class="small">Mutate skill post-vetting</span>
-                </div>
-              </div>
-            </div>
+        <div class="section-title">Literature Review &amp; Research Gaps</div>
+        <div class="section-body" style="padding: 4px;">
+          <table class="lit-review-table">
+            <thead>
+              <tr>
+                <th style="width: 20%;">Reference</th>
+                <th style="width: 19%;">Research Objectives</th>
+                <th style="width: 20%;">Methodology</th>
+                <th style="width: 23%;">Key Findings</th>
+                <th style="width: 18%;">Limitations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Row 1: Agent Skills '26 -->
+              <tr>
+                <td>
+                  <div class="ref-title">Agent Skills '26</div>
+                  <div class="ref-sub">Do Agent Skills Speak Safety in Every Language? A Cross-Lingual Security Analysis of the Skills Ecosystem</div>
+                </td>
+                <td>Checking the security of 3,656 agent skills in eight languages to find security flaws, especially in rare languages, and test how well multilingual security tools work.</td>
+                <td>
+                  <ul>
+                    <li>Ran code checks using Cisco Skill Scanner v2.0.9, Snyk Agent Scan, and Semgrep.</li>
+                    <li>Tracked how data moves and had both humans and AI check a smaller set of languages.</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li>Direct code flaws were rare (2.3%), but 87% of skills did not include a license.</li>
+                    <li>Non-English skills triggered 3–5 times as many safety warnings (e.g., Japanese hit 10.9% vs. 1.8% for English).</li>
+                    <li>Safety tools flagged almost only false alarms on non-English skills (0% precision on Japanese).</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li>Relies mostly on a single scanner built for skills.</li>
+                    <li>Tested only a few examples for certain languages (Portuguese, German).</li>
+                    <li>Frequently raised false alarms on non-English text.</li>
+                  </ul>
+                </td>
+              </tr>
 
-            <!-- TRANSITION ARROW -->
-            <div class="text-center" style="font-size: 18px; color: #e06040;">⬇ <span class="small bold" style="color: #c75000;">Poisoned Skill Injected</span></div>
+              <!-- Row 2: SkillJect -->
+              <tr>
+                <td>
+                  <div class="ref-title">SkillJect</div>
+                  <div class="ref-sub">Effectively Automating Skill-Based Prompt Injection for Skill-Enabled Agents — <em>arXiv:2602.14211</em></div>
+                </td>
+                <td>Testing automatic ways to trick AI agents into running hidden, harmful code inside shareable skills.</td>
+                <td>
+                  <ul>
+                    <li>Hide attacks inside setup scripts, mask them as standard steps in skill instructions, and use error messages to refine prompts.</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li>SKILLJECT succeeded <strong>80.7%</strong> on average (94.7% on GLM-4.7, 97.2% on MiniMax, 83.8% on GPT-5-mini, 47.0% on Claude-Sonnet-4.6).</li>
+                    <li>Direct prompt injection failed every time (0%).</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li>Tested only with synthetic attack code/passwords in isolated Docker setups.</li>
+                    <li>Real-world damage depends on whether human approves action prompt.</li>
+                  </ul>
+                </td>
+              </tr>
 
-            <!-- RUNTIME LANE -->
-            <div class="flow-lane defense">
-              <div class="lane-label">Agent Runtime (Stage 5 + Defense Seam)</div>
-              <div class="flow-steps" style="margin-top: 4px;">
-                <div class="flow-step attack-step">
-                  <span class="step-num">⑤</span>
-                  <strong>Execution</strong><br>
-                  <span class="small">LLM planner selects poisoned skill</span>
-                </div>
-                <div class="flow-arrow defense-arrow">→</div>
-                <div class="flow-step defense-step">
-                  <span class="step-num">🛡️</span>
-                  <strong>Policy Seam</strong><br>
-                  <span class="small">Validate paths, tokens, invariants</span>
-                </div>
-                <div class="flow-arrow defense-arrow">→</div>
-                <div class="flow-step defense-step" style="border-color: #3aa060; background: #f0fff5;">
-                  <span class="step-num" style="color: #1a6b3c;">✓</span>
-                  <strong>Pass / Block</strong><br>
-                  <span class="small">Authorize or deterministically deny</span>
-                </div>
-              </div>
-            </div>
-          </div>
+              <!-- Row 3: SKILL-INJECT -->
+              <tr>
+                <td>
+                  <div class="ref-title">SKILL-INJECT</div>
+                  <div class="ref-sub">Measuring Agent Vulnerability to Skill File Attacks — <em>arXiv:2602.20156</em></div>
+                </td>
+                <td>Evaluating if AI agents can be tricked into following harmful instructions hidden inside third-party skill files, while distinguishing attacks from benign requests.</td>
+                <td>Tested how agents react under basic, strict, or relaxed safety rules by hiding attacks in text, scripts, and setup files across 23 skills in 202 test scenarios.</td>
+                <td>
+                  <ul>
+                    <li>Sneaky attacks succeeded <strong>67.6%</strong> on Gemini 3 Flash and <strong>64.7%</strong> on GPT-5.1-Codex-Max.</li>
+                    <li>Hiding attacks in scripts boosted success from 53.8% to 71.8%; adding to skill descriptions raised success by +14.1%.</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li>Limited to 202 synthetic tasks in single-turn conversations.</li>
+                    <li>Static attacks do not adapt dynamically to agent behavior.</li>
+                  </ul>
+                </td>
+              </tr>
+
+              <!-- Row 4: Under the Hood of SKILL.md -->
+              <tr>
+                <td>
+                  <div class="ref-title">Under the Hood of SKILL.md</div>
+                  <div class="ref-sub">Semantic Supply-chain Attacks on AI Agent Skill Registry — <em>arXiv:2605.11418</em> (v1, May 2026)</div>
+                </td>
+                <td>Checking if an attacker can alter simple text in <code>SKILL.md</code> to manipulate search results, force skill selection, or bypass store filters.</td>
+                <td>
+                  <ul>
+                    <li>Tested real ClawHub skills in three stages: search manipulation, side-by-side choice tests, and mock security scanner.</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li><strong>Search Manipulation:</strong> Beat competing skills 86.14% of the time; top 10 results 80.0% in OpenAI search (74.14% in realistic ranking).</li>
+                    <li><strong>Bypassing Security:</strong> Avoided safety block in 36.5% to 100% of tests.</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li>Only altered text in <code>SKILL.md</code> without editing auxiliary files.</li>
+                    <li>Filters tested locally rather than in live public stores.</li>
+                  </ul>
+                </td>
+              </tr>
+
+              <!-- Row 5: Do Not Mention This to the User -->
+              <tr>
+                <td>
+                  <div class="ref-title">Malicious Skills in the Wild</div>
+                  <div class="ref-sub">“Do Not Mention This to the User”: Detecting &amp; Understanding Malicious Agent Skills — <em>arXiv:2602.06547</em></div>
+                </td>
+                <td>Building the first verified dataset of real malicious skills targeting coding tools (Claude Code, Gemini CLI) to understand real-world attack vectors.</td>
+                <td>Filtered 98,380 skills down to 4,287 candidates via keyword rules and GPT-5.2; executed in isolated Docker containers with canary tokens; hand-verified 157 bad skills (99.6% accuracy).</td>
+                <td>
+                  <ul>
+                    <li>Confirmed <strong>157 bad skills</strong> (all removed from registries post-disclosure).</li>
+                    <li>Identified average of <strong>4.03 security risks</strong> per bad skill across three attack stages.</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li>Automated scans capped at 60s, missing delayed or sleep-triggered attacks.</li>
+                    <li>Discovered set represents only a subset of in-the-wild malicious packages.</li>
+                  </ul>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -862,6 +970,14 @@
       <div class="section">
         <div class="section-title">Proposed Methodology</div>
         <div class="section-body">
+          <!-- 5-STAGE ATTACK LIFECYCLE & SEAM ARCHITECTURE DIAGRAM -->
+          <div class="methodology-banner" style="margin-bottom: 8px; text-align: center; background: #ffffff; border: 1.5px solid #1a3a5c; border-radius: 5px; padding: 2px; overflow: hidden; box-shadow: 0 1px 4px rgba(26, 58, 92, 0.1);">
+            <img src="methodology.jpeg" alt="The Five-Stage Attack Lifecycle: Skill-Based Jailbreaking &amp; Policy Enforcement Seam" style="width: 100%; height: auto; max-height: 175px; object-fit: contain; display: block; margin: 0 auto; border-radius: 3px;">
+            <div style="font-size: 9px; color: #1a3a5c; margin-top: 3px; font-weight: 700; letter-spacing: 0.2px;">
+              Fig 1: Five-Stage Cross-Lingual Attack Lifecycle 
+            </div>
+          </div>
+
           <p>
             We construct a systematic evaluation benchmark across <strong>three linguistic registers</strong>
             and <strong>three defense tiers</strong>, measuring active runtime exploitation
@@ -1183,14 +1299,15 @@
         <div class="section-title">References</div>
         <div class="section-body references">
           <ol>
-            <li>Greshake et al. (2023). Not what you've signed up for: Compromising real-world LLM-integrated applications with indirect prompt injection. <em>AISEC '23</em>.</li>
             <li>Schmotz et al. (2026). Skill-Inject: Measuring Agent Vulnerability to Skill File Attacks. <em>arXiv:2602.20156</em>.</li>
-            <li>Deng et al. (2024). Multilingual Jailbreak Challenges in Large Language Models. <em>ICLR 2024</em>.</li>
-            <li>Zhang, Yuan et al. (2026). Do Agent Skills Speak Safety in Every Language? <em>AgentSkills Workshop, CAIS 2026</em>.</li>
-            <li>Hassan & Hossain (2026). BanglaVeilGuard: Cross-Script Safety Benchmarking for Bangla LLMs. <em>arXiv:2608.21880</em>.</li>
+            <li>Zhang, Yuan et al. (2026). Do Agent Skills Speak Safety in Every Language? <em>AgentSkills Workshop, ACM CAIS 2026</em>.</li>
             <li>Saha et al. (2026). Under the Hood of SKILL.md: Semantic Supply-chain Attacks on AI Agent Skill Registry. <em>arXiv:2605.11418</em>.</li>
-            <li>Debenedetti et al. (2024). AgentDojo: Dynamic Environment to Evaluate Prompt Injection. <em>NeurIPS 2024</em>.</li>
-            <li>Ji, Wu et al. (2026). SEAgent: Taming Privilege Escalation in LLM-Based Agent Systems. <em>arXiv:2601.11893</em>.</li>
+            <li>Li et al. (2026). SkillJect: Effectively Automating Skill-Based Prompt Injection for Skill-Enabled Agents. <em>arXiv:2602.14211</em>.</li>
+            <li>Wang et al. (2026). “Do Not Mention This to the User”: Detecting and Understanding Malicious Agent Skills in the Wild. <em>arXiv:2602.06547</em>.</li>
+            <li>Chen et al. (2026). Supply-Chain Poisoning Attacks Against LLM Coding Agent Skill Ecosystems. <em>arXiv:2604.03081</em>.</li>
+            <li>Hassan &amp; Hossain (2026). BanglaVeilGuard: Cross-Script Safety Benchmarking for Bangla LLMs. <em>arXiv:2608.21880</em>.</li>
+            <li>Greshake et al. (2023). Compromising Real-World LLM Applications with Indirect Prompt Injection. <em>ACM AISEC '23</em>.</li>
+            <li>Debenedetti et al. (2024). AgentDojo: A Dynamic Environment to Evaluate Prompt Injection. <em>NeurIPS 2024</em>.</li>
           </ol>
         </div>
       </div>
