@@ -798,12 +798,10 @@
 
      <!-- BACKGROUND -->
 <div class="section">
-  <div class="section-title">Background</div>
-  <div class="section-body" style="font-size: 12.8px; line-height: 1.55;">
+  <div class="section-title">Background</div> 
+  <div class="section-body" style="font-size: 12.8px; line-height: 1.55;">  
     <p>
-      Tool-using LLM agents extend their capabilities through third-party skill artifacts (<code>SKILL.md</code>) that define instructions for a specific task with tool schemas, creating an instruction channel that attackers can use to trigger <strong>unauthorized tool use</strong> and <strong>malicious instructions</strong>. We investigate <span class="label label-red" style="font-size: 12px; padding: 2px 7px;">Cross-Lingual Skill Poisoning</span>, in which hidden tool-calling, malicious injection, or payloads written in multiple languages are embedded in benign-looking skills. We will build a benchmark paired with benign and poisoned skills using semantically matched <span class="label label-blue">English</span>, <span class="label label-orange">Bangla</span>, and <span class="label label-green">Banglish</span> instructions, and measure unauthorized-action proposals, scanner detection, and legitimate task completion under benign user prompt requests. We will compare three <strong>defense tiers</strong>: <strong>static scanning</strong>, <strong>prompt-level isolation</strong>, and a proposed deterministic <strong>Policy Enforcement Module</strong>. The study examines whether multilingual instruction-following capability exceeds security coverage across languages.
-    </p>
-  </div>
+     Tool-using LLM agents expand their abilities using third-party skill files <code>SKILL.md</code>, which provides task instructions and tool schemas. However, this creates an open instruction channel that attackers can exploit to trigger <strong>unauthorized actions</strong> and run <strong>malicious commands</strong>, bypassing the guardrail of AI agents. Here,we investigate <span class="pill pill-orange"> Cross-Lingual Skill Poisoning</span> where attackers use <strong>hidden malicious prompts, tool calls, or payloads </strong> written in  <span class="pill pill-blue">Bangla </span>,  <span class="pill pill-orange">English</span> and <span class="pill pill-green">Banglish</span> inside benign-looking skills. We build an evaluation benchmark pairing benign and poisoned skills across semantically matched <strong>  English, Bangla, and Banglish</strong> instructions. Using user requests via API calls through LLM agents, we evaluate unauthorized action attempts and tool calling , scanner detection rates, and legitimate task completion. Finally we compare <strong>defense tiers</strong>: <strong>static scanning</strong>, <strong>prompt-level isolation</strong>, and a proposed <strong>deterministic Policy Enforcement Module</strong>. The study examines whether <strong>multilingual instruction-following capability exceeds security coverage across languages </strong>. </div>
 </div>
 
       <!-- RESEARCH QUESTIONS -->
@@ -913,7 +911,7 @@
                   <div class="ref-title">Under the Hood of SKILL.md</div>
                   <div class="ref-sub">Semantic Supply-chain Attacks on AI Agent Skill Registry — <em>arXiv:2605.11418</em> (v1, May 2026)</div>
                 </td>
-                <td>Checking if an attacker can alter simple text in <code>SKILL.md</code> to manipulate search results, force skill selection, or bypass store filters.</td>
+                <td>Checking if an attacker can alter simple text in SKILL.md to manipulate search results, force skill selection, or bypass store filters.</td>
                 <td>
                   <ul>
                     <li>Tested real ClawHub skills in three stages: search manipulation, side-by-side choice tests, and mock security scanner.</li>
@@ -927,7 +925,7 @@
                 </td>
                 <td>
                   <ul>
-                    <li>Only altered text in <code>SKILL.md</code> without editing auxiliary files.</li>
+                    <li>Only altered text in SKILL.md without editing auxiliary files.</li>
                     <li>Filters tested locally rather than in live public stores.</li>
                   </ul>
                 </td>
