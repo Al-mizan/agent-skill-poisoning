@@ -1,0 +1,356 @@
+{
+  "canvas": {
+    "height": 800.0,
+    "width": 1680.0
+  },
+  "composition": {
+    "limits": {
+      "max_bends_per_edge": 12,
+      "max_bridged_crossings": 8,
+      "max_route_stretch": 5.0,
+      "max_total_bends": 100,
+      "min_container_gutter": 0.0,
+      "min_label_clearance": 2.0,
+      "min_node_gap": 0.0,
+      "min_segment_length": 0.0,
+      "profile": "standard"
+    },
+    "metrics": {
+      "bridged_crossings": 0,
+      "max_route_stretch": 1.0,
+      "minimum_container_gutter": 20.0,
+      "minimum_node_gap": 30.0,
+      "shortest_segment": 13.28,
+      "total_bends": 8
+    },
+    "ok": true,
+    "profile": "standard",
+    "score": 100,
+    "violations": []
+  },
+  "edges": [
+    {
+      "bends": 0,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-1-2",
+      "length": 96.0,
+      "route": [
+        [
+          375.0,
+          220.0
+        ],
+        [
+          471.0,
+          220.0
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "stage1",
+      "source_port": [
+        375.0,
+        220.0
+      ],
+      "target": "stage2",
+      "target_port": [
+        471.0,
+        220.0
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 0,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-2-3",
+      "length": 96.0,
+      "route": [
+        [
+          791.0,
+          220.0
+        ],
+        [
+          887.0,
+          220.0
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "stage2",
+      "source_port": [
+        791.0,
+        220.0
+      ],
+      "target": "stage3",
+      "target_port": [
+        887.0,
+        220.0
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 0,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-3-4",
+      "length": 96.0,
+      "route": [
+        [
+          1207.0,
+          220.0
+        ],
+        [
+          1303.0,
+          220.0
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "stage3",
+      "source_port": [
+        1207.0,
+        220.0
+      ],
+      "target": "stage4",
+      "target_port": [
+        1303.0,
+        220.0
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 0,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-user-stage5",
+      "length": 96.0,
+      "route": [
+        [
+          375.0,
+          502.5
+        ],
+        [
+          471.0,
+          502.5
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "user-task",
+      "source_port": [
+        375.0,
+        502.5
+      ],
+      "target": "stage5",
+      "target_port": [
+        471.0,
+        502.5
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 4,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-stage4-stage5",
+      "length": 987.0,
+      "route": [
+        [
+          1463.0,
+          285.0
+        ],
+        [
+          1463.0,
+          332.0
+        ],
+        [
+          717.88,
+          332.0
+        ],
+        [
+          717.88,
+          419.6
+        ],
+        [
+          631.0,
+          419.6
+        ],
+        [
+          631.0,
+          440.0
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "stage4",
+      "source_port": [
+        1463.0,
+        285.0
+      ],
+      "target": "stage5",
+      "target_port": [
+        631.0,
+        440.0
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 0,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-stage5-policy",
+      "length": 96.0,
+      "route": [
+        [
+          791.0,
+          502.5
+        ],
+        [
+          887.0,
+          502.5
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "stage5",
+      "source_port": [
+        791.0,
+        502.5
+      ],
+      "target": "policy-module",
+      "target_port": [
+        887.0,
+        502.5
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 2,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-policy-auth",
+      "length": 117.0,
+      "route": [
+        [
+          1207.0,
+          493.5
+        ],
+        [
+          1227.4,
+          493.5
+        ],
+        [
+          1227.4,
+          472.5
+        ],
+        [
+          1303.0,
+          472.5
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "policy-module",
+      "source_port": [
+        1207.0,
+        493.5
+      ],
+      "target": "authorized",
+      "target_port": [
+        1303.0,
+        472.5
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 2,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-policy-deny",
+      "length": 192.0,
+      "route": [
+        [
+          1207.0,
+          511.5
+        ],
+        [
+          1220.28,
+          511.5
+        ],
+        [
+          1220.28,
+          607.5
+        ],
+        [
+          1303.0,
+          607.5
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "policy-module",
+      "source_port": [
+        1207.0,
+        511.5
+      ],
+      "target": "deny",
+      "target_port": [
+        1303.0,
+        607.5
+      ],
+      "waypoints": []
+    }
+  ],
+  "input_schema": "v1",
+  "issues": [],
+  "mode": "architecture",
+  "ok": true,
+  "palette": {
+    "below_target": [],
+    "minimum_target": 4.5,
+    "ratios": {
+      "section_sub_fill": 4.76,
+      "text_muted": 4.76,
+      "text_primary": 17.74,
+      "text_secondary": 4.83
+    },
+    "scope": "default opaque canvas text tokens; not a full rendered accessibility audit",
+    "unsupported_tokens": []
+  },
+  "placements": {
+    "legend": {
+      "actual": [
+        58.0,
+        722.0
+      ],
+      "bounds": [
+        48.0,
+        708.0,
+        1283.76,
+        754.0
+      ],
+      "moved": true,
+      "requested": [
+        55.0,
+        735.0
+      ]
+    }
+  },
+  "schema_version": 1,
+  "semantics": {
+    "details": {},
+    "ok": true,
+    "profile": "generic",
+    "style": 1,
+    "visual_theme": "Flat Icon"
+  },
+  "style": {
+    "id": 1,
+    "name": "Flat Icon"
+  },
+  "summary": {
+    "bridged_crossings": 0,
+    "edges": 8,
+    "nodes": 9
+  },
+  "text_metrics": "heuristic-v1",
+  "typography": {
+    "complete_text": true,
+    "hint": null,
+    "metrics": "heuristic widths; inspect the actual rendered font",
+    "truncated": []
+  }
+}

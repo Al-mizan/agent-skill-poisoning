@@ -1,1336 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=1200">
-<title>Cross-Lingual Agent Skill Poisoning — Research Poster</title>
-<style>
-  /* ───── RESET & PAGE ───── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  @page {
-    size: 48in 36in;
-    margin: 0;
-  }
-
-  html {
-    font-size: 14px;
-  }
-
-  body {
-    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    background: #f0f2f5;
-    color: #1a1a2e;
-    line-height: 1.45;
-    padding: 12px;
-  }
-
-  /* ───── POSTER CONTAINER ───── */
-  .poster {
-    width: 100%;
-    max-width: 1500px;
-    margin: 0 auto;
-    background: #ffffff;
-    border: 4px solid #1a3a5c;
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-  }
-
-  /* ───── HEADER BAR ───── */
-  .poster-header {
-    background: linear-gradient(135deg, #1a3a5c 0%, #0d2240 60%, #162d50 100%);
-    color: #fff;
-    padding: 18px 28px 14px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    border-bottom: 4px solid #e8a820;
-  }
-
-  .header-logo {
-    flex-shrink: 0;
-    width: 80px;
-    height: 80px;
-    background: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    font-size: 11px;
-    color: #1a3a5c;
-    text-align: center;
-    line-height: 1.15;
-    border: 3px solid #e8a820;
-    padding: 3px;
-    overflow: hidden;
-  }
-
-  .header-center {
-    flex: 1;
-    text-align: center;
-  }
-
-  .header-center h1 {
-    font-size: 22px;
-    font-weight: 800;
-    line-height: 1.2;
-    letter-spacing: -0.3px;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    margin-bottom: 6px;
-  }
-
-  .header-center h1 .highlight {
-    color: #e8a820;
-  }
-
-  .header-authors {
-    font-size: 12.5px;
-    font-weight: 500;
-    opacity: 0.92;
-    margin-bottom: 2px;
-  }
-
-  .header-affiliation {
-    font-size: 11px;
-    opacity: 0.78;
-    font-style: italic;
-  }
-
-  .header-badge {
-    flex-shrink: 0;
-    width: 80px;
-    height: 80px;
-    background: rgba(255,255,255,0.08);
-    border: 2px solid rgba(255,255,255,0.25);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    text-align: center;
-    line-height: 1.3;
-    padding: 4px;
-  }
-
-  .header-badge .badge-icon {
-    font-size: 22px;
-    margin-bottom: 2px;
-  }
-
-  /* ───── 3-COLUMN BODY ───── */
-  .poster-body {
-    display: grid;
-    grid-template-columns: 1fr 1.15fr 1fr;
-    gap: 12px;
-    padding: 12px;
-    align-items: start;
-  }
-
-  /* ───── SECTION BOXES ───── */
-  .section {
-    background: #fafbfd;
-    border: 2px solid #d0d7e2;
-    border-radius: 6px;
-    margin-bottom: 12px;
-    overflow: hidden;
-  }
-
-  .section:last-child {
-    margin-bottom: 0;
-  }
-
-  .section-title {
-    background: linear-gradient(135deg, #1a3a5c, #0d2240);
-    color: #fff;
-    font-size: 13.5px;
-    font-weight: 700;
-    padding: 7px 12px;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-  }
-
-  .section-title.accent-orange {
-    background: linear-gradient(135deg, #c75000, #a04000);
-  }
-
-  .section-title.accent-green {
-    background: linear-gradient(135deg, #1a6b3c, #0e5028);
-  }
-
-  .section-title.accent-purple {
-    background: linear-gradient(135deg, #4a2c7c, #3a1d6b);
-  }
-
-  .section-title.accent-red {
-    background: linear-gradient(135deg, #8b1a1a, #6b1010);
-  }
-
-  .section-body {
-    padding: 10px 12px;
-    font-size: 11.5px;
-  }
-
-  .section-body p {
-    margin-bottom: 6px;
-  }
-
-  .section-body p:last-child {
-    margin-bottom: 0;
-  }
-
-  .section-body ul, .section-body ol {
-    padding-left: 16px;
-    margin-bottom: 6px;
-  }
-
-  .section-body li {
-    margin-bottom: 3px;
-  }
-
-  .section-body li:last-child {
-    margin-bottom: 0;
-  }
-
-  /* ───── INLINE LABELS ───── */
-  .label {
-    display: inline-block;
-    font-weight: 700;
-    font-size: 10.5px;
-    padding: 1px 6px;
-    border-radius: 3px;
-    margin-right: 4px;
-    vertical-align: middle;
-  }
-
-  .label-red { background: #fce4e4; color: #8b1a1a; border: 1px solid #f0b0b0; }
-  .label-orange { background: #fff3e0; color: #a04000; border: 1px solid #ffd09e; }
-  .label-green { background: #e6f9ed; color: #1a6b3c; border: 1px solid #a0deb8; }
-  .label-blue { background: #e3f0ff; color: #1a3a5c; border: 1px solid #a0c8f0; }
-  .label-purple { background: #f0e6ff; color: #4a2c7c; border: 1px solid #c8a0f0; }
-
-  code {
-    background: #eef2f8;
-    color: #1a3a5c;
-    font-family: 'JetBrains Mono', Consolas, 'SFMono-Regular', monospace;
-    font-size: 11.5px;
-    padding: 1.5px 6px;
-    border-radius: 4px;
-    border: 1px solid #c8d3e2;
-    font-weight: 600;
-  }
-
-  /* ───── KEY/VALUE HIGHLIGHT BOXES ───── */
-  .kv-box {
-    background: #fff;
-    border: 1.5px solid #d0d7e2;
-    border-radius: 5px;
-    padding: 6px 10px;
-    margin-bottom: 6px;
-    font-size: 11px;
-  }
-
-  .kv-box .kv-label {
-    font-weight: 700;
-    color: #1a3a5c;
-    font-size: 10.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-bottom: 2px;
-  }
-
-  .kv-box.alert {
-    border-color: #e06040;
-    background: #fff8f6;
-  }
-
-  .kv-box.success {
-    border-color: #3aa060;
-    background: #f6fff9;
-  }
-
-  /* ───── RESEARCH QUESTIONS ───── */
-  .rq {
-    background: #fff;
-    border-left: 4px solid #1a3a5c;
-    padding: 5px 8px;
-    margin-bottom: 6px;
-    font-size: 11px;
-    border-radius: 0 4px 4px 0;
-  }
-
-  .rq strong {
-    color: #1a3a5c;
-    font-size: 11px;
-  }
-
-  /* ───── FRAMEWORK DIAGRAM (CSS-BASED) ───── */
-  .framework-flow {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 4px 0;
-  }
-
-  .flow-lane {
-    position: relative;
-    border: 2px solid #d0d7e2;
-    border-radius: 6px;
-    padding: 8px 10px 8px 10px;
-  }
-
-  .flow-lane.attack {
-    border-color: #e06040;
-    background: #fff8f6;
-  }
-
-  .flow-lane.defense {
-    border-color: #3aa060;
-    background: #f6fff9;
-  }
-
-  .lane-label {
-    position: absolute;
-    top: -9px;
-    left: 10px;
-    background: inherit;
-    padding: 0 6px;
-    font-size: 9.5px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .flow-lane.attack .lane-label { color: #c75000; background: #fff8f6; }
-  .flow-lane.defense .lane-label { color: #1a6b3c; background: #f6fff9; }
-
-  .flow-steps {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .flow-step {
-    flex: 1;
-    min-width: 70px;
-    background: #fff;
-    border: 1.5px solid;
-    border-radius: 5px;
-    padding: 4px 6px;
-    text-align: center;
-    font-size: 10px;
-    line-height: 1.3;
-    position: relative;
-  }
-
-  .flow-step.attack-step {
-    border-color: #e06040;
-  }
-
-  .flow-step.defense-step {
-    border-color: #3aa060;
-  }
-
-  .flow-step .step-num {
-    display: block;
-    font-weight: 800;
-    font-size: 11px;
-    margin-bottom: 1px;
-  }
-
-  .flow-step.attack-step .step-num { color: #c75000; }
-  .flow-step.defense-step .step-num { color: #1a6b3c; }
-
-  .flow-arrow {
-    font-size: 14px;
-    color: #999;
-    flex-shrink: 0;
-  }
-
-  .flow-arrow.attack-arrow { color: #e06040; }
-  .flow-arrow.defense-arrow { color: #3aa060; }
-
-  /* ───── DEFENSE TIERS ───── */
-  .defense-tiers {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .defense-tier {
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    padding: 6px 8px;
-    border-radius: 5px;
-    border: 1.5px solid;
-    background: #fff;
-    font-size: 11px;
-  }
-
-  .defense-tier.tier-fail {
-    border-color: #e06040;
-  }
-
-  .defense-tier.tier-partial {
-    border-color: #e8a820;
-  }
-
-  .defense-tier.tier-pass {
-    border-color: #3aa060;
-  }
-
-  .tier-icon {
-    font-size: 18px;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .tier-content {
-    flex: 1;
-  }
-
-  .tier-content .tier-name {
-    font-weight: 700;
-    font-size: 11.5px;
-    margin-bottom: 2px;
-  }
-
-  .defense-tier.tier-fail .tier-name { color: #c75000; }
-  .defense-tier.tier-partial .tier-name { color: #a07000; }
-  .defense-tier.tier-pass .tier-name { color: #1a6b3c; }
-
-  /* ───── LITERATURE REVIEW TABLE ───── */
-  .lit-review-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 8.5px;
-    line-height: 1.35;
-    margin-bottom: 2px;
-    background: #ffffff;
-    border: 1px solid #1a3a5c;
-  }
-
-  .lit-review-table thead th {
-    background: linear-gradient(135deg, #104278 0%, #0d2b52 100%);
-    color: #ffffff;
-    padding: 5px 4px;
-    font-weight: 700;
-    font-size: 8.8px;
-    text-align: center;
-    border: 1px solid #0d2b52;
-    letter-spacing: 0.2px;
-  }
-
-  .lit-review-table tbody td {
-    padding: 4px 5px;
-    border: 1px solid #cbd5e1;
-    vertical-align: top;
-    color: #1e293b;
-  }
-
-  .lit-review-table tbody tr:nth-child(even) {
-    background: #f8fafc;
-  }
-
-  .lit-review-table tbody tr:nth-child(odd) {
-    background: #ffffff;
-  }
-
-  .lit-review-table tbody tr:hover {
-    background: #f1f5f9;
-  }
-
-  .lit-review-table .ref-title {
-    font-weight: 700;
-    color: #0f2d59;
-    font-size: 8.5px;
-  }
-
-  .lit-review-table .ref-sub {
-    font-style: italic;
-    color: #334155;
-    margin-top: 2px;
-  }
-
-  .lit-review-table ul {
-    margin: 0;
-    padding-left: 11px;
-    list-style-type: disc;
-  }
-
-  .lit-review-table li {
-    margin-bottom: 2px;
-  }
-
-  .lit-review-table li:last-child {
-    margin-bottom: 0;
-  }
-
-  /* ───── RESULTS TABLE ───── */
-  .results-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 10px;
-    margin-bottom: 8px;
-  }
-
-  .results-table thead th {
-    background: #1a3a5c;
-    color: #fff;
-    padding: 4px 6px;
-    font-weight: 700;
-    font-size: 9.5px;
-    text-align: center;
-    letter-spacing: 0.3px;
-  }
-
-  .results-table thead th:first-child {
-    text-align: left;
-  }
-
-  .results-table tbody td {
-    padding: 3px 6px;
-    text-align: center;
-    border-bottom: 1px solid #e8ecf0;
-  }
-
-  .results-table tbody td:first-child {
-    text-align: left;
-    font-weight: 600;
-    font-size: 10px;
-  }
-
-  .results-table tbody tr:nth-child(even) {
-    background: #f5f7fa;
-  }
-
-  .results-table tbody tr:hover {
-    background: #eef2f8;
-  }
-
-  .cell-red { background: #fce4e4 !important; color: #8b1a1a; font-weight: 700; }
-  .cell-orange { background: #fff3e0 !important; color: #a04000; font-weight: 700; }
-  .cell-green { background: #e6f9ed !important; color: #1a6b3c; font-weight: 700; }
-  .cell-yellow { background: #fffbe6 !important; color: #806000; font-weight: 700; }
-
-  /* ───── ASR BAR CHART (CSS-only) ───── */
-  .chart-container {
-    background: #fff;
-    border: 1.5px solid #d0d7e2;
-    border-radius: 5px;
-    padding: 8px 10px;
-    margin-bottom: 8px;
-  }
-
-  .chart-title {
-    font-size: 11px;
-    font-weight: 700;
-    text-align: center;
-    color: #1a3a5c;
-    margin-bottom: 8px;
-  }
-
-  .bar-group-container {
-    display: flex;
-    gap: 10px;
-    align-items: flex-end;
-    justify-content: space-around;
-    height: 120px;
-    padding: 0 4px;
-    border-bottom: 2px solid #1a3a5c;
-    margin-bottom: 6px;
-  }
-
-  .bar-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    flex: 1;
-  }
-
-  .bars {
-    display: flex;
-    gap: 3px;
-    align-items: flex-end;
-    height: 110px;
-  }
-
-  .bar {
-    width: 18px;
-    border-radius: 2px 2px 0 0;
-    position: relative;
-    transition: all 0.3s;
-  }
-
-  .bar.en { background: #4a90d9; }
-  .bar.bn { background: #e8a820; }
-  .bar.bnen { background: #50b070; }
-
-  .bar-val {
-    position: absolute;
-    top: -14px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 8px;
-    font-weight: 700;
-    white-space: nowrap;
-    color: #333;
-  }
-
-  .bar-group-label {
-    font-size: 9px;
-    font-weight: 600;
-    text-align: center;
-    color: #555;
-    margin-top: 2px;
-  }
-
-  .chart-legend {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    font-size: 9px;
-    margin-top: 4px;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .legend-swatch {
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
-  }
-
-  /* ───── EQUATION ───── */
-  .equation-box {
-    background: #f5f7fa;
-    border: 1px solid #d0d7e2;
-    border-radius: 4px;
-    padding: 6px 10px;
-    margin: 6px 0;
-    font-family: 'Cambria Math', 'Latin Modern Math', Georgia, serif;
-    font-size: 11.5px;
-    text-align: center;
-    overflow-x: auto;
-  }
-
-  .eq-label {
-    font-weight: 700;
-    color: #1a3a5c;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: 10px;
-    margin-right: 6px;
-  }
-
-  /* ───── FINDINGS CALLOUT ───── */
-  .finding {
-    display: flex;
-    gap: 6px;
-    align-items: flex-start;
-    padding: 5px 0;
-    border-bottom: 1px dotted #d0d7e2;
-    font-size: 11px;
-  }
-
-  .finding:last-child {
-    border-bottom: none;
-  }
-
-  .finding-icon {
-    flex-shrink: 0;
-    font-size: 14px;
-    margin-top: 1px;
-  }
-
-  /* ───── REFERENCES ───── */
-  .references {
-    font-size: 9px;
-    line-height: 1.4;
-    color: #555;
-  }
-
-  .references ol {
-    padding-left: 14px;
-  }
-
-  .references li {
-    margin-bottom: 2px;
-  }
-
-  /* ───── FOOTER ───── */
-  .poster-footer {
-    background: #1a3a5c;
-    color: rgba(255,255,255,0.7);
-    font-size: 9.5px;
-    padding: 6px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .poster-footer strong {
-    color: #e8a820;
-  }
-
-  /* ───── UTILITY ───── */
-  .bold { font-weight: 700; }
-  .italic { font-style: italic; }
-  .small { font-size: 10px; }
-  .text-center { text-align: center; }
-  .mt-4 { margin-top: 4px; }
-  .mt-6 { margin-top: 6px; }
-  .mb-4 { margin-bottom: 4px; }
-  .mb-6 { margin-bottom: 6px; }
-
-  .emoji-bullet {
-    font-size: 12px;
-    margin-right: 3px;
-  }
-
-  /* ───── MOTIVATION BOXES ───── */
-  .motivation-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-  }
-
-  .motivation-card {
-    border: 1.5px solid;
-    border-radius: 5px;
-    padding: 6px 8px;
-    font-size: 10.5px;
-    background: #fff;
-  }
-
-  .motivation-card.challenge {
-    border-color: #e06040;
-  }
-
-  .motivation-card.gap {
-    border-color: #e8a820;
-  }
-
-  .motivation-card .card-title {
-    font-weight: 700;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-bottom: 2px;
-  }
-
-  .motivation-card.challenge .card-title { color: #c75000; }
-  .motivation-card.gap .card-title { color: #a07000; }
-
-  /* ───── DATASET COMPACT ───── */
-  .dataset-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 4px;
-  }
-
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 600;
-    border: 1px solid;
-  }
-
-  .pill-blue { background: #e3f0ff; color: #1a3a5c; border-color: #a0c8f0; }
-  .pill-orange { background: #fff3e0; color: #a04000; border-color: #ffd09e; }
-  .pill-green { background: #e6f9ed; color: #1a6b3c; border-color: #a0deb8; }
-  .pill-purple { background: #f0e6ff; color: #4a2c7c; border-color: #c8a0f0; }
-
-  /* ───── PRINT ───── */
-  @media print {
-    body { padding: 0; background: #fff; }
-    .poster { border: none; box-shadow: none; max-width: 100%; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cross-Lingual Agent Skill Poisoning: Interactive Research Poster Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0f1d;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: auto;
+      overflow-y: scroll;
+    }
+
+    /* Fixed top toolbar */
+    .toolbar {
+      position: sticky;
+      top: 14px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid #334155;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      margin-bottom: 24px;
+    }
+
+    .toolbar-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #93c5fd;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding-right: 8px;
+      border-right: 1px solid #334155;
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #475569;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn:hover {
+      background: #2563eb;
+      border-color: #38bdf8;
+      color: #ffffff;
+    }
+
+    .btn.active {
+      background: #2563eb;
+      border-color: #60a5fa;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .btn-primary {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: #0369a1;
+    }
+
+    /* Outer poster stage */
+    .stage {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 10px 20px 80px 20px;
+    }
+
+    .poster-container {
+      width: 2700px;
+      height: 3600px;
+      transform-origin: top center;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    iframe {
+      width: 2700px;
+      height: 3600px;
+      border: none;
+      display: block;
+    }
+  </style>
 </head>
 <body>
 
-<div class="poster">
-
-  <!-- ════════ HEADER ════════ -->
-  <div class="poster-header">
-    <div class="header-logo">
-      <img src="ju_logo.png" alt="Jahangirnagar University Logo" style="width: 100%; height: 100%; object-fit: contain;">
+  <div class="toolbar">
+    <div class="toolbar-title">27" × 36" Academic Poster (v2)</div>
+    <div class="btn-group">
+      <button class="btn active" id="btnFit" onclick="fitToScreen()">Fit Screen</button>
+      <button class="btn" id="btn40" onclick="setScale(0.40)">40%</button>
+      <button class="btn" id="btn60" onclick="setScale(0.60)">60%</button>
+      <button class="btn" id="btn100" onclick="setScale(1.0)">100% (1:1 Print)</button>
     </div>
-
-    <div class="header-center">
-      <h1>
-        <span class="highlight">Cross-Lingual Agent Skill Poisoning:</span><br>
-        Active Runtime Exploitation and Deterministic<br>Authorization in Tool-Using LLM Agents
-      </h1>
-      <div class="header-authors">
-        Al-mizan<sup>1</sup>, Fateema Binti Taher Eva<sup>1</sup> &nbsp;·&nbsp; Supervisor:  Md. Rafsan Jani<sup>1</sup>
-      </div>
-      <div class="header-affiliation">
-        <sup>1</sup>Department of Computer Science &amp; Engineering, Jahangirnagar University, Savar, Dhaka, Bangladesh
-      </div>
-    </div>
-
-    <div class="header-badge">
-      <div class="badge-icon">🛡️</div>
-      <div>AI Agent<br>Security<br>Research</div>
+    <div class="btn-group" style="padding-left: 8px; border-left: 1px solid #334155;">
+      <a class="btn btn-primary" href="research_poster_print.html" target="_blank">Full Canvas ↗</a>
+      <a class="btn" href="research_poster_27x36.png" download>Download PNG</a>
+      <a class="btn" href="research_poster_27x36.pdf" target="_blank">Print / PDF</a>
     </div>
   </div>
 
-  <!-- ════════ 3-COLUMN BODY ════════ -->
-  <div class="poster-body">
-
-    <!-- ──── LEFT COLUMN ──── -->
-    <div class="col-left">
-
-     <!-- BACKGROUND -->
-<div class="section">
-  <div class="section-title">Background</div>
-  <div class="section-body" style="font-size: 12.8px; line-height: 1.55;">
-    <p>
-      Tool-using LLM agents extend their capabilities through third-party skill artifacts (<code>SKILL.md</code>) that define instructions for a specific task with tool schemas, creating an instruction channel that attackers can use to trigger <strong>unauthorized tool use</strong> and <strong>malicious instructions</strong>. We investigate <span class="label label-red" style="font-size: 12px; padding: 2px 7px;">Cross-Lingual Skill Poisoning</span>, in which hidden tool-calling, malicious injection, or payloads written in multiple languages are embedded in benign-looking skills. We will build a benchmark paired with benign and poisoned skills using semantically matched <span class="label label-blue">English</span>, <span class="label label-orange">Bangla</span>, and <span class="label label-green">Banglish</span> instructions, and measure unauthorized-action proposals, scanner detection, and legitimate task completion under benign user prompt requests. We will compare three <strong>defense tiers</strong>: <strong>static scanning</strong>, <strong>prompt-level isolation</strong>, and a proposed deterministic <strong>Policy Enforcement Module</strong>. The study examines whether multilingual instruction-following capability exceeds security coverage across languages.
-    </p>
-  </div>
-</div>
-
-      <!-- RESEARCH QUESTIONS -->
-      <div class="section">
-        <div class="section-title accent-purple">Research Questions</div>
-        <div class="section-body">
-          <div class="rq"><strong>RQ1 (Runtime Exploitation):</strong> Do non-English/code-mixed skill manifests increase Attack Success Rate compared to English equivalents?</div>
-          <div class="rq"><strong>RQ2 (Scanner Bias):</strong> How do static scanners and prompt-level filters perform on cross-lingual skill manifests?</div>
-          <div class="rq"><strong>RQ3 (Model Stratification):</strong> How do proprietary vs. open-weights models compare in resisting cross-lingual manipulation?</div>
-          <div class="rq"><strong>RQ4 (Language Invariance):</strong> Can a deterministic policy enforcement module provide language-invariant protection without utility penalty?</div>
-        </div>
-      </div>
-
-      <!-- LITERATURE REVIEW & RELATED WORK -->
-      <div class="section">
-        <div class="section-title">Literature Review &amp; Research Gaps</div>
-        <div class="section-body" style="padding: 4px;">
-          <table class="lit-review-table">
-            <thead>
-              <tr>
-                <th style="width: 20%;">Reference</th>
-                <th style="width: 19%;">Research Objectives</th>
-                <th style="width: 20%;">Methodology</th>
-                <th style="width: 23%;">Key Findings</th>
-                <th style="width: 18%;">Limitations</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Row 1: Agent Skills '26 -->
-              <tr>
-                <td>
-                  <div class="ref-title">Agent Skills '26</div>
-                  <div class="ref-sub">Do Agent Skills Speak Safety in Every Language? A Cross-Lingual Security Analysis of the Skills Ecosystem</div>
-                </td>
-                <td>Checking the security of 3,656 agent skills in eight languages to find security flaws, especially in rare languages, and test how well multilingual security tools work.</td>
-                <td>
-                  <ul>
-                    <li>Ran code checks using Cisco Skill Scanner v2.0.9, Snyk Agent Scan, and Semgrep.</li>
-                    <li>Tracked how data moves and had both humans and AI check a smaller set of languages.</li>
-                  </ul>
-                </td>
-                <td>
-                  <ul>
-                    <li>Direct code flaws were rare (2.3%), but 87% of skills did not include a license.</li>
-                    <li>Non-English skills triggered 3–5 times as many safety warnings (e.g., Japanese hit 10.9% vs. 1.8% for English).</li>
-                    <li>Safety tools flagged almost only false alarms on non-English skills (0% precision on Japanese).</li>
-                  </ul>
-                </td>
-                <td>
-                  <ul>
-                    <li>Relies mostly on a single scanner built for skills.</li>
-                    <li>Tested only a few examples for certain languages (Portuguese, German).</li>
-                    <li>Frequently raised false alarms on non-English text.</li>
-                  </ul>
-                </td>
-              </tr>
-
-              <!-- Row 2: SkillJect -->
-              <tr>
-                <td>
-                  <div class="ref-title">SkillJect</div>
-                  <div class="ref-sub">Effectively Automating Skill-Based Prompt Injection for Skill-Enabled Agents — <em>arXiv:2602.14211</em></div>
-                </td>
-                <td>Testing automatic ways to trick AI agents into running hidden, harmful code inside shareable skills.</td>
-                <td>
-                  <ul>
-                    <li>Hide attacks inside setup scripts, mask them as standard steps in skill instructions, and use error messages to refine prompts.</li>
-                  </ul>
-                </td>
-                <td>
-                  <ul>
-                    <li>SKILLJECT succeeded <strong>80.7%</strong> on average (94.7% on GLM-4.7, 97.2% on MiniMax, 83.8% on GPT-5-mini, 47.0% on Claude-Sonnet-4.6).</li>
-                    <li>Direct prompt injection failed every time (0%).</li>
-                  </ul>
-                </td>
-                <td>
-                  <ul>
-                    <li>Tested only with synthetic attack code/passwords in isolated Docker setups.</li>
-                    <li>Real-world damage depends on whether human approves action prompt.</li>
-                  </ul>
-                </td>
-              </tr>
-
-              <!-- Row 3: SKILL-INJECT -->
-              <tr>
-                <td>
-                  <div class="ref-title">SKILL-INJECT</div>
-                  <div class="ref-sub">Measuring Agent Vulnerability to Skill File Attacks — <em>arXiv:2602.20156</em></div>
-                </td>
-                <td>Evaluating if AI agents can be tricked into following harmful instructions hidden inside third-party skill files, while distinguishing attacks from benign requests.</td>
-                <td>Tested how agents react under basic, strict, or relaxed safety rules by hiding attacks in text, scripts, and setup files across 23 skills in 202 test scenarios.</td>
-                <td>
-                  <ul>
-                    <li>Sneaky attacks succeeded <strong>67.6%</strong> on Gemini 3 Flash and <strong>64.7%</strong> on GPT-5.1-Codex-Max.</li>
-                    <li>Hiding attacks in scripts boosted success from 53.8% to 71.8%; adding to skill descriptions raised success by +14.1%.</li>
-                  </ul>
-                </td>
-                <td>
-                  <ul>
-                    <li>Limited to 202 synthetic tasks in single-turn conversations.</li>
-                    <li>Static attacks do not adapt dynamically to agent behavior.</li>
-                  </ul>
-                </td>
-              </tr>
-
-              <!-- Row 4: Under the Hood of SKILL.md -->
-              <tr>
-                <td>
-                  <div class="ref-title">Under the Hood of SKILL.md</div>
-                  <div class="ref-sub">Semantic Supply-chain Attacks on AI Agent Skill Registry — <em>arXiv:2605.11418</em> (v1, May 2026)</div>
-                </td>
-                <td>Checking if an attacker can alter simple text in <code>SKILL.md</code> to manipulate search results, force skill selection, or bypass store filters.</td>
-                <td>
-                  <ul>
-                    <li>Tested real ClawHub skills in three stages: search manipulation, side-by-side choice tests, and mock security scanner.</li>
-                  </ul>
-                </td>
-                <td>
-                  <ul>
-                    <li><strong>Search Manipulation:</strong> Beat competing skills 86.14% of the time; top 10 results 80.0% in OpenAI search (74.14% in realistic ranking).</li>
-                    <li><strong>Bypassing Security:</strong> Avoided safety block in 36.5% to 100% of tests.</li>
-                  </ul>
-                </td>
-                <td>
-                  <ul>
-                    <li>Only altered text in <code>SKILL.md</code> without editing auxiliary files.</li>
-                    <li>Filters tested locally rather than in live public stores.</li>
-                  </ul>
-                </td>
-              </tr>
-
-              <!-- Row 5: Do Not Mention This to the User -->
-              <tr>
-                <td>
-                  <div class="ref-title">Malicious Skills in the Wild</div>
-                  <div class="ref-sub">“Do Not Mention This to the User”: Detecting &amp; Understanding Malicious Agent Skills — <em>arXiv:2602.06547</em></div>
-                </td>
-                <td>Building the first verified dataset of real malicious skills targeting coding tools (Claude Code, Gemini CLI) to understand real-world attack vectors.</td>
-                <td>Filtered 98,380 skills down to 4,287 candidates via keyword rules and GPT-5.2; executed in isolated Docker containers with canary tokens; hand-verified 157 bad skills (99.6% accuracy).</td>
-                <td>
-                  <ul>
-                    <li>Confirmed <strong>157 bad skills</strong> (all removed from registries post-disclosure).</li>
-                    <li>Identified average of <strong>4.03 security risks</strong> per bad skill across three attack stages.</li>
-                  </ul>
-                </td>
-                <td>
-                  <ul>
-                    <li>Automated scans capped at 60s, missing delayed or sleep-triggered attacks.</li>
-                    <li>Discovered set represents only a subset of in-the-wild malicious packages.</li>
-                  </ul>
-                </td>
-              </tr>
-
-            </tbody>
-          </table>
-        </div>
-      </div>
+  <div class="stage" id="stage">
+    <div class="poster-container" id="posterContainer">
+      <iframe src="research_poster_print.html" title="Poster Print Canvas"></iframe>
     </div>
-
-    <!-- ──── CENTER COLUMN ──── -->
-    <div class="col-center">
-
-      <!-- PROPOSED METHODOLOGY -->
-      <div class="section">
-        <div class="section-title">Proposed Methodology</div>
-        <div class="section-body">
-          <!-- 5-STAGE ATTACK LIFECYCLE & SEAM ARCHITECTURE DIAGRAM -->
-          <div class="methodology-banner" style="margin-bottom: 8px; text-align: center; background: #ffffff; border: 1.5px solid #1a3a5c; border-radius: 5px; padding: 2px; overflow: hidden; box-shadow: 0 1px 4px rgba(26, 58, 92, 0.1);">
-            <img src="methodology.jpeg" alt="The Five-Stage Attack Lifecycle: Skill-Based Jailbreaking &amp; Policy Enforcement Seam" style="width: 100%; height: auto; max-height: 175px; object-fit: contain; display: block; margin: 0 auto; border-radius: 3px;">
-            <div style="font-size: 9px; color: #1a3a5c; margin-top: 3px; font-weight: 700; letter-spacing: 0.2px;">
-              Fig 1: Five-Stage Cross-Lingual Attack Lifecycle (Ethically Evaluated via ADR-0004 Hermetic Registry)
-            </div>
-          </div>
-
-          <p>
-            We construct a systematic evaluation benchmark across <strong>three linguistic registers</strong>
-            and <strong>three defense tiers</strong>, measuring active runtime exploitation
-            of poisoned skill manifests in tool-using LLM agents.
-          </p>
-
-          <!-- LINGUISTIC REGISTERS -->
-          <div class="kv-box mt-4">
-            <div class="kv-label">Linguistic Registers (Native-Speaker Authored)</div>
-            <div class="dataset-pills">
-              <span class="pill pill-blue">🇬🇧 English (en) — Formal technical baseline</span>
-              <span class="pill pill-orange">🇧🇩 Bangla (bn) — Native-script low-resource</span>
-              <span class="pill pill-green">🔀 Banglish (bn-en) — Code-mixed colloquial</span>
-            </div>
-          </div>
-
-          <p class="mt-4">
-            <strong>Benchmark:</strong> Phase 1 pilot spans 5 domains (pdf, git, email, internal-comms, webapp-testing)
-            → Phase 2 expands to 50 enterprise workflows across 4+ registers including Mandarin and Spanish.
-            Each task pairs an authentic user prompt with clean tool expectations and 3 skill variants.
-          </p>
-
-          <!-- DEFENSE TIERS -->
-          <div class="mt-6 mb-4"><strong>Defense Evaluation Framework (3 Tiers):</strong></div>
-          <div class="defense-tiers">
-            <div class="defense-tier tier-fail">
-              <div class="tier-icon">❌</div>
-              <div class="tier-content">
-                <div class="tier-name">Tier 1: Static Keyword &amp; YARA Scanner</div>
-                Represents current marketplace vetting. Scans manifest text for known
-                inducement strings and description-length heuristics.
-                <br><span class="label label-red">Result: 100% bypass on non-English manifests</span>
-              </div>
-            </div>
-            <div class="defense-tier tier-partial">
-              <div class="tier-icon">⚠️</div>
-              <div class="tier-content">
-                <div class="tier-name">Tier 2: Prompt-Level Isolation</div>
-                Injects explicit security warnings into system prompt directing the model
-                to ignore side-effect instructions in skill documentation.
-                <br><span class="label label-orange">Result: Reduces ASR but degrades utility by up to 23.1%</span>
-              </div>
-            </div>
-            <div class="defense-tier tier-pass">
-              <div class="tier-icon">✅</div>
-              <div class="tier-content">
-                <div class="tier-name">Tier 3: Deterministic Policy Enforcement (ADR-0002)</div>
-                Positioned between reasoning loop and tool adapters. Evaluates declarative
-                capability tokens, path invariants, and workspace boundaries at the execution seam.
-                <br><span class="label label-green">Result: 0% ASR across all languages, 100% benign utility, sub-ms latency</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- EVALUATION METRICS -->
-      <div class="section">
-        <div class="section-title accent-purple">Evaluation Metrics</div>
-        <div class="section-body">
-          <div class="equation-box">
-            <span class="eq-label">SSR:</span>
-            SSR = (Σ 𝕀[Selected = Target]) / N × 100%
-          </div>
-          <div class="equation-box">
-            <span class="eq-label">VBR:</span>
-            VBR = (Σ 𝕀[Blocked at Install = 0]) / N × 100%
-          </div>
-          <div class="equation-box">
-            <span class="eq-label">ASR:</span>
-            ASR = (Σ 𝕀[Canary Executed]) / N × 100%
-          </div>
-          <div class="equation-box">
-            <span class="eq-label">BUR:</span>
-            BUR = (Σ 𝕀[Clean Task Completed]) / N × 100%
-          </div>
-          <div class="equation-box">
-            <span class="eq-label">DRR:</span>
-            DRR = (ASR<sub>undefended</sub> − ASR<sub>defended</sub>) / ASR<sub>undefended</sub> × 100%
-          </div>
-          <p class="small mt-4 italic">
-            SSR = Skill Selection Rate · VBR = Vetting Bypass Rate · ASR = Attack Success Rate · BUR = Benign Utility Retention · DRR = Defense Robustness Rate
-          </p>
-        </div>
-      </div>
-
-      <!-- DATASET -->
-      <div class="section">
-        <div class="section-title accent-green">Dataset &amp; Experimental Setup</div>
-        <div class="section-body">
-          <div class="kv-box">
-            <div class="kv-label">Phase 1 Pilot (Completed)</div>
-            <p>26 enterprise task domains × 3 linguistic registers × 4 defense configs = <strong>312 live agent trials</strong></p>
-            <div class="dataset-pills">
-              <span class="pill pill-blue">📄 PDF Processing</span>
-              <span class="pill pill-blue">🔀 Git Operations</span>
-              <span class="pill pill-blue">📧 Email API</span>
-              <span class="pill pill-orange">💬 Internal Comms</span>
-              <span class="pill pill-orange">🌐 Webapp Testing</span>
-              <span class="pill pill-purple">+21 more domains</span>
-            </div>
-          </div>
-
-          <div class="kv-box mt-4">
-            <div class="kv-label">Infrastructure &amp; Safety (ADR-0004 &amp; ADR-0005)</div>
-            <ul>
-              <li><strong>Models:</strong> Gemini 2.5 Flash, Groq Llama 3.3 70B Versatile</li>
-              <li><strong>Ethical Registry:</strong> Zero public deployments (Menlo Report 2012); local filesystem simulation (ADR-0004)</li>
-              <li><strong>Dual Sandboxing:</strong> Egress-gated container (bridge egress for APIs) + Air-gapped hermetic container (<code>--network none</code>)</li>
-              <li><strong>Isolation:</strong> Host filesystem unmounted; non-root UID 1000; ephemeral scratchpads</li>
-              <li><strong>Payloads:</strong> Harmless local canary telemetry markers (zero credential risk)</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ──── RIGHT COLUMN ──── -->
-    <div class="col-right">
-
-      <!-- EXPERIMENTAL RESULTS -->
-      <div class="section">
-        <div class="section-title accent-orange">Experimental Results (312 Trials)</div>
-        <div class="section-body">
-
-          <!-- RESULTS TABLE -->
-          <table class="results-table">
-            <thead>
-              <tr>
-                <th>Defense × Language</th>
-                <th>ASR ↓</th>
-                <th>TSR ↑</th>
-                <th>Latency</th>
-                <th>FDR ↓</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>None (EN)</td>
-                <td class="cell-red">100%</td>
-                <td class="cell-green">100%</td>
-                <td>—</td>
-                <td>0%</td>
-              </tr>
-              <tr>
-                <td>None (BN)</td>
-                <td class="cell-red">100%</td>
-                <td class="cell-green">100%</td>
-                <td>—</td>
-                <td>0%</td>
-              </tr>
-              <tr>
-                <td>None (BN-EN)</td>
-                <td class="cell-red">100%</td>
-                <td class="cell-green">100%</td>
-                <td>—</td>
-                <td>0%</td>
-              </tr>
-              <tr>
-                <td>Scanner (EN)</td>
-                <td class="cell-orange">76.9%</td>
-                <td class="cell-yellow">76.9%</td>
-                <td>—</td>
-                <td class="cell-red">23.1%</td>
-              </tr>
-              <tr>
-                <td>Scanner (BN)</td>
-                <td class="cell-red">100%</td>
-                <td class="cell-green">100%</td>
-                <td>—</td>
-                <td>0%</td>
-              </tr>
-              <tr>
-                <td>Scanner (BN-EN)</td>
-                <td class="cell-red">100%</td>
-                <td class="cell-green">100%</td>
-                <td>—</td>
-                <td>0%</td>
-              </tr>
-              <tr>
-                <td>Prompt Isolation (EN)</td>
-                <td>7.7%</td>
-                <td class="cell-yellow">76.9%</td>
-                <td>—</td>
-                <td>0%</td>
-              </tr>
-              <tr>
-                <td>Prompt Isolation (BN)</td>
-                <td>3.8%</td>
-                <td class="cell-yellow">84.6%</td>
-                <td>—</td>
-                <td>0%</td>
-              </tr>
-              <tr>
-                <td>Prompt Isolation (BN-EN)</td>
-                <td class="cell-green">0.0%</td>
-                <td class="cell-yellow">84.6%</td>
-                <td>—</td>
-                <td>0%</td>
-              </tr>
-              <tr style="background: #f0fff5 !important;">
-                <td><strong>Policy Module (EN)</strong></td>
-                <td class="cell-green">3.8%</td>
-                <td class="cell-green">100%</td>
-                <td class="cell-green">0.037ms</td>
-                <td class="cell-green">0%</td>
-              </tr>
-              <tr style="background: #f0fff5 !important;">
-                <td><strong>Policy Module (BN)</strong></td>
-                <td class="cell-green">0.0%</td>
-                <td class="cell-green">100%</td>
-                <td class="cell-green">0.037ms</td>
-                <td class="cell-green">0%</td>
-              </tr>
-              <tr style="background: #f0fff5 !important;">
-                <td><strong>Policy Module (BN-EN)</strong></td>
-                <td class="cell-green">0.0%</td>
-                <td class="cell-green">100%</td>
-                <td class="cell-green">0.041ms</td>
-                <td class="cell-green">0%</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="small italic text-center">ASR = Attack Success Rate · TSR = Task Success Rate · FDR = False Denial Rate</p>
-
-          <!-- CSS BAR CHART -->
-          <div class="chart-container mt-6">
-            <div class="chart-title">ASR (%) by Defense Tier × Language Register</div>
-            <div class="bar-group-container">
-              <!-- Undefended -->
-              <div class="bar-group">
-                <div class="bars">
-                  <div class="bar en" style="height: 100px;"><span class="bar-val">100</span></div>
-                  <div class="bar bn" style="height: 100px;"><span class="bar-val">100</span></div>
-                  <div class="bar bnen" style="height: 100px;"><span class="bar-val">100</span></div>
-                </div>
-                <div class="bar-group-label">Undefended</div>
-              </div>
-              <!-- Static Scanner -->
-              <div class="bar-group">
-                <div class="bars">
-                  <div class="bar en" style="height: 77px;"><span class="bar-val">76.9</span></div>
-                  <div class="bar bn" style="height: 100px;"><span class="bar-val">100</span></div>
-                  <div class="bar bnen" style="height: 100px;"><span class="bar-val">100</span></div>
-                </div>
-                <div class="bar-group-label">Static Scanner</div>
-              </div>
-              <!-- Prompt Isolation -->
-              <div class="bar-group">
-                <div class="bars">
-                  <div class="bar en" style="height: 8px;"><span class="bar-val">7.7</span></div>
-                  <div class="bar bn" style="height: 4px;"><span class="bar-val">3.8</span></div>
-                  <div class="bar bnen" style="height: 1px;"><span class="bar-val">0</span></div>
-                </div>
-                <div class="bar-group-label">Prompt Isolation</div>
-              </div>
-              <!-- Policy Module -->
-              <div class="bar-group">
-                <div class="bars">
-                  <div class="bar en" style="height: 4px;"><span class="bar-val">3.8</span></div>
-                  <div class="bar bn" style="height: 1px;"><span class="bar-val">0</span></div>
-                  <div class="bar bnen" style="height: 1px;"><span class="bar-val">0</span></div>
-                </div>
-                <div class="bar-group-label">Policy Module<br>(ADR-0002)</div>
-              </div>
-            </div>
-            <div class="chart-legend">
-              <div class="legend-item"><div class="legend-swatch" style="background: #4a90d9;"></div> English</div>
-              <div class="legend-item"><div class="legend-swatch" style="background: #e8a820;"></div> Bangla</div>
-              <div class="legend-item"><div class="legend-swatch" style="background: #50b070;"></div> Banglish</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- KEY FINDINGS -->
-      <div class="section">
-        <div class="section-title accent-green">Key Findings</div>
-        <div class="section-body">
-          <div class="finding">
-            <span class="finding-icon">🔴</span>
-            <div><strong>Runtime Vulnerability Confirmed:</strong> Cross-lingual skill poisoning reliably compromises live agent tool dispatch across all 26 enterprise domains with 100% ASR when undefended.</div>
-          </div>
-          <div class="finding">
-            <span class="finding-icon">🔄</span>
-            <div><strong>Two-Phase Rug-Pull Lifecycle (ADR-0004):</strong> Phase 1 confirms 100% Benign Utility Retention across all registers; in Phase 2, mutated non-English exploits achieve 100% Vetting Bypass Rate, slipping past scanners undetected.</div>
-          </div>
-          <div class="finding">
-            <span class="finding-icon">🟡</span>
-            <div><strong>Scanner Breakdown:</strong> Static scanners achieve 0% detection on non-English manifests while generating 23.1% false denials on English skills.</div>
-          </div>
-          <div class="finding">
-            <span class="finding-icon">🟠</span>
-            <div><strong>Prompt Isolation Trade-Off:</strong> Soft prompt warnings reduce ASR but degrade task completion by up to 23.1% — an unacceptable utility penalty.</div>
-          </div>
-          <div class="finding">
-            <span class="finding-icon">🟢</span>
-            <div><strong>Deterministic Protection:</strong> ADR-0002 runtime enforcement achieves sub-millisecond, language-invariant defense with 100% task completion and 0% false denials.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CONCLUSION & FUTURE WORK -->
-      <div class="section">
-        <div class="section-title">Conclusion &amp; Future Work</div>
-        <div class="section-body">
-          <p>
-            <strong>Conclusion:</strong> We present the first active runtime evaluation of
-            cross-lingual skill supply-chain poisoning. Our results demonstrate that
-            English-calibrated static scanners and prompt-level filters fail against
-            non-English manifests, while deterministic runtime policy enforcement provides
-            language-invariant protection without utility degradation.
-          </p>
-          <div class="mt-4">
-            <strong>Future Work:</strong>
-            <ul>
-              <li>Scale benchmark to 50 enterprise workflows across Mandarin, Spanish, and additional low-resource languages.</li>
-              <li>Evaluate frontier proprietary models (GPT-4o, Claude) alongside open-weights architectures.</li>
-              <li>Conduct defense ablation studies measuring memory, token overhead, and multi-turn stability.</li>
-              <li>Submit manuscript to top-tier security/NLP conference.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- REFERENCES -->
-      <div class="section">
-        <div class="section-title">References</div>
-        <div class="section-body references">
-          <ol>
-            <li>Schmotz et al. (2026). Skill-Inject: Measuring Agent Vulnerability to Skill File Attacks. <em>arXiv:2602.20156</em>.</li>
-            <li>Zhang, Yuan et al. (2026). Do Agent Skills Speak Safety in Every Language? <em>AgentSkills Workshop, ACM CAIS 2026</em>.</li>
-            <li>Saha et al. (2026). Under the Hood of SKILL.md: Semantic Supply-chain Attacks on AI Agent Skill Registry. <em>arXiv:2605.11418</em>.</li>
-            <li>Li et al. (2026). SkillJect: Effectively Automating Skill-Based Prompt Injection for Skill-Enabled Agents. <em>arXiv:2602.14211</em>.</li>
-            <li>Wang et al. (2026). “Do Not Mention This to the User”: Detecting and Understanding Malicious Agent Skills in the Wild. <em>arXiv:2602.06547</em>.</li>
-            <li>Chen et al. (2026). Supply-Chain Poisoning Attacks Against LLM Coding Agent Skill Ecosystems. <em>arXiv:2604.03081</em>.</li>
-            <li>Hassan &amp; Hossain (2026). BanglaVeilGuard: Cross-Script Safety Benchmarking for Bangla LLMs. <em>arXiv:2608.21880</em>.</li>
-            <li>Greshake et al. (2023). Compromising Real-World LLM Applications with Indirect Prompt Injection. <em>ACM AISEC '23</em>.</li>
-            <li>Debenedetti et al. (2024). AgentDojo: A Dynamic Environment to Evaluate Prompt Injection. <em>NeurIPS 2024</em>.</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /poster-body -->
-
-  <!-- ════════ FOOTER ════════ -->
-  <div class="poster-footer">
-    <span>Department of Computer Science &amp; Engineering · <strong>Jahangirnagar University</strong> · Savar, Dhaka, Bangladesh</span>
-    <span>📧 Contact: almizan@juniv.edu · October 2026 · <strong>B.Sc. Research Project</strong></span>
   </div>
 
-</div><!-- /poster -->
+  <script>
+    const container = document.getElementById('posterContainer');
+    const stage = document.getElementById('stage');
+    let currentScale = 1.0;
+
+    function setScale(scale) {
+      currentScale = scale;
+      container.style.transform = 'scale(' + scale + ')';
+      
+      // Update wrapper dimensions so scrolling works naturally
+      const scaledWidth = 2700 * scale;
+      const scaledHeight = 3600 * scale;
+      stage.style.height = (scaledHeight + 120) + 'px';
+
+      document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+      if (Math.abs(scale - 0.40) < 0.01) document.getElementById('btn40').classList.add('active');
+      else if (Math.abs(scale - 0.60) < 0.01) document.getElementById('btn60').classList.add('active');
+      else if (Math.abs(scale - 1.0) < 0.01) document.getElementById('btn100').classList.add('active');
+    }
+
+    function fitToScreen() {
+      const availWidth = window.innerWidth - 60;
+      const availHeight = window.innerHeight - 100;
+      const scaleX = availWidth / 2700;
+      const scaleY = availHeight / 3600;
+      const fitScale = Math.min(scaleX, scaleY);
+      setScale(Math.max(0.2, fitScale));
+      document.getElementById('btnFit').classList.add('active');
+    }
+
+    window.addEventListener('resize', () => {
+      if (document.getElementById('btnFit').classList.contains('active')) {
+        fitToScreen();
+      }
+    });
+
+    // Auto-fit on load
+    window.addEventListener('load', fitToScreen);
+  </script>
 
 </body>
 </html>

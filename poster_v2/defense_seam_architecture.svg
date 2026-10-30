@@ -1,0 +1,306 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <marker id="arrowNavy" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0f2b5c"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <style>
+      text { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      .main-title { font-size: 38px; font-weight: 900; fill: #0a1e38; letter-spacing: -0.4px; }
+      .main-sub { font-size: 23px; font-weight: 500; fill: #475569; }
+      .step-badge { font-size: 21px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; }
+      .card-title { font-size: 30px; font-weight: 800; fill: #0f172a; }
+      .card-body { font-size: 27px; font-weight: 500; fill: #334155; line-height: 1.48; }
+      .pill-text { font-size: 23px; font-weight: 800; }
+      .seam-header { font-size: 27px; font-weight: 800; fill: #0f766e; }
+      .check-item { font-size: 26px; font-weight: 600; fill: #115e59; line-height: 1.45; }
+      .legend-lbl { font-size: 25px; font-weight: 700; fill: #334155; }
+      .conduit-label { font-size: 14px; font-weight: 900; }
+    </style>
+  </defs>
+
+  <!-- Clean Canvas -->
+  <rect width="1920" height="1080" fill="#ffffff"/>
+
+  <!-- Top Title Bar -->
+  <text x="960" y="46" text-anchor="middle" class="main-title">Deterministic Authorization Seam: Execution Boundary Architecture</text>
+  <text x="960" y="80" text-anchor="middle" class="main-sub">In-process pre-execution gateway mediating proposed tool dispatches: capability tokens, invariants, and containment</text>
+
+  <!-- COMPONENT 1: Reasoning Plane (Left, width=410) -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="105" width="410" height="925" rx="14" fill="#f8fafc" stroke="#3b82f6" stroke-width="2.2"/>
+    <rect x="40" y="105" width="410" height="8" rx="4" fill="#2563eb"/>
+
+    <!-- Iconic Badge: Neural Planner -->
+    <g transform="translate(65, 126)">
+      <rect width="44" height="44" rx="9" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+      <rect x="10" y="10" width="24" height="24" rx="4" fill="#2563eb"/>
+      <circle cx="16" cy="16" r="2" fill="#ffffff"/>
+      <circle cx="28" cy="16" r="2" fill="#ffffff"/>
+      <circle cx="22" cy="26" r="2.5" fill="#ffffff"/>
+      <path d="M16 16l6 10 6-10" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+    </g>
+    <text x="120" y="152" class="step-badge" fill="#2563eb">Component 1 · Probabilistic</text>
+    <text x="65" y="196" class="card-title">Reasoning Plane</text>
+
+    <!-- Card 1A: User Intent -->
+    <rect x="65" y="218" width="360" height="185" rx="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <!-- User Icon -->
+    <g transform="translate(85, 235)">
+      <circle cx="14" cy="10" r="7" fill="#0f2b5c"/>
+      <path d="M4 28c0-6 5-10 10-10s10 4 10 10" fill="#0f2b5c"/>
+    </g>
+    <text x="118" y="254" font-size="26" font-weight="800" fill="#0f2b5c">Authentic Intent</text>
+    <text x="85" y="305" class="card-body">User task prompt</text>
+    <g transform="translate(85, 360)">
+      <circle cx="12" cy="-6" r="10" fill="#16a34a"/>
+      <path d="M 7 -6 L 11 -2 L 17 -10" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="32" y="2" font-size="24" font-weight="800" fill="#16a34a">Trusted Control Plane</text>
+    </g>
+
+    <!-- Card 1B: Poisoned Skills -->
+    <rect x="65" y="420" width="360" height="215" rx="9" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.6"/>
+    <!-- Virus/Bug Icon -->
+    <g transform="translate(85, 436)">
+      <circle cx="12" cy="12" r="8" fill="#c2410c"/>
+      <line x1="4" y1="12" x2="20" y2="12" stroke="#ffffff" stroke-width="2"/>
+      <line x1="12" y1="4" x2="12" y2="20" stroke="#ffffff" stroke-width="2"/>
+    </g>
+    <text x="118" y="458" font-size="26" font-weight="800" fill="#c2410c">Poisoned Manifest</text>
+    <text x="85" y="510" class="card-body">Untrusted skill input</text>
+    <text x="85" y="555" class="card-body">Cross-lingual injection</text>
+    <g transform="translate(85, 602)">
+      <circle cx="12" cy="-6" r="10" fill="#dc2626"/>
+      <path d="M 7 -11 L 17 -1 M 17 -11 L 7 -1" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+      <text x="32" y="2" font-size="24" font-weight="800" fill="#dc2626">Untrusted Data Plane</text>
+    </g>
+
+    <!-- Card 1C: LLM Planner Loop -->
+    <rect x="65" y="655" width="360" height="275" rx="9" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.6"/>
+    <text x="85" y="694" font-size="26" font-weight="800" fill="#1d4ed8">LLM Planner Loop</text>
+    <text x="85" y="745" font-size="26" font-weight="600" fill="#334155">• Multi-step reasoning</text>
+    <text x="85" y="790" font-size="26" font-weight="600" fill="#334155">• Cannot self-police</text>
+    <rect x="85" y="825" width="320" height="60" rx="7" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.2"/>
+    <text x="245" y="862" text-anchor="middle" font-size="21" font-weight="800" fill="#dc2626">100% Injection Vulnerable</text>
+
+    <!-- Bottom pill -->
+    <rect x="65" y="950" width="360" height="48" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+    <text x="245" y="982" text-anchor="middle" class="pill-text" fill="#1d4ed8">Probabilistic Plane</text>
+  </g>
+
+  <!-- Conduit Component 1 -> Component 2 (Thick Bus with Data Marker) -->
+  <path d="M 450 565 H 498" fill="none" stroke="#0f2b5c" stroke-width="4" marker-end="url(#arrowNavy)"/>
+
+  <!-- COMPONENT 2: Proposed Tool Call (Dispatch Hook, width=324) -->
+  <g filter="url(#shadow)">
+    <rect x="498" y="210" width="324" height="715" rx="12" fill="#ffffff" stroke="#0f2b5c" stroke-width="2.4"/>
+    <rect x="498" y="210" width="324" height="8" rx="4" fill="#0f2b5c"/>
+
+    <!-- Terminal Window Top Bar with macOS dots -->
+    <rect x="498" y="218" width="324" height="34" fill="#f1f5f9"/>
+    <circle cx="518" cy="235" r="5" fill="#ef4444"/>
+    <circle cx="533" cy="235" r="5" fill="#f59e0b"/>
+    <circle cx="548" cy="235" r="5" fill="#10b981"/>
+    <text x="660" y="240" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">dispatch_hook.py</text>
+
+    <text x="518" y="285" class="step-badge" fill="#0f2b5c">Step 2 · Candidate Call</text>
+    <text x="518" y="324" class="card-title">Proposed Call</text>
+    <text x="518" y="362" font-size="24" font-weight="600" fill="#475569">Candidate dispatch:</text>
+
+    <!-- Code Block Window -->
+    <rect x="514" y="385" width="292" height="460" rx="8" fill="#0f172a"/>
+    <text x="530" y="426" font-family="'JetBrains Mono', monospace" font-size="21" font-weight="bold" fill="#38bdf8">dispatch(req, ctx):</text>
+    <text x="530" y="474" font-family="'JetBrains Mono', monospace" font-size="19.5" fill="#f8fafc">tool  = "file_write"</text>
+    <text x="530" y="522" font-family="'JetBrains Mono', monospace" font-size="19.5" fill="#f8fafc">path  = "../../.ssh"</text>
+    <text x="530" y="570" font-family="'JetBrains Mono', monospace" font-size="19.5" fill="#f8fafc">token = "sess_4a91"</text>
+    <text x="530" y="640" font-family="'JetBrains Mono', monospace" font-size="18.5" fill="#ea580c"># Seam Mediation:</text>
+    <text x="530" y="685" font-family="'JetBrains Mono', monospace" font-size="18.5" fill="#ea580c">• alias: file_path</text>
+    <text x="530" y="730" font-family="'JetBrains Mono', monospace" font-size="18.5" fill="#ea580c">• realpath traversal</text>
+    <text x="530" y="775" font-family="'JetBrains Mono', monospace" font-size="18.5" fill="#ea580c">• workspace check</text>
+
+    <rect x="514" y="860" width="292" height="48" rx="7" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="660" y="892" text-anchor="middle" class="pill-text" fill="#0f2b5c">Pre-Dispatch Hook</text>
+  </g>
+
+  <!-- Conduit Component 2 -> Component 3 (Thick Bus with Mediation Marker) -->
+  <path d="M 822 565 H 855" fill="none" stroke="#0f2b5c" stroke-width="4" marker-end="url(#arrowNavy)"/>
+
+  <!-- COMPONENT 3: Deterministic Policy Enforcement Seam (width=570, ends at 1425) -->
+  <g filter="url(#shadow)">
+    <rect x="855" y="105" width="570" height="925" rx="14" fill="#ffffff" stroke="#0d9488" stroke-width="2.8"/>
+    <rect x="855" y="105" width="570" height="8" rx="4" fill="#0f766e"/>
+
+    <!-- Iconic Badge: Fortress Security Shield -->
+    <g transform="translate(880, 126)">
+      <rect width="44" height="44" rx="9" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1.5"/>
+      <path d="M22 8L34 13v10c0 8-5 15-12 18-7-3-12-10-12-18V13z" fill="#0d9488"/>
+      <path d="M22 17a3 3 0 0 0-3 3v2h6v-2a3 3 0 0 0-3-3z" fill="#ffffff"/>
+      <rect x="17" y="22" width="10" height="8" rx="1.5" fill="#ffffff"/>
+    </g>
+    <text x="935" y="152" class="step-badge" fill="#0d9488">Component 2 · Trusted Anchor</text>
+    <text x="880" y="196" class="card-title">Policy Enforcement Seam</text>
+    <text x="880" y="234" font-size="25" font-weight="700" fill="#0f766e">Mandatory Invariant Verification:</text>
+
+    <!-- Invariant 1: Capability Tokens -->
+    <rect x="880" y="250" width="520" height="155" rx="8" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1.6"/>
+    <!-- Token Key Icon -->
+    <g transform="translate(900, 268)">
+      <circle cx="10" cy="10" r="7" fill="none" stroke="#0f766e" stroke-width="2.5"/>
+      <path d="M15 15l10 10m-4-2l2-2m3 3l2-2" fill="none" stroke="#0f766e" stroke-width="2.2" stroke-linecap="round"/>
+    </g>
+    <text x="935" y="288" class="seam-header">1. Capability Tokens</text>
+    <g transform="translate(900, 345)">
+      <circle cx="12" cy="-6" r="10" fill="#0f766e"/>
+      <path d="M 7 -6 L 11 -2 L 17 -10" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="32" y="2" class="check-item">Session token verification</text>
+    </g>
+
+    <!-- Invariant 2: Path Normalization -->
+    <rect x="880" y="420" width="520" height="155" rx="8" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1.6"/>
+    <!-- Path Folder Icon -->
+    <g transform="translate(900, 438)">
+      <path d="M4 6h6l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="#0f766e"/>
+    </g>
+    <text x="935" y="458" class="seam-header">2. Path Normalization</text>
+    <g transform="translate(900, 515)">
+      <circle cx="12" cy="-6" r="10" fill="#0f766e"/>
+      <path d="M 7 -6 L 11 -2 L 17 -10" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="32" y="2" class="check-item">Canonical realpath(..) check</text>
+    </g>
+
+    <!-- Invariant 3: Sandbox Confinement -->
+    <rect x="880" y="590" width="520" height="155" rx="8" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1.6"/>
+    <!-- Sandbox Enclosure Icon -->
+    <g transform="translate(900, 608)">
+      <rect x="2" y="2" width="22" height="22" rx="4" fill="none" stroke="#0f766e" stroke-width="2.4" stroke-dasharray="4 2"/>
+      <circle cx="13" cy="13" r="4" fill="#0f766e"/>
+    </g>
+    <text x="935" y="628" class="seam-header">3. Sandbox Confinement</text>
+    <g transform="translate(900, 685)">
+      <circle cx="12" cy="-6" r="10" fill="#0f766e"/>
+      <path d="M 7 -6 L 11 -2 L 17 -10" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="32" y="2" class="check-item">Isolated workspace boundary</text>
+    </g>
+
+    <!-- Performance Metric Box -->
+    <rect x="880" y="762" width="520" height="175" rx="8" fill="#ccfbf1" stroke="#5eead4" stroke-width="1.6"/>
+    <text x="900" y="800" font-size="27" font-weight="900" fill="#0f766e">Empirical Guarantees (N = 312)</text>
+
+    <g transform="translate(900, 836)">
+      <circle cx="12" cy="-6" r="10" fill="#0f766e"/>
+      <path d="M 7 -6 L 11 -2 L 17 -10" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="32" y="2" font-size="26" font-weight="700" fill="#115e59">0.037 ms Overhead (&lt;0.005%)</text>
+    </g>
+
+    <g transform="translate(900, 874)">
+      <circle cx="12" cy="-6" r="10" fill="#0f766e"/>
+      <path d="M 7 -6 L 11 -2 L 17 -10" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="32" y="2" font-size="26" font-weight="700" fill="#115e59">100% Invariant (0.0% ASR in BN)</text>
+    </g>
+
+    <g transform="translate(900, 912)">
+      <circle cx="12" cy="-6" r="10" fill="#0f766e"/>
+      <path d="M 7 -6 L 11 -2 L 17 -10" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="32" y="2" font-size="26" font-weight="700" fill="#115e59">0.0% False Denials (100% Utility)</text>
+    </g>
+
+    <rect x="880" y="950" width="520" height="48" rx="8" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1.5"/>
+    <text x="1140" y="982" text-anchor="middle" class="pill-text" fill="#0f766e">Deterministic Enforcement</text>
+  </g>
+
+  <!-- Branch Conduits to Component 4 (80px gap: 1425 to 1505) -->
+  <path d="M 1425 355 H 1505" fill="none" stroke="#16a34a" stroke-width="4" marker-end="url(#arrowGreen)"/>
+  <rect x="1438" y="320" width="56" height="26" rx="5" fill="#ffffff" stroke="#16a34a" stroke-width="1.6"/>
+  <text x="1466" y="338" text-anchor="middle" font-size="13" font-weight="900" fill="#16a34a">PASS</text>
+
+  <path d="M 1425 785 H 1505" fill="none" stroke="#dc2626" stroke-width="4" marker-end="url(#arrowRed)"/>
+  <rect x="1438" y="750" width="56" height="26" rx="5" fill="#ffffff" stroke="#dc2626" stroke-width="1.6"/>
+  <text x="1466" y="768" text-anchor="middle" font-size="13" font-weight="900" fill="#dc2626">DENY</text>
+
+  <!-- COMPONENT 4: Execution Outcomes (x=1505 to 1890, width=385) -->
+  <!-- 4A: Authorized Execution Container -->
+  <g filter="url(#shadow)">
+    <rect x="1505" y="150" width="385" height="400" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2.2"/>
+    <rect x="1505" y="150" width="385" height="8" rx="4" fill="#15803d"/>
+    <!-- Iconic Badge: Green Vault -->
+    <g transform="translate(1528, 168)">
+      <rect width="42" height="42" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+      <rect x="8" y="8" width="26" height="26" rx="4" fill="#16a34a"/>
+      <path d="M14 21l4 4 10-10" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="1580" y="194" class="step-badge" fill="#16a34a">Outcome A · Authorized</text>
+    <text x="1528" y="240" class="card-title">Sandboxed Execution</text>
+    <text x="1528" y="278" font-size="25" font-weight="600" fill="#15803d">Compliant calls execute:</text>
+
+    <rect x="1520" y="298" width="355" height="170" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+    <g transform="translate(1535, 360)">
+      <circle cx="10" cy="-6" r="9" fill="#16a34a"/>
+      <path d="M 6 -6 L 9 -3 L 14 -9" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="26" y="2" font-size="24" font-weight="700" fill="#15803d">Worker sandbox isolation</text>
+    </g>
+    <g transform="translate(1535, 420)">
+      <circle cx="10" cy="-6" r="9" fill="#16a34a"/>
+      <path d="M 6 -6 L 9 -3 L 14 -9" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="26" y="2" font-size="24" font-weight="700" fill="#15803d">Confined task root</text>
+    </g>
+
+    <rect x="1520" y="485" width="355" height="46" rx="7" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+    <text x="1697" y="516" text-anchor="middle" class="pill-text" fill="#15803d">100% Benign Success</text>
+  </g>
+
+  <!-- 4B: Deterministic Denial -->
+  <g filter="url(#shadow)">
+    <rect x="1505" y="580" width="385" height="410" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2.2"/>
+    <rect x="1505" y="580" width="385" height="8" rx="4" fill="#b91c1c"/>
+    <!-- Iconic Badge: Red Firewall Barrier -->
+    <g transform="translate(1528, 598)">
+      <rect width="42" height="42" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+      <circle cx="21" cy="21" r="13" fill="#dc2626"/>
+      <path d="M14 14l14 14M28 14L14 28" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+    </g>
+    <text x="1580" y="624" class="step-badge" fill="#dc2626">Outcome B · Intercept</text>
+    <text x="1528" y="670" class="card-title">Deterministic Denial</text>
+    <text x="1528" y="708" font-size="25" font-weight="600" fill="#b91c1c">Hostile calls intercepted:</text>
+
+    <rect x="1520" y="728" width="355" height="170" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+    <g transform="translate(1535, 790)">
+      <circle cx="10" cy="-6" r="9" fill="#dc2626"/>
+      <path d="M 6 -10 L 14 -2 M 14 -10 L 6 -2" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+      <text x="26" y="2" font-size="24" font-weight="700" fill="#b91c1c">Fail-closed call block</text>
+    </g>
+    <g transform="translate(1535, 850)">
+      <circle cx="10" cy="-6" r="9" fill="#dc2626"/>
+      <path d="M 6 -10 L 14 -2 M 14 -10 L 6 -2" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+      <text x="26" y="2" font-size="24" font-weight="700" fill="#b91c1c">Zero host secret access</text>
+    </g>
+
+    <rect x="1520" y="915" width="355" height="46" rx="7" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.5"/>
+    <text x="1697" y="946" text-anchor="middle" class="pill-text" fill="#b91c1c">ASR: 0.0% (BN &amp; BN-EN)</text>
+  </g>
+
+  <!-- Bottom Legend Bar -->
+  <g transform="translate(45, 1052)">
+    <circle cx="15" cy="10" r="10" fill="#2563eb"/>
+    <text x="34" y="19" class="legend-lbl">Reasoning Plane</text>
+
+    <circle cx="310" cy="10" r="10" fill="#0f2b5c"/>
+    <text x="329" y="19" class="legend-lbl">Candidate Proposal</text>
+
+    <circle cx="700" cy="10" r="10" fill="#0d9488"/>
+    <text x="719" y="19" class="legend-lbl">Authorization Seam</text>
+
+    <circle cx="1180" cy="10" r="10" fill="#16a34a"/>
+    <text x="1199" y="19" class="legend-lbl">Authorized Pass</text>
+
+    <circle cx="1560" cy="10" r="10" fill="#dc2626"/>
+    <text x="1579" y="19" class="legend-lbl">Deterministic Block</text>
+  </g>
+</svg>

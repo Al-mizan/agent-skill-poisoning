@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "mode": "architecture",
+  "style": 1,
+  "text_policy": "strict",
+  "width": 1560,
+  "height": 1080,
+  "title": "Deterministic Authorization Seam: Execution Boundary Architecture",
+  "subtitle": "Direct mediation of tool call proposals between the Reasoning Plane and external Tool Adapters",
+  "containers": [
+    {
+      "id": "container-reasoning",
+      "x": 35,
+      "y": 115,
+      "width": 370,
+      "height": 830,
+      "label": "Reasoning Plane (Untrusted Influence)",
+      "subtitle": "Model generates tool proposal via ReAct planning loop",
+      "stroke": "#cbd5e1",
+      "fill": "#f8fafc"
+    },
+    {
+      "id": "container-seam",
+      "x": 520,
+      "y": 115,
+      "width": 520,
+      "height": 830,
+      "label": "Deterministic Authorization Seam",
+      "subtitle": "In-process execution boundary intercepts dispatch(request, context)",
+      "stroke": "#0d9488",
+      "fill": "#f0fdfa"
+    },
+    {
+      "id": "container-adapters",
+      "x": 1155,
+      "y": 115,
+      "width": 370,
+      "height": 830,
+      "label": "Execution Boundary & Tool Adapters",
+      "subtitle": "Strict Mandatory Access Control (MAC) boundary",
+      "stroke": "#94a3b8",
+      "fill": "#f8fafc"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node-proposal",
+      "kind": "review_card",
+      "x": 55,
+      "y": 230,
+      "width": 330,
+      "height": 260,
+      "type_label": "INPUT TOOL CALL",
+      "label": "Reasoning Plane: Proposed Call",
+      "description": "Model proposes tool_name and parameters from skill instructions during ReAct planning execution.",
+      "technology": "dispatch(request, context)",
+      "fill": "#eff6ff",
+      "stroke": "#3b82f6"
+    },
+    {
+      "id": "node-context",
+      "kind": "review_card",
+      "x": 55,
+      "y": 600,
+      "width": 330,
+      "height": 260,
+      "type_label": "PROVENANCE & STATE",
+      "label": "Session Context & Tokens",
+      "description": "Carries task capability tokens and untrusted Data Plane taint history across multi-turn workflow steps.",
+      "technology": "Ephemeral Auth Tokens",
+      "fill": "#f8fafc",
+      "stroke": "#64748b"
+    },
+    {
+      "id": "node-seam-gate",
+      "kind": "review_card",
+      "x": 535,
+      "y": 230,
+      "width": 490,
+      "height": 260,
+      "type_label": "EXECUTION INTERCEPTOR",
+      "label": "Policy Enforcement Module",
+      "description": "In-process gate mediates all adapter calls independently of model reasoning. Zero bypass surface for prompt injections regardless of linguistic register or register mutation.",
+      "technology": "Deterministic Invariant Gate",
+      "fill": "#ecfdf5",
+      "stroke": "#059669"
+    },
+    {
+      "id": "node-enforcement-checks",
+      "kind": "review_card",
+      "x": 535,
+      "y": 600,
+      "width": 490,
+      "height": 260,
+      "type_label": "INVARIANT VALIDATION ENGINE",
+      "label": "Four Invariant Validation Controls",
+      "description": "1. Capability Tokens · 2. Path Invariants · 3. Workspace Sandbox · 4. 100% Language Invariant. Zero LLM evaluations in the enforcement hot-path.",
+      "technology": "Pre-Execution Gate",
+      "fill": "#f0fdf4",
+      "stroke": "#16a34a"
+    },
+    {
+      "id": "node-authorized",
+      "kind": "review_card",
+      "x": 1175,
+      "y": 230,
+      "width": 330,
+      "height": 260,
+      "type_label": "COMPLIANT EXECUTION (PASS)",
+      "label": "Tool Adapter Execution",
+      "description": "Permitted tool executes in container sandbox; zero canary telemetry triggered (100% utility retained).",
+      "technology": "Bash / Git / API Adapters",
+      "fill": "#f0fdf4",
+      "stroke": "#16a34a"
+    },
+    {
+      "id": "node-blocked",
+      "kind": "review_card",
+      "x": 1175,
+      "y": 600,
+      "width": 330,
+      "height": 260,
+      "type_label": "VIOLATION BLOCKED (DENY)",
+      "label": "Deterministic Deny",
+      "description": "Unauthorized path traversal or secret exfiltration halted before adapter call. Zero unauthorized writes executed.",
+      "technology": "MAC Invariant Rejection",
+      "fill": "#fef2f2",
+      "stroke": "#dc2626"
+    }
+  ],
+  "arrows": [
+    {
+      "id": "flow-proposal-to-gate",
+      "source": "node-proposal",
+      "target": "node-seam-gate",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "control",
+      "label": "Proposed Call"
+    },
+    {
+      "id": "flow-context-to-checks",
+      "source": "node-context",
+      "target": "node-enforcement-checks",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "data",
+      "label": "Auth Tokens"
+    },
+    {
+      "id": "flow-gate-to-checks",
+      "source": "node-seam-gate",
+      "target": "node-enforcement-checks",
+      "source_port": "bottom",
+      "target_port": "top",
+      "flow": "control"
+    },
+    {
+      "id": "flow-gate-to-auth",
+      "source": "node-seam-gate",
+      "target": "node-authorized",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "write",
+      "label": "Invariant Passed"
+    },
+    {
+      "id": "flow-checks-to-deny",
+      "source": "node-enforcement-checks",
+      "target": "node-blocked",
+      "source_port": "right",
+      "target_port": "left",
+      "flow": "feedback",
+      "label": "Policy Violation"
+    }
+  ],
+  "legend_orientation": "horizontal",
+  "legend_x": 50,
+  "legend_y": 980,
+  "legend": [
+    {
+      "flow": "control",
+      "label": "Tool Call Proposal (Purple)"
+    },
+    {
+      "flow": "data",
+      "label": "Context & Token Evaluation (Orange)"
+    },
+    {
+      "flow": "write",
+      "label": "Authorized Adapter Execution (Green)"
+    },
+    {
+      "flow": "feedback",
+      "label": "Deterministic Policy Deny (Red)"
+    }
+  ],
+  "footer": "Research Poster · Deterministic Authorization Seam Architecture",
+  "footer_x": 50,
+  "footer_y": 1045
+}

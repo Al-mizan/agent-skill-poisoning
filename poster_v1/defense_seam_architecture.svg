@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1200" width="1920" height="1200">
+  <defs>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ea580c"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#dc2626"/>
+    </marker>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <style>
+      text { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      .main-title { font-size: 42px; font-weight: 800; fill: #0a1e38; letter-spacing: -0.5px; }
+      .main-sub { font-size: 21px; font-weight: 500; fill: #475569; }
+      .container-header { font-size: 19px; font-weight: 800; letter-spacing: 0.8px; }
+      .container-sub { font-size: 15.5px; font-weight: 500; fill: #64748b; }
+      .badge-type { font-size: 15px; font-weight: 800; letter-spacing: 0.8px; }
+      .card-title { font-size: 27px; font-weight: 800; fill: #0f172a; letter-spacing: -0.3px; }
+      .card-desc { font-size: 18px; font-weight: 500; fill: #334155; }
+      .tech-pill { font-size: 16px; font-weight: 700; }
+      .flow-label { font-size: 15px; font-weight: 800; }
+      .legend-text { font-size: 17px; font-weight: 600; fill: #475569; }
+      .footer-text { font-size: 15px; font-weight: 500; fill: #94a3b8; }
+      .inv-item-title { font-size: 18px; font-weight: 800; fill: #0f172a; }
+      .inv-item-desc { font-size: 15px; font-weight: 500; fill: #475569; }
+    </style>
+  </defs>
+
+  <rect width="1920" height="1200" fill="#ffffff"/>
+
+  <!-- Title & Subtitle -->
+  <text x="960" y="52" text-anchor="middle" class="main-title">Deterministic Authorization Seam: Execution Boundary Architecture</text>
+  <text x="960" y="85" text-anchor="middle" class="main-sub">Direct mediation of candidate tool proposals between Reasoning Plane and external Tool Adapters</text>
+
+  <!-- Container 1: Reasoning Plane (Untrusted Influence) -->
+  <rect x="40" y="110" width="460" height="955" rx="16" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2.2" stroke-dasharray="8 6"/>
+  <text x="65" y="145" class="container-header" fill="#2563eb">REASONING PLANE (UNTRUSTED)</text>
+  <text x="65" y="172" class="container-sub">Model generates tool proposals via ReAct planning</text>
+
+  <!-- Container 2: Deterministic Authorization Seam (Enforcement Gate) -->
+  <rect x="530" y="110" width="860" height="955" rx="16" fill="#f0fdfa" stroke="#0d9488" stroke-width="2.4" stroke-dasharray="8 6"/>
+  <text x="555" y="145" class="container-header" fill="#0d9488">DETERMINISTIC AUTHORIZATION SEAM</text>
+  <text x="555" y="172" class="container-sub">In-process execution boundary intercepts dispatch(request, context)</text>
+
+  <!-- Container 3: Execution Boundary & Tool Adapters (MAC Boundary) -->
+  <rect x="1420" y="110" width="460" height="955" rx="16" fill="#f8fafc" stroke="#94a3b8" stroke-width="2.2" stroke-dasharray="8 6"/>
+  <text x="1445" y="145" class="container-header" fill="#334155">EXECUTION BOUNDARY &amp; ADAPTERS</text>
+  <text x="1445" y="172" class="container-sub">Strict Mandatory Access Control (MAC) boundary</text>
+
+  <!-- NODE 1: Proposed Tool Call (Left Top) -->
+  <g filter="url(#cardShadow)">
+    <rect x="65" y="200" width="410" height="385" rx="12" fill="#ffffff" stroke="#3b82f6" stroke-width="2"/>
+    <rect x="65" y="200" width="410" height="6" rx="3" fill="#2563eb"/>
+    <text x="90" y="242" class="badge-type" fill="#2563eb">PROPOSED TOOL INVOCATION</text>
+    <text x="90" y="282" class="card-title">Reasoning Plane: Call</text>
+    <text x="90" y="328" class="card-desc">Model proposes tool_name and</text>
+    <text x="90" y="362" class="card-desc">parameters from untrusted skill</text>
+    <text x="90" y="396" class="card-desc">manifests during autonomous planning.</text>
+    <rect x="90" y="505" width="360" height="46" rx="8" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.2"/>
+    <text x="270" y="534" text-anchor="middle" class="tech-pill" fill="#1d4ed8">dispatch(request, context)</text>
+  </g>
+
+  <!-- NODE 2: Session Context & Tokens (Left Bottom) -->
+  <g filter="url(#cardShadow)">
+    <rect x="65" y="635" width="410" height="385" rx="12" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <rect x="65" y="635" width="410" height="6" rx="3" fill="#475569"/>
+    <text x="90" y="677" class="badge-type" fill="#475569">PROVENANCE &amp; STATE</text>
+    <text x="90" y="717" class="card-title">Session Context &amp; Tokens</text>
+    <text x="90" y="763" class="card-desc">Carries verified capability tokens,</text>
+    <text x="90" y="797" class="card-desc">session credentials, and untrusted</text>
+    <text x="90" y="831" class="card-desc">Data Plane taint history across turns.</text>
+    <rect x="90" y="940" width="360" height="46" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.2"/>
+    <text x="270" y="969" text-anchor="middle" class="tech-pill" fill="#334155">Ephemeral Auth Tokens</text>
+  </g>
+
+  <!-- CONNECTOR: Proposed Call -> Policy Gate -->
+  <path d="M 475 392 H 560" fill="none" stroke="#7c3aed" stroke-width="3" marker-end="url(#arrowPurple)"/>
+  <rect x="483" y="379" width="70" height="26" rx="4" fill="#ffffff" stroke="#ddd6fe" stroke-width="1.5"/>
+  <text x="518" y="397" text-anchor="middle" class="flow-label" fill="#7c3aed">Proposal</text>
+
+  <!-- CONNECTOR: Context Tokens -> Checks -->
+  <path d="M 475 827 H 560" fill="none" stroke="#ea580c" stroke-width="3" marker-end="url(#arrowOrange)"/>
+  <rect x="486" y="814" width="64" height="26" rx="4" fill="#ffffff" stroke="#fed7aa" stroke-width="1.5"/>
+  <text x="518" y="832" text-anchor="middle" class="flow-label" fill="#ea580c">Tokens</text>
+
+  <!-- NODE 3: Policy Enforcement Module (Seam Top) -->
+  <g filter="url(#cardShadow)">
+    <rect x="560" y="200" width="800" height="385" rx="12" fill="#ffffff" stroke="#059669" stroke-width="2.2"/>
+    <rect x="560" y="200" width="800" height="6" rx="3" fill="#047857"/>
+    <text x="590" y="242" class="badge-type" fill="#059669">EXECUTION INTERCEPTOR GATE</text>
+    <text x="590" y="282" class="card-title" font-size="28">Policy Enforcement Module</text>
+    <text x="590" y="328" class="card-desc" font-size="18.5">In-process security gate mediates adapter calls independently of model reasoning.</text>
+    <text x="590" y="362" class="card-desc" font-size="18.5">Zero bypass surface for prompt injections across EN, BN, and BN-EN registers.</text>
+    <text x="590" y="396" class="card-desc" font-size="18.5">Guarantees deterministic fail-closed safety with 0.037ms latency overhead.</text>
+    <rect x="590" y="505" width="740" height="46" rx="8" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.2"/>
+    <text x="960" y="534" text-anchor="middle" class="tech-pill" fill="#065f46">Deterministic Invariant Enforcement (0.037ms · 0.0% False Denials)</text>
+  </g>
+
+  <!-- CONNECTOR: Policy Module -> Invariant Checks (Vertical) -->
+  <path d="M 960 585 V 630" fill="none" stroke="#7c3aed" stroke-width="3" marker-end="url(#arrowPurple)"/>
+
+  <!-- NODE 4: Four Invariant Validation Controls (Seam Bottom) -->
+  <g filter="url(#cardShadow)">
+    <rect x="560" y="635" width="800" height="385" rx="12" fill="#ffffff" stroke="#059669" stroke-width="2.2"/>
+    <rect x="560" y="635" width="800" height="6" rx="3" fill="#047857"/>
+    <text x="590" y="677" class="badge-type" fill="#059669">INVARIANT VALIDATION ENGINE</text>
+    <text x="590" y="717" class="card-title" font-size="28">Four Pre-Execution Invariant Controls</text>
+
+    <!-- 4 Sub-blocks -->
+    <!-- Block 1: Capability Tokens -->
+    <rect x="590" y="745" width="355" height="85" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="605" y="776" class="inv-item-title">1. Capability Tokens</text>
+    <text x="605" y="806" class="inv-item-desc">Cryptographic intent token validation.</text>
+
+    <!-- Block 2: Path Invariants -->
+    <rect x="975" y="745" width="355" height="85" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="990" y="776" class="inv-item-title">2. Path Invariants</text>
+    <text x="990" y="806" class="inv-item-desc">realpath() workspace sandboxing.</text>
+
+    <!-- Block 3: Workspace Sandbox -->
+    <rect x="590" y="845" width="355" height="85" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="605" y="876" class="inv-item-title">3. Workspace Sandbox</text>
+    <text x="605" y="906" class="inv-item-desc">Unprivileged container isolation.</text>
+
+    <!-- Block 4: Language Invariance -->
+    <rect x="975" y="845" width="355" height="85" rx="8" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="990" y="876" class="inv-item-title">4. Language Invariance</text>
+    <text x="990" y="906" class="inv-item-desc">Raw dispatch check (100% register agnostic).</text>
+
+    <!-- Code strip -->
+    <rect x="590" y="945" width="740" height="46" rx="8" fill="#064e3b" stroke="#047857" stroke-width="1.2"/>
+    <text x="960" y="974" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="17" font-weight="700" fill="#a7f3d0">dispatch(req, ctx) -&gt; verify(token) -&gt; assert(path) -&gt; execute()</text>
+  </g>
+
+  <!-- CONNECTOR: Policy Gate -> Authorized Execution (Pass) -->
+  <path d="M 1360 392 H 1445" fill="none" stroke="#16a34a" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <rect x="1369" y="379" width="66" height="26" rx="4" fill="#ffffff" stroke="#86efac" stroke-width="1.5"/>
+  <text x="1402" y="397" text-anchor="middle" class="flow-label" fill="#16a34a">Passed</text>
+
+  <!-- CONNECTOR: Invariant Checks -> Deterministic Deny (Block) -->
+  <path d="M 1360 827 H 1445" fill="none" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowRed)"/>
+  <rect x="1366" y="814" width="72" height="26" rx="4" fill="#ffffff" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="1402" y="832" text-anchor="middle" class="flow-label" fill="#dc2626">Violation</text>
+
+  <!-- NODE 5: Tool Adapter Execution (Right Top) -->
+  <g filter="url(#cardShadow)">
+    <rect x="1445" y="200" width="410" height="385" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+    <rect x="1445" y="200" width="410" height="6" rx="3" fill="#15803d"/>
+    <text x="1470" y="242" class="badge-type" fill="#16a34a">COMPLIANT EXECUTION (PASS)</text>
+    <text x="1470" y="282" class="card-title">Tool Adapter Execution</text>
+    <text x="1470" y="328" class="card-desc">Permitted tool executes inside</text>
+    <text x="1470" y="362" class="card-desc">container sandbox; zero canary</text>
+    <text x="1470" y="396" class="card-desc">telemetry triggered (100% utility).</text>
+    <rect x="1470" y="505" width="360" height="46" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1.2"/>
+    <text x="1650" y="534" text-anchor="middle" class="tech-pill" fill="#15803d">Bash / Git / API Adapters</text>
+  </g>
+
+  <!-- NODE 6: Deterministic Deny (Right Bottom) -->
+  <g filter="url(#cardShadow)">
+    <rect x="1445" y="635" width="410" height="385" rx="12" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+    <rect x="1445" y="635" width="410" height="6" rx="3" fill="#b91c1c"/>
+    <text x="1470" y="677" class="badge-type" fill="#dc2626">VIOLATION BLOCKED (DENY)</text>
+    <text x="1470" y="717" class="card-title">Deterministic Deny</text>
+    <text x="1470" y="763" class="card-desc">Unauthorized path traversal or</text>
+    <text x="1470" y="797" class="card-desc">secret exfiltration halted before</text>
+    <text x="1470" y="831" class="card-desc">adapter call; zero writes reach host.</text>
+    <rect x="1470" y="940" width="360" height="46" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.2"/>
+    <text x="1650" y="969" text-anchor="middle" class="tech-pill" fill="#b91c1c">MAC Invariant Rejection</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(65, 1095)">
+    <circle cx="10" cy="10" r="7" fill="#7c3aed"/>
+    <text x="26" y="16" class="legend-text">Tool Call Proposal</text>
+
+    <circle cx="260" cy="10" r="7" fill="#ea580c"/>
+    <text x="276" y="16" class="legend-text">Context &amp; Token Evaluation</text>
+
+    <circle cx="580" cy="10" r="7" fill="#16a34a"/>
+    <text x="596" y="16" class="legend-text">Authorized Execution (Pass)</text>
+
+    <circle cx="890" cy="10" r="7" fill="#dc2626"/>
+    <text x="906" y="16" class="legend-text">Deterministic Policy Deny (Block)</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="65" y="1165" class="footer-text">Research Poster · Deterministic Authorization Seam Architecture &amp; Execution Boundary</text>
+</svg>

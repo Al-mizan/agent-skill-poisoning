@@ -1,0 +1,237 @@
+{
+  "canvas": {
+    "height": 1080.0,
+    "width": 1560.0
+  },
+  "composition": {
+    "limits": {
+      "max_bends_per_edge": 12,
+      "max_bridged_crossings": 8,
+      "max_route_stretch": 5.0,
+      "max_total_bends": 100,
+      "min_container_gutter": 0.0,
+      "min_label_clearance": 2.0,
+      "min_node_gap": 0.0,
+      "min_segment_length": 0.0,
+      "profile": "standard"
+    },
+    "metrics": {
+      "bridged_crossings": 0,
+      "max_route_stretch": 1.0,
+      "minimum_container_gutter": 20.0,
+      "minimum_node_gap": 110.0,
+      "shortest_segment": 110.0,
+      "total_bends": 0
+    },
+    "ok": true,
+    "profile": "standard",
+    "score": 100,
+    "violations": []
+  },
+  "edges": [
+    {
+      "bends": 0,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-proposal-to-gate",
+      "length": 160.0,
+      "route": [
+        [
+          370.0,
+          360.0
+        ],
+        [
+          530.0,
+          360.0
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "node-proposal",
+      "source_port": [
+        370.0,
+        360.0
+      ],
+      "target": "node-seam-gate",
+      "target_port": [
+        530.0,
+        360.0
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 0,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-context-to-checks",
+      "length": 160.0,
+      "route": [
+        [
+          370.0,
+          730.0
+        ],
+        [
+          530.0,
+          730.0
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "node-context",
+      "source_port": [
+        370.0,
+        730.0
+      ],
+      "target": "node-enforcement-checks",
+      "target_port": [
+        530.0,
+        730.0
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 0,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-gate-to-checks",
+      "length": 110.0,
+      "route": [
+        [
+          780.0,
+          490.0
+        ],
+        [
+          780.0,
+          600.0
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "node-seam-gate",
+      "source_port": [
+        780.0,
+        490.0
+      ],
+      "target": "node-enforcement-checks",
+      "target_port": [
+        780.0,
+        600.0
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 0,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-gate-to-auth",
+      "length": 160.0,
+      "route": [
+        [
+          1030.0,
+          360.0
+        ],
+        [
+          1190.0,
+          360.0
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "node-seam-gate",
+      "source_port": [
+        1030.0,
+        360.0
+      ],
+      "target": "node-authorized",
+      "target_port": [
+        1190.0,
+        360.0
+      ],
+      "waypoints": []
+    },
+    {
+      "bends": 0,
+      "bridges": [],
+      "crossings": [],
+      "id": "flow-checks-to-deny",
+      "length": 160.0,
+      "route": [
+        [
+          1030.0,
+          730.0
+        ],
+        [
+          1190.0,
+          730.0
+        ]
+      ],
+      "route_stretch": 1.0,
+      "source": "node-enforcement-checks",
+      "source_port": [
+        1030.0,
+        730.0
+      ],
+      "target": "node-blocked",
+      "target_port": [
+        1190.0,
+        730.0
+      ],
+      "waypoints": []
+    }
+  ],
+  "input_schema": "v1",
+  "issues": [],
+  "mode": "architecture",
+  "ok": true,
+  "palette": {
+    "below_target": [],
+    "minimum_target": 4.5,
+    "ratios": {
+      "section_sub_fill": 4.76,
+      "text_muted": 4.76,
+      "text_primary": 17.74,
+      "text_secondary": 4.83
+    },
+    "scope": "default opaque canvas text tokens; not a full rendered accessibility audit",
+    "unsupported_tokens": []
+  },
+  "placements": {
+    "legend": {
+      "actual": [
+        50.0,
+        985.0
+      ],
+      "bounds": [
+        40.0,
+        971.0,
+        1136.72,
+        1017.0
+      ],
+      "moved": false,
+      "requested": [
+        50.0,
+        985.0
+      ]
+    }
+  },
+  "schema_version": 1,
+  "semantics": {
+    "details": {},
+    "ok": true,
+    "profile": "generic",
+    "style": 1,
+    "visual_theme": "Flat Icon"
+  },
+  "style": {
+    "id": 1,
+    "name": "Flat Icon"
+  },
+  "summary": {
+    "bridged_crossings": 0,
+    "edges": 5,
+    "nodes": 6
+  },
+  "text_metrics": "heuristic-v1",
+  "typography": {
+    "complete_text": true,
+    "hint": null,
+    "metrics": "heuristic widths; inspect the actual rendered font",
+    "truncated": []
+  }
+}

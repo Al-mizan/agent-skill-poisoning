@@ -63,14 +63,14 @@ The pilot evaluation executed 120 trials spanning 5 enterprise domains (`pdf`, `
 | **Prompt Warning Policy** | English (`en`) | 10 | **0.0%** | **0.0%** | 100.0% | 0.000 ms | 0.0% |
 | **Prompt Warning Policy** | Native Bangla (`bn`) | 10 | **100.0%** | **100.0%** (Guardrail Fail) | 100.0% | 0.000 ms | 0.0% |
 | **Prompt Warning Policy** | Banglish (`bn-en`) | 10 | **100.0%** | **100.0%** (Guardrail Fail) | 100.0% | 0.000 ms | 0.0% |
-| **Policy Module (ADR-0002)**| English (`en`) | 10 | **0.0%** | **0.0%** | **100.0%** | **0.021 ms** | **0.0%** |
-| **Policy Module (ADR-0002)**| Native Bangla (`bn`) | 10 | **0.0%** | **0.0%** | **100.0%** | **0.019 ms** | **0.0%** |
-| **Policy Module (ADR-0002)**| Banglish (`bn-en`) | 10 | **0.0%** | **0.0%** | **100.0%** | **0.018 ms** | **0.0%** |
+| **Policy Module**| English (`en`) | 10 | **0.0%** | **0.0%** | **100.0%** | **0.021 ms** | **0.0%** |
+| **Policy Module**| Native Bangla (`bn`) | 10 | **0.0%** | **0.0%** | **100.0%** | **0.019 ms** | **0.0%** |
+| **Policy Module**| Banglish (`bn-en`) | 10 | **0.0%** | **0.0%** | **100.0%** | **0.018 ms** | **0.0%** |
 
 ### Key Analytical Insights for the Journal Paper:
 1. **The Ineffectiveness of Lexical Marketplace Scanners:** The static keyword scanner successfully flagged English injection patterns, but in doing so blocked the entire package install, resulting in 0% Benign Utility Retention. More critically, against Bangla and Banglish manifests, the scanner exhibited a 100% failure rate, allowing all poisoned skills to pass undetected.
 2. **The Fragility of Soft Prompt Instructions:** While prompt-level warnings effectively conditioned the model to disregard English side-effect instructions, they offered zero protection against non-English instructions. Models followed Bangla and Banglish canary directives with 100% fidelity, proving that safety fine-tuning does not transfer robustly across multilingual tool interactions.
-3. **Language Invariance of the Deterministic Seam:** The ADR-0002 policy enforcement module completely blocked the canary marker write (`/tmp/canary_audit.marker`) across all 30 evaluated trials, while allowing the legitimate clean tool calls (`pdf_merge`, `git_log`, etc.) to execute seamlessly, demonstrating 100% utility retention without any dependence on model language comprehension.
+3. **Language Invariance of the Deterministic Seam:** The policy enforcement module completely blocked the canary marker write (`/tmp/canary_audit.marker`) across all 30 evaluated trials, while allowing the legitimate clean tool calls (`pdf_merge`, `git_log`, etc.) to execute seamlessly, demonstrating 100% utility retention without any dependence on model language comprehension.
 
 ---
 
@@ -182,7 +182,7 @@ flowchart TD
    5.4 Qualitative Case Studies: How Code-Mixed Syntax Manipulates Reasoning Scratchpads
 
 6. DETERMINISTIC RUNTIME DEFENSE (RQ4)
-   6.1 Architecture of the ADR-0002 Policy Enforcement Seam
+   6.1 Architecture of the Policy Enforcement Seam
    6.2 Declarative Capability Manifests & Behavioral Invariants
    6.3 Language-Invariant Runtime Authorization Results
    6.4 Utility Preservation, False-Positive Analysis, and Latency Overhead

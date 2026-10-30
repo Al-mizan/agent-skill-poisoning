@@ -1,0 +1,95 @@
+{
+  "title": "Cross-Lingual Skill Poisoning: Defense Architecture",
+  "style": 3,
+  "text_policy": "report",
+  "viewBox": "0 0 1060 620",
+  "nodes": [
+    {
+      "id": "attacker",
+      "label": "Adversary",
+      "description": "EN / BN / BN-EN",
+      "type": "external",
+      "x": 80, "y": 90, "w": 140, "h": 60
+    },
+    {
+      "id": "skill",
+      "label": "Poisoned Skill",
+      "description": "SKILL.md payload",
+      "type": "database",
+      "x": 280, "y": 90, "w": 140, "h": 60
+    },
+    {
+      "id": "scanner",
+      "label": "Static Scanner",
+      "description": "YARA heuristics",
+      "type": "service",
+      "x": 480, "y": 90, "w": 140, "h": 60
+    },
+    {
+      "id": "registry",
+      "label": "Skill Registry",
+      "description": "Marketplace",
+      "type": "database",
+      "x": 700, "y": 90, "w": 140, "h": 60
+    },
+    {
+      "id": "user",
+      "label": "Benign User",
+      "description": "Task request",
+      "type": "external",
+      "x": 80, "y": 340, "w": 140, "h": 60
+    },
+    {
+      "id": "planner",
+      "label": "LLM Planner",
+      "description": "ReAct loop",
+      "type": "service",
+      "x": 280, "y": 340, "w": 140, "h": 60
+    },
+    {
+      "id": "seam",
+      "label": "Policy Seam",
+      "description": "ADR-0002",
+      "type": "service",
+      "x": 500, "y": 340, "w": 140, "h": 60
+    },
+    {
+      "id": "pass",
+      "label": "Authorized",
+      "description": "Compliant action",
+      "type": "service",
+      "x": 720, "y": 290, "w": 130, "h": 50
+    },
+    {
+      "id": "deny",
+      "label": "Blocked",
+      "description": "Violation denied",
+      "type": "external",
+      "x": 720, "y": 380, "w": 130, "h": 50
+    }
+  ],
+  "edges": [
+    { "from": "attacker", "to": "skill" },
+    { "from": "skill", "to": "scanner" },
+    { "from": "scanner", "to": "registry" },
+    { "from": "registry", "to": "planner" },
+    { "from": "user", "to": "planner" },
+    { "from": "planner", "to": "seam" },
+    { "from": "seam", "to": "pass" },
+    { "from": "seam", "to": "deny" }
+  ],
+  "containers": [
+    {
+      "id": "supply",
+      "label": "Untrusted Supply Chain",
+      "x": 40, "y": 40, "width": 840, "height": 150,
+      "style": "dashed"
+    },
+    {
+      "id": "runtime",
+      "label": "Agent Runtime Boundary",
+      "x": 40, "y": 250, "width": 860, "height": 230,
+      "style": "dashed"
+    }
+  ]
+}

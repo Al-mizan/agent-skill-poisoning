@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cross-Lingual Agent Skill Poisoning: Active Runtime Exploitation and Deterministic Authorization</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ══════════════════════════════════════════════════════════
+     PRINT & PAGE GEOMETRY (27" × 36" Portrait Frame = 3:4)
+     Rendered at 2700 × 3600 px native print canvas
+     ══════════════════════════════════════════════════════════ */
+  @page {
+    size: 27in 36in;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg-poster: #ffffff;
+    --navy-dark: #0a1e38;
+    --navy-primary: #0f2b5c;
+    --navy-light: #163d7a;
+    --blue-accent: #2563eb;
+    --blue-soft: #eff6ff;
+    --blue-border: #bfdbfe;
+    --slate-text: #1e293b;
+    --slate-muted: #64748b;
+    --slate-border: #cbd5e1;
+    --card-bg: #ffffff;
+    --card-alt: #f8fafc;
+    --red-alert: #dc2626;
+    --red-soft: #fef2f2;
+    --red-border: #fca5a5;
+    --green-success: #16a34a;
+    --green-soft: #f0fdf4;
+    --green-border: #86efac;
+    --amber-warning: #d97706;
+    --amber-soft: #fffbeb;
+    --amber-border: #fde68a;
+  }
+
+  html, body {
+    width: 2700px;
+    height: 3600px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--slate-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .poster-wrapper {
+    width: 1400px;
+    height: 1866.6667px;
+    transform: scale(1.9285714285714);
+    transform-origin: top left;
+    background: #ffffff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .poster {
+    width: 1400px;
+    height: 1866.6667px;
+    background: var(--bg-poster);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     HEADER BANNER (NO QR CODES - CLEAN ACADEMIC MASTHEAD)
+     ══════════════════════════════════════════════════════════ */
+  .poster-header {
+    background: #ffffff;
+    border-bottom: 4px solid var(--navy-primary);
+    padding: 13px 36px 13px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .poster-header::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--blue-accent);
+  }
+
+  .header-left, .header-right {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .ju-logo-box {
+    width: 96px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ju-logo-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .header-center {
+    flex: 1;
+    text-align: center;
+    padding: 0 16px;
+  }
+
+  .header-title {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.2;
+    color: var(--navy-dark);
+    letter-spacing: -0.4px;
+    margin-bottom: 4px;
+  }
+
+  .header-title .highlight-blue {
+    color: var(--blue-accent);
+  }
+
+  .header-authors {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--navy-primary);
+    margin-bottom: 2px;
+  }
+
+  .header-affiliation {
+    font-size: 13px;
+    color: var(--slate-muted);
+    font-style: italic;
+  }
+
+  .security-badge {
+    width: 96px;
+    height: 96px;
+    border-radius: 10px;
+    background: var(--blue-soft);
+    border: 2px solid var(--blue-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6px;
+  }
+
+  .security-badge .shield-icon {
+    font-size: 30px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .security-badge .badge-text {
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--navy-primary);
+    text-transform: uppercase;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     3-COLUMN MAIN BODY
+     ══════════════════════════════════════════════════════════ */
+  .poster-body {
+    display: grid;
+    grid-template-columns: 1fr 1.38fr 1fr;
+    gap: 14px;
+    padding: 12px 24px 0 24px;
+    flex: 1;
+    align-items: stretch;
+    box-sizing: border-box;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     PANEL & CARD SYSTEM
+     ══════════════════════════════════════════════════════════ */
+  .panel {
+    background: var(--card-bg);
+    border: 1.5px solid var(--slate-border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-header {
+    background: #f8fafc;
+    border-bottom: 1.5px solid var(--slate-border);
+    padding: 6.5px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .panel-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--navy-primary);
+    letter-spacing: -0.2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .panel-body {
+    padding: 9px 12px;
+    font-size: 12px;
+    line-height: 1.45;
+    color: #1e293b;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  /* Square Bullet Lists */
+  .bullet-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9.5px;
+  }
+
+  .bullet-list li {
+    position: relative;
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 1.52;
+  }
+
+  .bullet-list li::before {
+    content: "□";
+    position: absolute;
+    left: 0;
+    top: 0px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--blue-accent);
+  }
+
+  .bullet-list strong {
+    color: var(--navy-primary);
+    font-weight: 700;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: #f1f5f9;
+    padding: 1.5px 5px;
+    border-radius: 3px;
+    color: #0f2b5c;
+    letter-spacing: 0;
+  }
+
+  /* Motivating Threat Timeline Box */
+  .timeline-box {
+    background: #fff8f6;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    padding: 7px 9px;
+    display: flex;
+    flex-direction: column;
+    gap: 4.5px;
+  }
+
+  .timeline-header {
+    font-size: 12.2px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #991b1b;
+    letter-spacing: 0.3px;
+  }
+
+  .timeline-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5px;
+  }
+
+  .timeline-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-size: 11.8px;
+    line-height: 1.38;
+    color: #450a0a;
+  }
+
+  .step-num {
+    background: #dc2626;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 800;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Asymmetry Callout in Section 1 */
+  .asymmetry-box {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .asymmetry-header {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--navy-primary);
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .asymmetry-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .asymmetry-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 7px 9px;
+    font-size: 12.2px;
+    line-height: 1.4;
+  }
+
+  .asymmetry-card strong {
+    color: var(--navy-primary);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12.5px;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     RESEARCH QUESTIONS (INTEGRATED)
+     ══════════════════════════════════════════════════════════ */
+  .rq-container {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 8px 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 5.5px;
+  }
+
+  .rq-header {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--navy-primary);
+    letter-spacing: 0.3px;
+  }
+
+  .rq-item {
+    font-size: 13px;
+    line-height: 1.45;
+    padding: 3.5px 0 3.5px 8px;
+    border-left: 3px solid var(--blue-accent);
+  }
+
+  .rq-item strong {
+    color: var(--navy-primary);
+    font-weight: 700;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     EXPLICIT THREAT MODEL (COLUMN 2 HEADER BOX)
+     ══════════════════════════════════════════════════════════ */
+  .threat-model-box {
+    background: #f8fafc;
+    border: 1.5px solid var(--slate-border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 2px;
+  }
+
+  .threat-model-header {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--navy-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .threat-model-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 8px 16px;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--slate-text);
+  }
+
+  .threat-model-col strong {
+    color: var(--navy-dark);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     FIGURE & METHODOLOGY EMBEDDING
+     ══════════════════════════════════════════════════════════ */
+  .figure-card {
+    background: #ffffff;
+    border: 1.5px solid var(--slate-border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 3px;
+    text-align: center;
+  }
+
+  .figure-img-wrap {
+    width: 100%;
+    padding: 3px;
+    background: #ffffff;
+  }
+
+  .figure-img-wrap img {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px;
+  }
+
+  .figure-caption {
+    font-size: 12.8px;
+    font-weight: 800;
+    color: var(--navy-primary);
+    background: #f8fafc;
+    border-top: 1px solid var(--slate-border);
+    padding: 6.5px 10px;
+    text-align: center;
+  }
+
+  /* Operational Protocol & Seam Matrix Styling */
+  .methodology-protocol-box {
+    background: #f8fafc;
+    border: 1.5px solid var(--slate-border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 2px 0;
+  }
+
+  .protocol-header {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--navy-primary);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .protocol-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+  }
+
+  .protocol-item {
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--slate-text);
+  }
+
+  .protocol-item strong {
+    color: var(--navy-dark);
+    font-weight: 700;
+  }
+
+  .seam-matrix-box {
+    background: #ffffff;
+    border: 1.5px solid #86efac;
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin-top: 2px;
+  }
+
+  .seam-matrix-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: #166534;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .seam-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10.5px;
+  }
+
+  .seam-table th {
+    background: #f0fdf4;
+    color: #166534;
+    font-weight: 700;
+    padding: 4px 7px;
+    text-align: left;
+    border-bottom: 1.5px solid #86efac;
+  }
+
+  .seam-table td {
+    padding: 4.2px 7px;
+    border-bottom: 1px solid #e2e8f0;
+    color: var(--slate-text);
+  }
+
+  .seam-table code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.8px;
+    background: #f1f5f9;
+    padding: 1px 4px;
+    border-radius: 3px;
+    color: #0f172a;
+  }
+
+  .td-blocked {
+    color: #dc2626;
+    font-weight: 800;
+  }
+
+  .td-passed {
+    color: #16a34a;
+    font-weight: 800;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     KEY RESULTS: STAT STRIP, CHART & TABLE
+     ══════════════════════════════════════════════════════════ */
+  .rq-answers {
+    background: #eff6ff;
+    border: 1.5px solid var(--blue-border);
+    border-radius: 6px;
+    padding: 6.5px 8.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5px;
+  }
+
+  .rq-ans-item {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .rq-ans-item strong {
+    color: var(--blue-accent);
+    font-weight: 800;
+  }
+
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+
+  .stat-item {
+    background: #ffffff;
+    border: 1.5px solid var(--blue-border);
+    border-radius: 5px;
+    padding: 5px 3px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--blue-accent);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .stat-lbl {
+    font-size: 9.2px;
+    font-weight: 700;
+    color: var(--slate-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  /* Grouped Bar Chart */
+  .chart-box {
+    background: #ffffff;
+    border: 1.5px solid var(--slate-border);
+    border-radius: 6px;
+    padding: 6px 8px;
+  }
+
+  .chart-header {
+    font-size: 11.8px;
+    font-weight: 800;
+    color: var(--navy-primary);
+    text-align: center;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .bar-chart-grid {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 88px;
+    border-bottom: 2px solid var(--navy-primary);
+    padding: 0 4px;
+    margin-bottom: 4px;
+  }
+
+  .bar-cluster {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .cluster-bars {
+    display: flex;
+    gap: 3.5px;
+    align-items: flex-end;
+    height: 88px;
+  }
+
+  .bar {
+    width: 15px;
+    border-radius: 2px 2px 0 0;
+    position: relative;
+  }
+
+  .bar.b-en { background: #3b82f6; }
+  .bar.b-bn { background: #f59e0b; }
+  .bar.b-bnen { background: #10b981; }
+
+  .bar-val {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9.5px;
+    font-weight: 800;
+    color: #1e293b;
+    white-space: nowrap;
+  }
+
+  .cluster-label {
+    font-size: 10.8px;
+    font-weight: 700;
+    color: #475569;
+    text-align: center;
+  }
+
+  .chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .legend-color {
+    width: 8.5px;
+    height: 8.5px;
+    border-radius: 2px;
+  }
+
+  /* Compact Multi-Metric Table */
+  .results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10.8px;
+    background: #ffffff;
+  }
+
+  .results-table thead th {
+    background: var(--navy-primary);
+    color: #ffffff;
+    padding: 4.5px 6px;
+    font-weight: 700;
+    text-align: center;
+    border: 1px solid var(--navy-primary);
+    font-size: 10.5px;
+    letter-spacing: 0.2px;
+  }
+
+  .results-table thead th:first-child {
+    text-align: left;
+  }
+
+  .results-table tbody td {
+    padding: 3.8px 6px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+    font-size: 10.8px;
+  }
+
+  .results-table tbody td:first-child {
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .td-red { background: #fef2f2; color: #991b1b; font-weight: 800; }
+  .td-orange { background: #fffbeb; color: #b45309; font-weight: 800; }
+  .td-green { background: #f0fdf4; color: #166534; font-weight: 800; }
+  .td-gray { color: #64748b; font-style: italic; }
+
+  /* Empirical Findings Callout */
+  .empirical-findings-box {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 5px;
+    padding: 7px 9px;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5px;
+  }
+
+  .empirical-title {
+    font-size: 11.8px;
+    font-weight: 800;
+    color: #166534;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .empirical-item {
+    font-size: 11px;
+    line-height: 1.38;
+    color: #14532d;
+  }
+
+  /* Section 5 Deployment Guidelines */
+  .guidelines-box {
+    background: #f8fafc;
+    border: 1px solid var(--slate-border);
+    border-radius: 5px;
+    padding: 6.5px 8.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5px;
+  }
+
+  .guidelines-title {
+    font-size: 11.2px;
+    font-weight: 800;
+    color: var(--navy-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .guidelines-item {
+    font-size: 10.8px;
+    line-height: 1.36;
+    color: #334155;
+    padding-left: 6px;
+    border-left: 2.5px solid var(--blue-accent);
+  }
+
+  /* Section 5 Security Takeaway Box */
+  .security-takeaway {
+    background: #fffbeb;
+    border: 1.5px solid #fde68a;
+    border-radius: 6px;
+    padding: 10px 14px;
+  }
+
+  .takeaway-title {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #92400e;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .takeaway-body {
+    font-size: 12.8px;
+    line-height: 1.48;
+    color: #78350f;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     BOTTOM ROW: CONCLUSION & FUTURE WORK
+     ══════════════════════════════════════════════════════════ */
+  .poster-bottom {
+    margin: 9px 24px 8px 24px;
+    background: #ffffff;
+    border: 1.5px solid var(--navy-primary);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    flex-shrink: 0;
+  }
+
+  .bottom-header {
+    background: var(--navy-primary);
+    color: #ffffff;
+    padding: 5.5px 12px;
+    font-size: 13.8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 14px;
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 1.46;
+    background: #f8fafc;
+  }
+
+  .bottom-card {
+    background: #ffffff;
+    border: 1px solid var(--slate-border);
+    border-radius: 6px;
+    padding: 8px 11px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .bottom-card-title {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--navy-primary);
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     FOOTER BANNER
+     ══════════════════════════════════════════════════════════ */
+  .poster-footer {
+    background: var(--navy-dark);
+    color: #cbd5e1;
+    padding: 9px 28px;
+    font-size: 11.6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 3px solid var(--blue-accent);
+    flex-shrink: 0;
+  }
+
+  .poster-footer strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<div class="poster-wrapper">
+  <div class="poster">
+
+    <!-- ══════════════════════════════════════════════════════════
+         HEADER: JU Logo (Left) · Title & Authors (Center) · Security Badge (Right)
+         Both QR codes completely removed as requested
+         ══════════════════════════════════════════════════════════ -->
+    <header class="poster-header">
+      <!-- Left: Jahangirnagar University Seal -->
+      <div class="header-left">
+        <div class="ju-logo-box">
+          <img src="ju_logo.png" alt="Jahangirnagar University Seal">
+        </div>
+      </div>
+
+      <!-- Center: Title, Authors, Department -->
+      <div class="header-center">
+        <h1 class="header-title">
+          Cross-Lingual Agent Skill Poisoning: <br>
+          <span class="highlight-blue">Active Runtime Exploitation and Deterministic Authorization</span> in Tool-Using LLM Agents
+        </h1>
+        <div class="header-authors">
+          Md. Al-mizan &nbsp;·&nbsp; Fateema Binti Taher Eva
+        </div>
+        <div class="header-affiliation">
+          Department of Computer Science &amp; Engineering, Jahangirnagar University, Savar, Dhaka, Bangladesh
+        </div>
+      </div>
+
+      <!-- Right: Research Badge -->
+      <div class="header-right">
+        <div class="security-badge">
+          <div class="shield-icon">🛡️</div>
+          <div class="badge-text">Agent Security<br>Research</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════════════════════════
+         3-COLUMN SCIENTIFIC NARRATIVE BODY
+         ══════════════════════════════════════════════════════════ -->
+    <main class="poster-body">
+
+      <!-- ──────────────────────────────────────────────────────
+           COLUMN 1: 01 · WHY (Motivation, Contributions & RQs, Threat Model)
+           ────────────────────────────────────────────────────── -->
+      <section class="col col-1">
+
+        <!-- 1. Motivation -->
+        <div class="panel" style="flex: 1.18;">
+          <div class="panel-header">
+            <h2 class="panel-title">1 Motivation</h2>
+          </div>
+          <div class="panel-body">
+            <ul class="bullet-list">
+              <li>
+                <strong>Third-party skill ecosystems:</strong> Tool-using agents (Claude Code, Gemini CLI, OpenManus) dynamically load external <code>SKILL.md</code> manifests and MCP servers, creating an unverified supply-chain attack surface.
+              </li>
+              <li>
+                <strong>Asymmetric safety alignment:</strong> Frontier LLMs process low-resource and code-mixed languages fluently, but alignment and safety filters remain heavily biased toward English datasets.
+              </li>
+              <li>
+                <strong>Marketplace scanner blind spots:</strong> Static package scanners depend on English keyword heuristics, allowing covert non-English payloads to slip through undetected.
+              </li>
+              <li>
+                <strong>Ambient authority abuse:</strong> Autonomous agents executing with local user privileges can be coerced into silently accessing private files, SSH keys, and system environment variables.
+              </li>
+            </ul>
+
+            <!-- Motivating Threat Timeline Box -->
+            <div class="timeline-box">
+              <div class="timeline-header">⚠️ Cross-Lingual Exploit Progression (Supply-Chain Rug-Pull)</div>
+              <div class="timeline-steps">
+                <div class="timeline-step">
+                  <span class="step-num">1</span>
+                  <div><strong>Manifest Poisoning:</strong> Attacker crafts <code>SKILL.md</code> in Bengali/Banglish instructing silent exfiltration of <code>~/.ssh/id_rsa</code>.</div>
+                </div>
+                <div class="timeline-step">
+                  <span class="step-num">2</span>
+                  <div><strong>Scanner Blindspot:</strong> English-trained marketplace static scanners verify syntax with zero keyword triggers (100% VBR).</div>
+                </div>
+                <div class="timeline-step">
+                  <span class="step-num">3</span>
+                  <div><strong>Runtime Theft:</strong> Autonomous agent loads skill, reasoning plane parses payload, and issues OS command without authorization.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cross-Lingual Semantic Asymmetry Matrix -->
+            <div class="asymmetry-box">
+              <div class="asymmetry-header">⚖️ The Cross-Lingual Asymmetry</div>
+              <div class="asymmetry-grid">
+                <div class="asymmetry-card">
+                  <strong>High-Resource (English)</strong>
+                  Rigorous alignment &amp; keyword filters; brittle prompt boundaries; high static scanner detection.
+                </div>
+                <div class="asymmetry-card">
+                  <strong>Low-Resource (BN / BN-EN)</strong>
+                  Fluent LLM comprehension with zero safety tuning; 100% scanner bypass; universal exploit execution.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Contributions & Research Questions -->
+        <div class="panel" style="flex: 1;">
+          <div class="panel-header">
+            <h2 class="panel-title">2 Contributions &amp; Research Questions</h2>
+          </div>
+          <div class="panel-body">
+            <ul class="bullet-list">
+              <li>
+                <strong>Live runtime benchmark:</strong> 312 execution trials over 26 enterprise tasks evaluating real OS-level tool calls rather than synthetic completions.
+              </li>
+              <li>
+                <strong>Tri-register evaluation:</strong> Native manifests spanning English (<code>en</code>), native-script Bangla (<code>bn</code>), and colloquial code-mixed Banglish (<code>bn-en</code>).
+              </li>
+              <li>
+                <strong>Static vetting breakdown:</strong> Empirical proof that non-English payload mutations achieve a 100% vetting bypass rate (VBR) against existing marketplace scanners.
+              </li>
+              <li>
+                <strong>Deterministic policy seam:</strong> An in-process authorization gateway delivering language-invariant defense while preserving 100% benign utility.
+              </li>
+            </ul>
+
+            <!-- Research Questions -->
+            <div class="rq-container">
+              <div class="rq-header">Research Questions</div>
+              <div class="rq-item">
+                <strong>RQ1 (Runtime Exploitation):</strong> Do non-English and code-mixed manifests trigger tool exploitation as reliably as English?
+              </div>
+              <div class="rq-item">
+                <strong>RQ2 (Scanner Blindness &amp; Utility Cost):</strong> Can static scanners detect cross-lingual payloads, and do prompt defenses break benign tasks?
+              </div>
+              <div class="rq-item">
+                <strong>RQ3 (Deterministic Invariance):</strong> Can an in-process policy seam provide zero-ASR protection without degrading normal agent workflows?
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ──────────────────────────────────────────────────────
+           COLUMN 2: 02 · HOW (Threat Model, Methodology & Seam Architecture)
+           ────────────────────────────────────────────────────── -->
+      <section class="col col-2">
+
+        <!-- 3. Methodology & Authorization Seam -->
+        <div class="panel" style="height: 100%;">
+          <div class="panel-header">
+            <h2 class="panel-title">3 Threat Model, Methodology &amp; Authorization Seam</h2>
+          </div>
+          <div class="panel-body" style="justify-content: space-between;">
+            <!-- Threat Model & Trust Boundaries -->
+            <div class="threat-model-box">
+              <div class="threat-model-header">🏛️ Threat Model, Trust Boundaries &amp; Attack Scope</div>
+              <div class="threat-model-grid">
+                <div class="threat-model-col">
+                  <strong>Three-Plane Architectural Trust Model:</strong><br>
+                  • <strong>Control Plane (Trusted):</strong> System instructions, baseline safety directives, authenticated user intent.<br>
+                  • <strong>Reasoning Plane (Untrusted Influence):</strong> LLM multi-step planning loop, subject to cross-lingual poisoning.<br>
+                  • <strong>Data Plane (Untrusted):</strong> External <code>SKILL.md</code> manifests, dynamic API payloads, web content.<br>
+                  • <strong>Enforcement Seam (Trusted Anchor):</strong> Mandatory in-process gateway intercepting all candidate tool calls.
+                </div>
+                <div class="threat-model-col">
+                  <strong>Adversary Profile &amp; Rug-Pull Protocol:</strong><br>
+                  • <strong>Adversary Profile:</strong> External skill author targeting ambient credentials (<code>~/.ssh</code>, API tokens, history).<br>
+                  • <strong>Cross-Lingual Vector:</strong> Payloads in low-resource Bangla &amp; Banglish evading English keyword heuristics.<br>
+                  • <strong>Two-Phase Rug-Pull:</strong> Clean <code>v1.0.0</code> passes vetting ➔ poisoned <code>v2.0.0</code> update executes with 100% ASR post-install.<br>
+                  • <strong>Dual Sandbox:</strong> Evaluations run in containerized environments with network disabled (<code>--network none</code>).
+                </div>
+              </div>
+            </div>
+
+            <!-- Threat Lifecycle Figure -->
+            <div class="figure-card">
+              <div class="figure-img-wrap">
+                <img src="threat_lifecycle.png" alt="Cross-Lingual Agent Skill Poisoning: Threat Lifecycle and Defense Seam">
+              </div>
+              <div class="figure-caption">
+                Fig 1: Five-Stage Cross-Lingual Threat Progression from Supply Chain to Runtime Dispatch
+              </div>
+            </div>
+
+            <!-- Autonomous Runtime Architecture & Evaluation Protocol -->
+            <div class="methodology-protocol-box">
+              <div class="protocol-header">⚙️ Autonomous Runtime Architecture &amp; Evaluation Protocol</div>
+              <div class="protocol-grid">
+                <div class="protocol-item">
+                  <strong>Dual Backbone Testing:</strong> Evaluated on live autonomous agents powered by Google Gemini 2.5 Flash and Groq Llama 3.3 70B Versatile across 26 enterprise tasks.
+                </div>
+                <div class="protocol-item">
+                  <strong>Tri-Register Attack Corpus:</strong> Verified across English (<code>en</code>), native-script Bangla (<code>bn</code>), and Latinized Banglish (<code>bn-en</code>) to benchmark semantic transfer.
+                </div>
+                <div class="protocol-item">
+                  <strong>In-Process Interception Hook:</strong> Mediates candidate tool dispatches (<code>dispatch(request, context)</code>) before kernel dispatch, validating capability invariants with sub-0.05ms overhead.
+                </div>
+                <div class="protocol-item">
+                  <strong>Dual Sandbox Isolation:</strong> Containerized environments with network disabled (<code>--network none</code>) and canary traps (<code>/tmp/canary_audit.marker</code>) to track file access.
+                </div>
+              </div>
+            </div>
+
+            <!-- Deterministic Authorization Seam Diagram -->
+            <div class="figure-card">
+              <div class="figure-img-wrap">
+                <img src="defense_seam_architecture.png" alt="Deterministic Authorization Seam: Execution Boundary Architecture">
+              </div>
+              <div class="figure-caption">
+                Fig 2: Deterministic Authorization Seam Architecture &amp; Pre-Execution Boundary
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ──────────────────────────────────────────────────────
+           COLUMN 3: 03 · WHAT (Key Results, Security Impact)
+           ────────────────────────────────────────────────────── -->
+      <section class="col col-3">
+
+        <!-- 4. Key Results (Answers to RQ1–RQ3) -->
+        <div class="panel" style="flex: 2.15;">
+          <div class="panel-header">
+            <h2 class="panel-title">4 Key Results (Answers to RQ1–RQ3)</h2>
+          </div>
+          <div class="panel-body">
+
+            <!-- Direct RQ Answers Callout -->
+            <div class="rq-answers">
+              <div class="rq-ans-item">
+                <strong>RQ1 (Universal Runtime Vulnerability):</strong> <strong>100% ASR</strong> in undefended agents across all registers. LLMs execute unauthorized actions from Bangla and Banglish manifests just as reliably as from English.
+              </div>
+              <div class="rq-ans-item">
+                <strong>RQ2 (Scanner Blindness &amp; Utility Cost):</strong> Scanners missed 100% of non-English attacks (<strong>100% VBR</strong>) while falsely flagging 23.1% of benign English skills. Prompt isolation dropped benign utility by <strong>23.1%</strong>.
+              </div>
+              <div class="rq-ans-item">
+                <strong>RQ3 (Language-Invariant Enforcement):</strong> Policy Seam slashed non-English attacks to <strong>0% ASR</strong> (3.8% in EN), preserved <strong>100% Benign Utility</strong>, and added only <strong>0.037 ms</strong> latency.
+              </div>
+            </div>
+
+            <!-- Benchmark Stat Strip (26 / 3 / 4 / 312) -->
+            <div class="stat-strip">
+              <div class="stat-item">
+                <div class="stat-num">26</div>
+                <div class="stat-lbl">Enterprise Domains</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">3</div>
+                <div class="stat-lbl">Linguistic Registers</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">4</div>
+                <div class="stat-lbl">Defense Configurations</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">312</div>
+                <div class="stat-lbl">Live Agent Trials</div>
+              </div>
+            </div>
+            <p style="font-size: 9px; color: var(--slate-muted); margin-bottom: 5px; text-align: center;">
+              <strong>Evaluated Backbones:</strong> Google Gemini 2.5 Flash &amp; Groq Llama 3.3 70B Versatile in Dual Sandbox
+            </p>
+
+            <!-- Grouped Bar Chart: ASR by Defense x Language -->
+            <div class="chart-box">
+              <div class="chart-header">ASR (%) by Defense Tier × Linguistic Register</div>
+              <div class="bar-chart-grid">
+                <!-- Undefended -->
+                <div class="bar-cluster">
+                  <div class="cluster-bars">
+                    <div class="bar b-en" style="height: 48px;"><span class="bar-val">100</span></div>
+                    <div class="bar b-bn" style="height: 48px;"><span class="bar-val">100</span></div>
+                    <div class="bar b-bnen" style="height: 48px;"><span class="bar-val">100</span></div>
+                  </div>
+                  <div class="cluster-label">Undefended</div>
+                </div>
+                <!-- Static Scanner -->
+                <div class="bar-cluster">
+                  <div class="cluster-bars">
+                    <div class="bar b-en" style="height: 37px;"><span class="bar-val">76.9</span></div>
+                    <div class="bar b-bn" style="height: 48px;"><span class="bar-val">100</span></div>
+                    <div class="bar b-bnen" style="height: 48px;"><span class="bar-val">100</span></div>
+                  </div>
+                  <div class="cluster-label">Scanner</div>
+                </div>
+                <!-- Prompt Isolation -->
+                <div class="bar-cluster">
+                  <div class="cluster-bars">
+                    <div class="bar b-en" style="height: 5px;"><span class="bar-val">7.7</span></div>
+                    <div class="bar b-bn" style="height: 3px;"><span class="bar-val">3.8</span></div>
+                    <div class="bar b-bnen" style="height: 1px;"><span class="bar-val">0</span></div>
+                  </div>
+                  <div class="cluster-label">Prompt Isol.</div>
+                </div>
+                <!-- Policy Module -->
+                <div class="bar-cluster">
+                  <div class="cluster-bars">
+                    <div class="bar b-en" style="height: 3px;"><span class="bar-val">3.8</span></div>
+                    <div class="bar b-bn" style="height: 1px;"><span class="bar-val">0</span></div>
+                    <div class="bar b-bnen" style="height: 1px;"><span class="bar-val">0</span></div>
+                  </div>
+                  <div class="cluster-label" style="color: var(--blue-accent); font-weight: 800;">Policy Seam</div>
+                </div>
+              </div>
+              <div class="chart-legend">
+                <div class="legend-item"><div class="legend-color" style="background: #3b82f6;"></div> English</div>
+                <div class="legend-item"><div class="legend-color" style="background: #f59e0b;"></div> Bangla</div>
+                <div class="legend-item"><div class="legend-color" style="background: #10b981;"></div> Banglish</div>
+              </div>
+            </div>
+
+            <!-- Compact Multi-Metric Table -->
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>Defense × Register</th>
+                  <th>ASR ↓</th>
+                  <th>BUR ↑</th>
+                  <th>VBR ↑</th>
+                  <th>FDR ↓</th>
+                  <th>Latency</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Undefended (All)</td>
+                  <td class="td-red">100%</td>
+                  <td class="td-green">100%</td>
+                  <td class="td-gray">—</td>
+                  <td>0.0%</td>
+                  <td class="td-gray">—</td>
+                </tr>
+                <tr>
+                  <td>Static Scanner (EN)</td>
+                  <td class="td-orange">76.9%</td>
+                  <td class="td-orange">76.9%</td>
+                  <td>76.9%</td>
+                  <td class="td-red">23.1%</td>
+                  <td class="td-gray">—</td>
+                </tr>
+                <tr>
+                  <td>Static Scanner (BN)</td>
+                  <td class="td-red">100%</td>
+                  <td class="td-green">100%</td>
+                  <td class="td-red">100%</td>
+                  <td>0.0%</td>
+                  <td class="td-gray">—</td>
+                </tr>
+                <tr>
+                  <td>Static Scanner (BN-EN)</td>
+                  <td class="td-red">100%</td>
+                  <td class="td-green">100%</td>
+                  <td class="td-red">100%</td>
+                  <td>0.0%</td>
+                  <td class="td-gray">—</td>
+                </tr>
+                <tr>
+                  <td>Prompt Isolation (EN)</td>
+                  <td>7.7%</td>
+                  <td class="td-orange">76.9%</td>
+                  <td class="td-gray">—</td>
+                  <td>0.0%</td>
+                  <td class="td-gray">—</td>
+                </tr>
+                <tr>
+                  <td>Prompt Isolation (BN)</td>
+                  <td>3.8%</td>
+                  <td class="td-orange">84.6%</td>
+                  <td class="td-gray">—</td>
+                  <td>0.0%</td>
+                  <td class="td-gray">—</td>
+                </tr>
+                <tr>
+                  <td>Prompt Isolation (BN-EN)</td>
+                  <td class="td-green">0.0%</td>
+                  <td class="td-orange">84.6%</td>
+                  <td class="td-gray">—</td>
+                  <td>0.0%</td>
+                  <td class="td-gray">—</td>
+                </tr>
+                <tr style="background: #f0fdf4;">
+                  <td><strong>Policy Seam (EN)</strong></td>
+                  <td class="td-green">3.8%</td>
+                  <td class="td-green">100%</td>
+                  <td class="td-gray">—</td>
+                  <td class="td-green">0.0%</td>
+                  <td class="td-green">0.037ms</td>
+                </tr>
+                <tr style="background: #f0fdf4;">
+                  <td><strong>Policy Seam (BN)</strong></td>
+                  <td class="td-green">0.0%</td>
+                  <td class="td-green">100%</td>
+                  <td class="td-gray">—</td>
+                  <td class="td-green">0.0%</td>
+                  <td class="td-green">0.037ms</td>
+                </tr>
+                <tr style="background: #f0fdf4;">
+                  <td><strong>Policy Seam (BN-EN)</strong></td>
+                  <td class="td-green">0.0%</td>
+                  <td class="td-green">100%</td>
+                  <td class="td-gray">—</td>
+                  <td class="td-green">0.0%</td>
+                  <td class="td-green">0.041ms</td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Empirical Summary Strip -->
+            <div class="empirical-findings-box">
+              <div class="empirical-title">Key Empirical Findings</div>
+              <div class="empirical-item">
+                • <strong>Universal Vulnerability:</strong> 100% exploit compliance across Gemini 2.5 Flash &amp; Llama 3.3 70B confirms model-agnostic risk.
+              </div>
+              <div class="empirical-item">
+                • <strong>Total Scanner Blindness:</strong> 100% VBR for Bangla and Banglish manifests proves syntax filters fail on non-English inputs.
+              </div>
+              <div class="empirical-item">
+                • <strong>Negligible Latency:</strong> Policy Seam adds only 0.037 ms overhead (&lt;0.005% of runtime) with 0.0% false denials and 100% BUR.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 5. Security Impact -->
+        <div class="panel" style="flex: 1;">
+          <div class="panel-header">
+            <h2 class="panel-title">5 Security Impact</h2>
+          </div>
+          <div class="panel-body">
+            <ul class="bullet-list" style="margin-bottom: 6px;">
+              <li>
+                <strong>Zero-Trust Reasoning Plane:</strong> Models must not hold execution authority; tool proposals are untrusted inputs requiring external validation.
+              </li>
+              <li>
+                <strong>Deterministic Fail-Closed:</strong> Calls lacking cryptographic session tokens or violating canonical workspace bounds fail closed immediately.
+              </li>
+              <li>
+                <strong>Static Vetting Obsolescence:</strong> Pre-install scanners cannot prevent runtime exploitation via post-vetting mutations; runtime enforcement is mandatory.
+              </li>
+              <li>
+                <strong>Defense-in-Depth Layering:</strong> Combines in-process dispatch tokens with OS-level container isolation and network sandboxing.
+              </li>
+            </ul>
+
+            <!-- Security Takeaway Callout -->
+            <div class="security-takeaway">
+              <div class="takeaway-title">
+                <span>🛡️ Strategic Security Recommendation</span>
+              </div>
+              <div class="takeaway-body">
+                Probabilistic reasoning engines cannot safely police themselves. Enterprise agent runtimes must place deterministic access controls at the execution boundary rather than relying on prompt-layer filtering.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ══════════════════════════════════════════════════════════
+         BOTTOM FULL-WIDTH ROW: CONCLUSION & FUTURE WORK
+         ══════════════════════════════════════════════════════════ -->
+    <div class="poster-bottom">
+      <div class="bottom-header">
+        <span>6 Conclusion &amp; Future Work</span>
+      </div>
+      <div class="bottom-grid">
+        <!-- Conclusion -->
+        <div class="bottom-card">
+          <div class="bottom-card-title">Key Findings</div>
+          <p>
+            The transition from passive LLMs to autonomous tool-using agents demands a shift from probabilistic prompt-layer safety to deterministic execution-boundary authorization. Cross-lingual poisoning proves that model reasoning cannot serve as its own security perimeter. By placing language-invariant policy enforcement at the tool dispatch seam, enterprise agent systems achieve verifiable security guarantees without sacrificing agent capability or latency.
+          </p>
+        </div>
+
+        <!-- Future Work -->
+        <div class="bottom-card">
+          <div class="bottom-card-title">Future Directions</div>
+          <ul style="padding-left: 14px; margin: 0; font-size: 11.6px; line-height: 1.4; display: flex; flex-direction: column; gap: 4px;">
+            <li>Expand benchmark across additional high-diversity language families (Mandarin, Arabic, Spanish).</li>
+            <li>Evaluate defense robustness on emerging reasoning-centric architectures (Claude 3.7, DeepSeek-R1).</li>
+            <li>Develop formal verification tooling for agent dispatch capability tokens and session lifetimes.</li>
+            <li>Standardize deterministic authorization seams in open MCP and agent skill package managers.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         FOOTER: INSTITUTIONAL BRANDING & CONTACT
+         ══════════════════════════════════════════════════════════ -->
+    <footer class="poster-footer">
+      <div>
+        Department of Computer Science &amp; Engineering &nbsp;·&nbsp; <strong>Jahangirnagar University</strong> &nbsp;·&nbsp; Savar, Dhaka, Bangladesh
+      </div>
+      <div>
+        📧 <strong>almizan@juniv.edu</strong> &nbsp;·&nbsp; October 2026 &nbsp;·&nbsp; <strong>B.Sc. Research Project</strong>
+      </div>
+    </footer>
+
+  </div><!-- /poster -->
+</div><!-- /poster-wrapper -->
+
+</body>
+</html>
