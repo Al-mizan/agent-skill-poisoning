@@ -1,194 +1,284 @@
 #!/usr/bin/env python3
 """
 generate_asr_chart_v2.py
-Generates the centerpiece ASR chart in strict 16:9 aspect ratio (1920x1080)
-with publication-quality 28px typography, iconic status badges,
-and highlighted zero-exploit protection zone.
+Generates the publication-grade ASR benchmark chart modeled after
+Research_Diagram/asr2.png in strict 16:9 aspect ratio (1920x1080)
+with a clean, elegant light-themed background.
+
+Design features:
+- Clean light card container (#ffffff) with subtle border (#cbd5e1)
+- Minimalist Y-axis with clean right-dash ticks (100-, 75-, 50-, 25-, 0-)
+- Sleek rectangular pillar bars with rounded corners (rx=6), vibrant colored borders,
+  and soft pastel matching fills (matching asr2.png pillar structure)
+- Exact floating numeric percentage directly above each bar in high-contrast matching color
+- Shaded zero-exploit protection zone for Tier 4 (Policy Seam) with pure SVG star
+- Centered modern legend below X-axis
+- Strict 16:9 coordinates, exported to both SVG and 100/300 DPI PNG
 """
 
 import os
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import numpy as np
+import subprocess
+
+def render_svg_to_png(svg_path, out_png, out_300, width=1920, height=1080):
+    abs_svg = os.path.abspath(svg_path)
+    chrome_bin = "/usr/bin/google-chrome"
+    rendered = False
+    if os.path.exists(chrome_bin):
+        try:
+            cmd_1x = [
+                chrome_bin,
+                "--headless=new",
+                "--disable-gpu",
+                f"--screenshot={out_png}",
+                f"--window-size={width},{height}",
+                "--default-background-color=00000000",
+                f"file://{abs_svg}"
+            ]
+            subprocess.run(cmd_1x, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            
+            cmd_300 = [
+                chrome_bin,
+                "--headless=new",
+                "--disable-gpu",
+                f"--screenshot={out_300}",
+                f"--window-size={width * 2},{height * 2}",
+                "--default-background-color=00000000",
+                f"file://{abs_svg}"
+            ]
+            subprocess.run(cmd_300, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            rendered = True
+        except Exception as e:
+            print(f"Warning: Chrome rendering failed ({e}), falling back to cairosvg")
+            
+    if not rendered:
+        import cairosvg
+        cairosvg.svg2png(url=svg_path, write_to=out_png, output_width=width, output_height=height)
+        cairosvg.svg2png(url=svg_path, write_to=out_300, output_width=width * 2, output_height=height * 2)
 
 def generate_asr_chart():
-    # Academic publication styling
-    plt.rcParams['font.sans-serif'] = 'DejaVu Sans'
-    plt.rcParams['axes.edgecolor'] = '#94a3b8'
-    plt.rcParams['axes.linewidth'] = 2.0
+    # Strict 16:9 ratio: 1920 x 1080
+    svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <filter id="cardShadow" x="-3%" y="-3%" width="106%" height="108%">
+      <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <style>
+      text { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      .chart-title { font-size: 41px; font-weight: 900; fill: #0f172a; letter-spacing: -0.3px; }
+      .chart-sub { font-size: 27px; font-weight: 600; fill: #475569; }
+      .axis-tick { font-family: 'JetBrains Mono', monospace; font-size: 29px; font-weight: 700; fill: #475569; }
+      .axis-label { font-size: 28px; font-weight: 800; fill: #334155; letter-spacing: 0.5px; }
+      .bar-num { font-family: 'JetBrains Mono', monospace; font-size: 27px; font-weight: 800; }
+      .group-title { font-size: 31px; font-weight: 800; fill: #0f172a; }
+      .group-sub { font-size: 24.5px; font-weight: 600; fill: #475569; }
+      .legend-text { font-size: 27px; font-weight: 700; fill: #1e293b; }
+      .badge-text { font-size: 21.5px; font-weight: 900; letter-spacing: 0.5px; }
+    </style>
+  </defs>
 
-    # Strict 16:9 ratio: 19.2 x 10.8 inches at 100 DPI -> 1920 x 1080 px
-    fig, ax = plt.subplots(figsize=(19.2, 10.8), dpi=100)
-    fig.patch.set_facecolor('#ffffff')
-    ax.set_facecolor('#ffffff')
+  <!-- Clean Canvas Frame -->
+  <rect width="1920" height="1080" fill="#ffffff"/>
 
-    # Categories
-    defenses = [
-        'Undefended\n(Baseline)',
-        'Static Scanner\n(Marketplace)',
-        'Prompt Isolation\n(Boundary Defense)',
-        'Policy Seam\n(Deterministic Ours)'
-    ]
-    n_groups = len(defenses)
+  <!-- Sleek Outer Container Card (matches asr2.png outer rounded border) -->
+  <rect x="25" y="25" width="1870" height="1030" rx="16" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" filter="url(#cardShadow)"/>
 
-    # Data: ASR percentages
-    asr_en = [100.0, 76.9, 7.7, 3.8]
-    asr_bn = [100.0, 100.0, 3.8, 0.0]
-    asr_bnen = [100.0, 100.0, 0.0, 0.0]
+  <!-- Top Title & Subtitle Bar -->
+  <text x="65" y="78" class="chart-title">Average Attack Success Rate (ASR %) across Linguistic Registers &amp; Defense Tiers</text>
+  <text x="65" y="112" class="chart-sub">N = 312 Live Empirical Trials · 26 Enterprise Tasks × 3 Linguistic Registers × 4 Defense Tiers · 95% Wilson CIs</text>
 
-    # Asymmetric Wilson 95% CI error bounds: (val - lower, upper - val)
-    err_en = np.array([
-        [12.9, 0.0],
-        [19.0, 12.1],
-        [5.6, 16.4],
-        [3.1, 15.1]
-    ]).T
+  <!-- ══════════════════════════════════════════════════════════════════════
+       CHART PLOTTING AREA: y_top = 190 (100%), y_bottom = 810 (0%)
+       Height = 620px (6.2 px per 1%)
+       ══════════════════════════════════════════════════════════════════════ -->
 
-    err_bn = np.array([
-        [12.9, 0.0],
-        [12.9, 0.0],
-        [3.1, 15.1],
-        [0.0, 12.9]
-    ]).T
+  <!-- Horizontal Guide Ticks & Gridlines (matches asr2.png minimalist style) -->
+  <!-- 100% (y = 190) -->
+  <line x1="160" y1="190" x2="1830" y2="190" stroke="#f87171" stroke-width="1.8" stroke-dasharray="6 6"/>
+  <text x="145" y="198" text-anchor="end" class="axis-tick">100-</text>
+  <text x="1375" y="182" text-anchor="end" font-size="21" font-weight="800" fill="#dc2626">Baseline Risk (100%)</text>
 
-    err_bnen = np.array([
-        [12.9, 0.0],
-        [12.9, 0.0],
-        [0.0, 12.9],
-        [0.0, 12.9]
-    ]).T
+  <!-- 75% (y = 345) -->
+  <line x1="160" y1="345" x2="1830" y2="345" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="145" y="353" text-anchor="end" class="axis-tick">75-</text>
 
-    bar_width = 0.24
-    indices = np.arange(n_groups)
+  <!-- 50% (y = 500) -->
+  <line x1="160" y1="500" x2="1830" y2="500" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="145" y="508" text-anchor="end" class="axis-tick">50-</text>
 
-    # High-contrast color palette matching poster
-    c_en = '#2563eb'    # Royal Blue
-    c_bn = '#d97706'    # Amber / Orange
-    c_bnen = '#059669'  # Emerald Green
+  <!-- 25% (y = 655) -->
+  <line x1="160" y1="655" x2="1830" y2="655" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="145" y="663" text-anchor="end" class="axis-tick">25-</text>
 
-    # Highlight Zone behind Tier 4 (Policy Seam)
-    seam_highlight = patches.Rectangle(
-        (indices[3] - bar_width * 1.8, 0),
-        bar_width * 3.6,
-        124,
-        linewidth=2.0,
-        edgecolor='#10b981',
-        facecolor='#f0fdf4',
-        linestyle='--',
-        alpha=0.6,
-        zorder=0
-    )
-    ax.add_patch(seam_highlight)
+  <!-- 0% Baseline Floor (y = 810) -->
+  <line x1="160" y1="810" x2="1830" y2="810" stroke="#64748b" stroke-width="2.5"/>
+  <text x="145" y="818" text-anchor="end" class="axis-tick">0-</text>
 
-    # Seam highlight banner text placed at y=113 (below legend)
-    ax.text(indices[3], 114.0, '★ Zero-Exploit Seam Defense (0.0% Non-English ASR)',
-            ha='center', va='center', fontsize=17, fontweight='bold', color='#0f766e',
-            bbox=dict(boxstyle='round,pad=0.4', facecolor='#ccfbf1', edgecolor='#14b8a6', linewidth=1.5), zorder=2)
+  <!-- Y-Axis Vertical Label -->
+  <g transform="translate(68, 510) rotate(-90)">
+    <text x="0" y="0" text-anchor="middle" class="axis-label">ASR (%)</text>
+  </g>
 
-    # Baseline risk reference line at 100%
-    ax.axhline(y=100, color='#ef4444', linestyle=':', linewidth=2.6, alpha=0.9, zorder=1)
-    ax.text(indices[3] + bar_width * 1.7, 102.5, 'Baseline Risk (100%)',
-            fontsize=18, fontweight='bold', color='#dc2626', ha='right', va='bottom')
+  <!-- ══════════════════════════════════════════════════════════════════════
+       SEAM DEFENSE HIGHLIGHT ENCLOSURE (Tier 4 Focus Zone)
+       Enclosure bounds: y=148 to y=810 (stops exactly at floor line)
+       ══════════════════════════════════════════════════════════════════════ -->
+  <rect x="1395" y="148" width="415" height="662" rx="14" fill="#f0fdfa" stroke="#0d9488" stroke-width="2" stroke-dasharray="6 4"/>
+  <!-- Pure Vector Star & Badge -->
+  <g transform="translate(1405, 126)">
+    <rect width="395" height="40" rx="7" fill="#ccfbf1" stroke="#0d9488" stroke-width="1.5"/>
+    <polygon points="20,20 23,13 26,20 33,20 27,25 29,32 23,27 17,32 19,25 13,20" fill="#0f766e"/>
+    <text x="212" y="28" text-anchor="middle" class="badge-text" fill="#0f766e">ZERO-EXPLOIT SEAM DEFENSE</text>
+  </g>
 
-    # Plot grouped bars
-    bars1 = ax.bar(indices - bar_width, asr_en, bar_width, yerr=err_en, capsize=7,
-                   color=c_en, edgecolor='#1e40af', linewidth=2.0, label='English (en) [n=26]',
-                   error_kw={'elinewidth': 2.4, 'ecolor': '#1e3a8a'}, zorder=3)
-    bars2 = ax.bar(indices, asr_bn, bar_width, yerr=err_bn, capsize=7,
-                   color=c_bn, edgecolor='#b45309', linewidth=2.0, label='Bangla native (bn) [n=26]',
-                   error_kw={'elinewidth': 2.4, 'ecolor': '#78350f'}, zorder=3)
-    bars3 = ax.bar(indices + bar_width, asr_bnen, bar_width, yerr=err_bnen, capsize=7,
-                   color=c_bnen, edgecolor='#047857', linewidth=2.0, label='Banglish mixed (bn-en) [n=26]',
-                   error_kw={'elinewidth': 2.4, 'ecolor': '#064e3b'}, zorder=3)
+  <!-- ══════════════════════════════════════════════════════════════════════
+       BAR GROUPS (4 TIERS, 3 BARS PER TIER: en, bn, bn-en)
+       Bar width = 88px, gap = 12px. Group span = 88*3 + 12*2 = 288px.
+       Group 1 (Undefended): x_center = 370 -> bars: 236, 336, 436
+       Group 2 (Scanner):    x_center = 770 -> bars: 636, 736, 836
+       Group 3 (Isolation):  x_center = 1170 -> bars: 1036, 1136, 1236
+       Group 4 (Seam):       x_center = 1600 -> bars: 1456, 1556, 1656
+       ══════════════════════════════════════════════════════════════════════ -->
 
-    # Numeric callout badges above the bars
-    # 1. Undefended
-    ax.text(indices[0], 104.5, '100% (All Registers)',
-            ha='center', va='bottom', fontsize=19, fontweight='bold', color='#991b1b',
-            bbox=dict(boxstyle='round,pad=0.3', facecolor='#fee2e2', edgecolor='#fca5a5', linewidth=1.4), zorder=4)
+  <!-- ──────────────────────────────────────────────────────────────────
+       GROUP 1: UNDEFENDED (BASELINE) - ALL 100%
+       height = 100 * 6.2 = 620px, y = 190
+       ────────────────────────────────────────────────────────────────── -->
+  <g id="grp-baseline">
+    <!-- English (100.0%) -->
+    <rect x="236" y="190" width="88" height="620" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2.8"/>
+    <text x="280" y="174" text-anchor="middle" class="bar-num" fill="#1d4ed8">100.0</text>
 
-    # 2. Static Scanner
-    ax.text(indices[1] - bar_width, 76.9 + 12.1 + 3.0, '76.9%',
-            ha='center', va='bottom', fontsize=19, fontweight='bold', color='#991b1b',
-            bbox=dict(boxstyle='round,pad=0.25', facecolor='#fee2e2', edgecolor='#fca5a5', linewidth=1.2), zorder=4)
-    ax.text(indices[1] + (bar_width / 2.0), 104.5, '100% (100% VBR)',
-            ha='center', va='bottom', fontsize=19, fontweight='bold', color='#b45309',
-            bbox=dict(boxstyle='round,pad=0.3', facecolor='#fef3c7', edgecolor='#fcd34d', linewidth=1.4), zorder=4)
+    <!-- Bengali Native (100.0%) -->
+    <rect x="336" y="190" width="88" height="620" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2.8"/>
+    <text x="380" y="174" text-anchor="middle" class="bar-num" fill="#b91c1c">100.0</text>
 
-    # 3. Prompt Isolation
-    ax.text(indices[2] - bar_width, 7.7 + 16.4 + 3.0, '7.7%',
-            ha='center', va='bottom', fontsize=18.5, fontweight='bold', color='#1e293b',
-            bbox=dict(boxstyle='round,pad=0.25', facecolor='#f1f5f9', edgecolor='#cbd5e1', linewidth=1.2), zorder=4)
-    ax.text(indices[2], 3.8 + 15.1 + 3.0, '3.8%',
-            ha='center', va='bottom', fontsize=18.5, fontweight='bold', color='#1e293b',
-            bbox=dict(boxstyle='round,pad=0.25', facecolor='#f1f5f9', edgecolor='#cbd5e1', linewidth=1.2), zorder=4)
-    ax.text(indices[2] + bar_width, 0.0 + 12.9 + 3.0, '0.0%',
-            ha='center', va='bottom', fontsize=18.5, fontweight='bold', color='#15803d',
-            bbox=dict(boxstyle='round,pad=0.25', facecolor='#dcfce7', edgecolor='#86efac', linewidth=1.2), zorder=4)
+    <!-- Banglish Mixed (100.0%) -->
+    <rect x="436" y="190" width="88" height="620" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2.8"/>
+    <text x="480" y="174" text-anchor="middle" class="bar-num" fill="#15803d">100.0</text>
+  </g>
 
-    # 4. Policy Seam
-    ax.text(indices[3] - bar_width, 3.8 + 15.1 + 3.0, '3.8%*',
-            ha='center', va='bottom', fontsize=19, fontweight='bold', color='#0f766e',
-            bbox=dict(boxstyle='round,pad=0.25', facecolor='#ccfbf1', edgecolor='#5eead4', linewidth=1.2), zorder=4)
-    ax.text(indices[3] + (bar_width / 2.0), 0.0 + 12.9 + 3.0, '0.0% (Zero Exploits)',
-            ha='center', va='bottom', fontsize=19, fontweight='bold', color='#15803d',
-            bbox=dict(boxstyle='round,pad=0.3', facecolor='#dcfce7', edgecolor='#86efac', linewidth=1.5), zorder=4)
+  <!-- ──────────────────────────────────────────────────────────────────
+       GROUP 2: STATIC SCANNER (MARKETPLACE)
+       en: 76.92% -> h = 476.9px, y = 333.1
+       bn: 100.0% -> h = 620px, y = 190
+       bn-en: 100.0% -> h = 620px, y = 190
+       ────────────────────────────────────────────────────────────────── -->
+  <g id="grp-scanner">
+    <!-- English (76.92%) -->
+    <rect x="636" y="333" width="88" height="477" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2.8"/>
+    <text x="680" y="317" text-anchor="middle" class="bar-num" fill="#1d4ed8">76.92</text>
 
-    # Iconic status badges below category labels
-    status_badges = [
-        '[ Baseline Vulnerable ]',
-        '[ 100% Registry Bypass ]',
-        '[ Boundary Isolation ]',
-        '[ Deterministic Seam Gateway ]'
-    ]
-    status_colors = ['#dc2626', '#d97706', '#2563eb', '#0f766e']
-    status_bgs = ['#fee2e2', '#fef3c7', '#eff6ff', '#ccfbf1']
+    <!-- Bengali Native (100.0%) -->
+    <rect x="736" y="190" width="88" height="620" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2.8"/>
+    <text x="780" y="174" text-anchor="middle" class="bar-num" fill="#b91c1c">100.0</text>
 
-    for i in range(n_groups):
-        ax.text(indices[i], -12.5, status_badges[i],
-                ha='center', va='top', fontsize=16.5, fontweight='bold', color=status_colors[i],
-                bbox=dict(boxstyle='round,pad=0.3', facecolor=status_bgs[i], edgecolor=status_colors[i], linewidth=1.4))
+    <!-- Banglish Mixed (100.0%) -->
+    <rect x="836" y="190" width="88" height="620" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2.8"/>
+    <text x="880" y="174" text-anchor="middle" class="bar-num" fill="#15803d">100.0</text>
+  </g>
 
-    # Gridlines & Axis Limits (expanded to 136 for clean top legend clearance)
-    ax.set_ylim(0, 136)
-    ax.set_yticks([0, 20, 40, 60, 80, 100])
-    ax.set_yticklabels(['0%', '20%', '40%', '60%', '80%', '100%'], fontsize=20, fontweight='bold', color='#334155')
-    ax.set_ylabel('Attack Success Rate (ASR %)', fontsize=22, fontweight='bold', color='#0f172a', labelpad=18)
+  <!-- ──────────────────────────────────────────────────────────────────
+       GROUP 3: PROMPT ISOLATION (DELIMITERS)
+       en: 7.69% -> h = 47.7px, y = 762.3
+       bn: 3.85% -> h = 23.9px, y = 786.1
+       bn-en: 0.00% -> h = 5px, y = 805
+       ────────────────────────────────────────────────────────────────── -->
+  <g id="grp-isolation">
+    <!-- English (7.69%) -->
+    <rect x="1036" y="762" width="88" height="48" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="2.8"/>
+    <text x="1080" y="746" text-anchor="middle" class="bar-num" fill="#1d4ed8">7.69</text>
 
-    ax.set_xticks(indices)
-    ax.set_xticklabels(defenses, fontsize=20, fontweight='bold', color='#0f172a')
+    <!-- Bengali Native (3.85%) -->
+    <rect x="1136" y="786" width="88" height="24" rx="5" fill="#fee2e2" stroke="#dc2626" stroke-width="2.8"/>
+    <text x="1180" y="770" text-anchor="middle" class="bar-num" fill="#b91c1c">3.85</text>
 
-    ax.grid(axis='y', linestyle='--', alpha=0.45, color='#94a3b8', zorder=0)
-    ax.set_axisbelow(True)
+    <!-- Banglish Mixed (0.00%) -->
+    <rect x="1236" y="804" width="88" height="6" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="2.2"/>
+    <text x="1280" y="792" text-anchor="middle" class="bar-num" fill="#15803d">0.00</text>
+  </g>
 
-    # Spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.spines['left'].set_color('#94a3b8')
-    ax.spines['bottom'].set_color('#0f172a')
-    ax.spines['bottom'].set_linewidth(2.4)
+  <!-- ──────────────────────────────────────────────────────────────────
+       GROUP 4: POLICY SEAM (DETERMINISTIC IN-PROCESS KERNEL)
+       en: 3.85% (1/26 residual) -> h = 23.9px, y = 786.1
+       bn: 0.00% (0/26 exploits) -> h = 6px, y = 804
+       bn-en: 0.00% (0/26 exploits) -> h = 6px, y = 804
+       ────────────────────────────────────────────────────────────────── -->
+  <g id="grp-seam">
+    <!-- English (3.85%*) -->
+    <rect x="1456" y="786" width="88" height="24" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="2.8"/>
+    <text x="1500" y="770" text-anchor="middle" class="bar-num" fill="#1d4ed8">3.85*</text>
 
-    # Clean Top Legend shifted left to avoid seam highlight banner
-    legend = ax.legend(frameon=True, facecolor='#f8fafc', edgecolor='#cbd5e1',
-                       fontsize=19.5, loc='upper left', bbox_to_anchor=(0.04, 0.98), ncol=3)
-    legend.get_frame().set_linewidth(1.8)
-    for text in legend.get_texts():
-        text.set_color('#1e293b')
-        text.set_fontweight('bold')
+    <!-- Bengali Native (0.00%) -->
+    <rect x="1556" y="804" width="88" height="6" rx="3" fill="#fee2e2" stroke="#dc2626" stroke-width="2.2"/>
+    <text x="1600" y="792" text-anchor="middle" class="bar-num" fill="#b91c1c">0.00</text>
 
-    # Title & Subtitle
-    ax.set_title('Attack Success Rate (ASR) Across Defense Tiers & Linguistic Registers\n'
-                 'N = 312 Live Trials · 26 tasks × 3 registers × 4 defense tiers · 95% Wilson Score CIs',
-                 fontsize=23, fontweight='bold', color='#0a1e38', pad=24, linespacing=1.35)
+    <!-- Banglish Mixed (0.00%) -->
+    <rect x="1656" y="804" width="88" height="6" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="2.2"/>
+    <text x="1700" y="792" text-anchor="middle" class="bar-num" fill="#15803d">0.00</text>
+  </g>
 
-    plt.subplots_adjust(bottom=0.14)
-    plt.tight_layout()
+  <!-- ══════════════════════════════════════════════════════════════════════
+       X-AXIS GROUP LABELS (Categorical Architecture Tiers)
+       ══════════════════════════════════════════════════════════════════════ -->
+  <g transform="translate(0, 846)">
+    <!-- Group 1 -->
+    <text x="380" y="0" text-anchor="middle" class="group-title">Undefended</text>
+    <text x="380" y="26" text-anchor="middle" class="group-sub">Baseline Model</text>
+    <rect x="270" y="38" width="220" height="34" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="1.2"/>
+    <text x="380" y="62" text-anchor="middle" font-size="20" font-weight="800" fill="#991b1b">100% VULNERABLE</text>
+
+    <!-- Group 2 -->
+    <text x="780" y="0" text-anchor="middle" class="group-title">Static Scanner</text>
+    <text x="780" y="26" text-anchor="middle" class="group-sub">Marketplace Regex</text>
+    <rect x="660" y="38" width="240" height="34" rx="6" fill="#fef3c7" stroke="#fcd34d" stroke-width="1.2"/>
+    <text x="780" y="62" text-anchor="middle" font-size="20" font-weight="800" fill="#92400e">100% VETTING BYPASS</text>
+
+    <!-- Group 3 -->
+    <text x="1180" y="0" text-anchor="middle" class="group-title">Prompt Isolation</text>
+    <text x="1180" y="26" text-anchor="middle" class="group-sub">XML / Boundary Tags</text>
+    <rect x="1060" y="38" width="240" height="34" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.2"/>
+    <text x="1180" y="62" text-anchor="middle" font-size="20" font-weight="800" fill="#1e40af">23.1% TASK REFUSAL</text>
+
+    <!-- Group 4 -->
+    <text x="1600" y="0" text-anchor="middle" class="group-title">Policy Seam</text>
+    <text x="1600" y="26" text-anchor="middle" class="group-sub">Deterministic Gateway (Ours)</text>
+    <rect x="1470" y="38" width="260" height="34" rx="6" fill="#dcfce7" stroke="#86efac" stroke-width="1.4"/>
+    <text x="1600" y="62" text-anchor="middle" font-size="20" font-weight="800" fill="#166534">0.0% ASR · 100% BUR</text>
+  </g>
+
+  <!-- Category Dimension Label -->
+  <text x="980" y="944" text-anchor="middle" class="axis-label" fill="#64748b">Defense Architecture Paradigm</text>
+
+  <!-- ══════════════════════════════════════════════════════════════════════
+       BOTTOM HORIZONTAL LEGEND BAR (Centered, matches asr2.png)
+       ══════════════════════════════════════════════════════════════════════ -->
+  <g transform="translate(360, 990)">
+    <!-- English Legend -->
+    <rect x="0" y="0" width="28" height="28" rx="5" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="38" y="22" class="legend-text">English (en) [n=26]</text>
+
+    <!-- Bengali Native Legend -->
+    <rect x="350" y="0" width="28" height="28" rx="5" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="388" y="22" class="legend-text">Bengali native (bn) [n=26]</text>
+
+    <!-- Banglish Mixed Legend -->
+    <rect x="760" y="0" width="28" height="28" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="798" y="22" class="legend-text">Banglish mixed (bn-en) [n=26]</text>
+  </g>
+
+</svg>"""
+
     for base_dir in ['poster', 'poster_v2']:
         os.makedirs(base_dir, exist_ok=True)
-        out_path = os.path.join(base_dir, 'asr_chart.png')
-        plt.savefig(out_path, dpi=100, bbox_inches='tight')
-        print(f"ASR chart (16:9) generated at: {out_path}")
-    plt.close()
+        out_svg = os.path.join(base_dir, 'asr_chart.svg')
+        out_png = os.path.join(base_dir, 'asr_chart.png')
+        out_300 = os.path.join(base_dir, 'asr_chart_300dpi.png')
+
+        with open(out_svg, 'w', encoding='utf-8') as f:
+            f.write(svg)
+
+        render_svg_to_png(out_svg, out_png, out_300, width=1920, height=1080)
+        print(f"Publication ASR chart generated: {out_png} & {out_300}")
 
 if __name__ == '__main__':
     generate_asr_chart()

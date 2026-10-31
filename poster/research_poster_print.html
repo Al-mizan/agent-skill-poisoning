@@ -79,7 +79,7 @@
   .poster-header {
     background: #ffffff;
     border-bottom: 5px solid var(--navy-primary);
-    padding: 14px 48px 12px 48px;
+    padding: 10px 48px 8px 48px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -146,7 +146,7 @@
   }
 
   .header-affiliation {
-    font-size: 26px;
+    font-size: 31px;
     color: var(--slate-muted);
     font-style: italic;
   }
@@ -185,7 +185,7 @@
   }
 
   .qr-caption {
-    font-size: 16.5px;
+    font-size: 21.5px;
     font-weight: 800;
     color: var(--navy-primary);
     text-align: center;
@@ -200,10 +200,10 @@
   .takeaway-strip {
     background: linear-gradient(90deg, #0f2b5c 0%, #1e40af 100%);
     color: #ffffff;
-    padding: 9px 48px;
-    font-size: 31px;
+    padding: 8px 48px;
+    font-size: 33px;
     font-weight: 600;
-    line-height: 1.55;
+    line-height: 1.45;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -215,11 +215,11 @@
   .takeaway-badge {
     background: #38bdf8;
     color: #0a1e38;
-    font-size: 22px;
+    font-size: 25px;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    padding: 5px 14px;
+    padding: 4px 14px;
     border-radius: 6px;
     flex-shrink: 0;
   }
@@ -235,10 +235,10 @@
   .poster-body {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    padding: 8px 34px 6px 34px;
+    gap: 15px;
+    padding: 8px 34px 8px 34px;
     flex: 1;
-    justify-content: flex-start;
+    justify-content: space-between;
   }
 
   .poster-row {
@@ -251,25 +251,25 @@
   /* Row Tier 1: Foundations & Research Scope (3 Panels) */
   .tier-1 {
     grid-template-columns: 820px 980px 808px;
-    height: 710px;
+    height: 675px;
   }
 
   /* Row Tier 2: Mechanisms & Architecture (2 Symmetric Panels) */
   .tier-2 {
     grid-template-columns: 1fr 1fr;
-    height: 760px;
+    height: 830px;
   }
 
   /* Row Tier 3: Empirical Validation (1 Row-Wise Wide Panel) */
   .tier-3 {
     grid-template-columns: 1fr;
-    height: 855px;
+    height: 915px;
   }
 
   /* Row Tier 4: Security Impact, Conclusion & Future Work (3 Panels in Bottom Row) */
   .tier-4 {
     grid-template-columns: 1fr 1fr 1fr;
-    height: 720px;
+    height: 500px;
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -296,7 +296,7 @@
   }
 
   .panel-title {
-    font-size: 38px;
+    font-size: 43px;
     font-weight: 800;
     color: var(--navy-primary);
     letter-spacing: -0.3px;
@@ -306,14 +306,14 @@
   }
 
   .panel-body {
-    padding: 8px 14px;
-    font-size: 26.5px;
-    line-height: 1.5;
+    padding: 10px 16px;
+    font-size: 31.5px;
+    line-height: 1.48;
     color: var(--slate-text);
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     justify-content: flex-start;
   }
 
@@ -324,22 +324,22 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
   }
 
   .clean-list li {
     position: relative;
-    padding-left: 26px;
-    font-size: 26px;
-    line-height: 1.48;
+    padding-left: 28px;
+    font-size: 31px;
+    line-height: 1.46;
   }
 
   .clean-list li::before {
     content: "■";
     position: absolute;
     left: 2px;
-    top: 5px;
-    font-size: 16px;
+    top: 6px;
+    font-size: 18px;
     color: var(--blue-accent);
   }
 
@@ -350,7 +350,7 @@
 
   code {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 23.5px;
+    font-size: 28.5px;
     background: #f1f5f9;
     padding: 1px 6px;
     border-radius: 4px;
@@ -361,10 +361,10 @@
   /* Callout Boxes */
   .callout-box {
     border-radius: 10px;
-    padding: 6px 12px;
+    padding: 8px 14px;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
   }
 
   .callout-red {
@@ -383,7 +383,7 @@
   }
 
   .callout-title {
-    font-size: 22.5px;
+    font-size: 27.5px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -394,24 +394,24 @@
   .callout-title.teal { color: #0f766e; }
 
   .callout-desc {
-    font-size: 24.5px;
-    line-height: 1.48;
+    font-size: 29.5px;
+    line-height: 1.46;
   }
 
   /* Contribution Cards */
   .contrib-grid {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
   }
 
   .contrib-card {
     background: #f8fafc;
     border: 1.5px solid #cbd5e1;
-    border-left: 5px solid var(--blue-accent);
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 25px;
+    border-left: 6px solid var(--blue-accent);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 30px;
     line-height: 1.44;
     color: var(--slate-text);
   }
@@ -425,16 +425,16 @@
   .rq-grid {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
 
   .rq-card {
     background: #ffffff;
     border: 1.5px solid #cbd5e1;
-    border-left: 5px solid var(--navy-dark);
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 25px;
+    border-left: 6px solid var(--navy-dark);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 30px;
     line-height: 1.44;
   }
 
@@ -447,26 +447,26 @@
   .trust-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    gap: 8px;
   }
 
   .trust-card {
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
     border-radius: 8px;
-    padding: 7px 12px;
-    font-size: 24px;
+    padding: 8px 14px;
+    font-size: 29px;
     line-height: 1.42;
   }
 
   .trust-card strong {
     display: block;
-    font-size: 24.5px;
-    margin-bottom: 2px;
+    font-size: 29.5px;
+    margin-bottom: 3px;
   }
 
-  .trust-card.trusted { border-left: 4px solid var(--green-success); }
-  .trust-card.untrusted { border-left: 4px solid var(--red-alert); }
+  .trust-card.trusted { border-left: 5px solid var(--green-success); }
+  .trust-card.untrusted { border-left: 5px solid var(--red-alert); }
 
   /* ══════════════════════════════════════════════════════════
      FIGURE EMBEDDING (TIER 2 - 16:9 RATIO ARCHITECTURE)
@@ -486,8 +486,8 @@
   .figure-header {
     background: #f8fafc;
     border-bottom: 2px solid var(--slate-border);
-    padding: 6px 20px;
-    font-size: 38px;
+    padding: 8px 20px;
+    font-size: 43px;
     font-weight: 800;
     color: var(--navy-primary);
     display: flex;
@@ -499,9 +499,9 @@
     background: var(--blue-soft);
     color: var(--navy-primary);
     border: 1.5px solid var(--blue-border);
-    font-size: 24px;
+    font-size: 29px;
     font-weight: 800;
-    padding: 3px 12px;
+    padding: 4px 14px;
     border-radius: 6px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -519,7 +519,7 @@
 
   .tier-2 .figure-img-wrap {
     width: 100%;
-    height: 675px;
+    height: 730px;
     border-radius: 8px;
     overflow: hidden;
     border: 1.5px solid #cbd5e1;
@@ -532,14 +532,14 @@
   .tier-2 .figure-img-wrap img {
     width: 100%;
     height: 100%;
-    max-height: 675px;
+    max-height: 730px;
     aspect-ratio: 16 / 9;
     display: block;
     object-fit: contain;
   }
 
   .figure-caption {
-    font-size: 24.5px;
+    font-size: 29.5px;
     font-weight: 700;
     color: var(--navy-primary);
     text-align: center;
@@ -562,7 +562,7 @@
   }
 
   .figure-point-item {
-    font-size: 26px;
+    font-size: 31px;
     line-height: 1.45;
     color: #334155;
   }
@@ -574,21 +574,21 @@
   /* Tier 3: Subgrid for Panel 5 (Wide Row-Wise Layout) */
   .results-subgrid {
     display: grid;
-    grid-template-columns: 1060px 1fr;
+    grid-template-columns: 1220px 1fr;
     gap: 22px;
-    align-items: start;
+    align-items: stretch;
     margin-top: 4px;
   }
 
   .results-chart-col {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
 
   .results-chart-col .figure-img-wrap {
     width: 100%;
-    height: 505px;
+    height: 685px;
     background: #ffffff;
     border: 1.5px solid #cbd5e1;
     border-radius: 8px;
@@ -600,7 +600,8 @@
 
   .results-chart-col .figure-img-wrap img {
     width: 100%;
-    max-height: 500px;
+    height: 100%;
+    max-height: 685px;
     aspect-ratio: 16 / 9;
     display: block;
     object-fit: contain;
@@ -609,24 +610,24 @@
   .results-takeaways-col {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     justify-content: flex-start;
   }
 
-  .takeaways-2x2-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+  .takeaways-single-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .takeaway-card {
     background: #ffffff;
     border: 1.5px solid #cbd5e1;
     border-radius: 8px;
-    padding: 8px 12px;
+    padding: 6px 12px;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
     box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
   }
 
@@ -636,7 +637,7 @@
   .takeaway-card.blue  { border-left: 5px solid #2563eb; background: #fbfdff; }
 
   .takeaway-card-title {
-    font-size: 22px;
+    font-size: 25px;
     font-weight: 800;
     letter-spacing: 0.2px;
   }
@@ -647,8 +648,8 @@
   .takeaway-card-title.blue  { color: #1e40af; }
 
   .takeaway-card-body {
-    font-size: 21px;
-    line-height: 1.42;
+    font-size: 23px;
+    line-height: 1.36;
     color: #334155;
     margin: 0;
   }
@@ -660,27 +661,27 @@
 
   /* Tier 4 Calibration (Security Impact, Conclusion, Future Work) */
   .tier-4 .panel-body {
-    padding: 7px 12px;
-    gap: 5px;
-  }
-  .tier-4 .clean-list {
+    padding: 8px 14px;
     gap: 6px;
   }
+  .tier-4 .clean-list {
+    gap: 8px;
+  }
   .tier-4 .clean-list li {
-    font-size: 23px;
-    line-height: 1.42;
-    padding-left: 22px;
+    font-size: 28px;
+    line-height: 1.44;
+    padding-left: 24px;
   }
   .tier-4 .callout-box {
-    padding: 5px 10px;
-    gap: 2px;
+    padding: 6px 12px;
+    gap: 3px;
   }
   .tier-4 .callout-title {
-    font-size: 20px;
+    font-size: 25px;
   }
   .tier-4 .callout-desc {
-    font-size: 21.5px;
-    line-height: 1.4;
+    font-size: 26.5px;
+    line-height: 1.42;
   }
 
   /* ══════════════════════════════════════════════════════════
@@ -701,7 +702,7 @@
   }
 
   .stat-num {
-    font-size: 48px;
+    font-size: 54px;
     font-weight: 900;
     color: var(--blue-accent);
     line-height: 1;
@@ -709,7 +710,7 @@
   }
 
   .stat-lbl {
-    font-size: 21px;
+    font-size: 26px;
     font-weight: 800;
     color: var(--slate-muted);
     text-transform: uppercase;
@@ -717,7 +718,7 @@
   }
 
   .backbone-note {
-    font-size: 21px;
+    font-size: 26px;
     color: var(--slate-muted);
     text-align: center;
     margin-top: -2px;
@@ -784,9 +785,9 @@
     background: #f8fafc;
     border: 1.5px solid #cbd5e1;
     border-radius: 8px;
-    padding: 5px 10px;
-    font-size: 20px;
-    line-height: 1.48;
+    padding: 6px 12px;
+    font-size: 25px;
+    line-height: 1.44;
     color: #334155;
   }
 
@@ -799,9 +800,9 @@
     background: #f0fdfa;
     border: 1.8px solid #99f6e4;
     border-radius: 8px;
-    padding: 5px 10px;
-    font-size: 20.5px;
-    line-height: 1.48;
+    padding: 6px 12px;
+    font-size: 25.5px;
+    line-height: 1.44;
     color: #115e59;
   }
 
@@ -827,7 +828,7 @@
     background: var(--navy-primary);
     color: #ffffff;
     padding: 6px 18px;
-    font-size: 26.5px;
+    font-size: 31.5px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.6px;
@@ -837,7 +838,7 @@
   }
 
   .bottom-header-sub {
-    font-size: 19.5px;
+    font-size: 23px;
     font-weight: 600;
     text-transform: none;
     color: #93c5fd;
@@ -862,7 +863,7 @@
   }
 
   .bottom-card-title {
-    font-size: 23.5px;
+    font-size: 28.5px;
     font-weight: 800;
     color: var(--navy-primary);
     text-transform: uppercase;
@@ -872,8 +873,8 @@
   }
 
   .bottom-card p {
-    font-size: 23.5px;
-    line-height: 1.55;
+    font-size: 28.5px;
+    line-height: 1.5;
     color: var(--slate-text);
   }
 
@@ -886,14 +887,16 @@
      ══════════════════════════════════════════════════════════ */
   .poster-footer {
     background: var(--navy-dark);
-    color: #cbd5e1;
-    padding: 10px 48px;
-    font-size: 24px;
+    color: #e2e8f0;
+    padding: 13px 48px;
+    font-size: 32px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     border-top: 4px solid var(--blue-accent);
     flex-shrink: 0;
+    text-align: center;
+    letter-spacing: 0.3px;
   }
 
   .poster-footer strong {
@@ -943,7 +946,7 @@
   <div class="takeaway-strip">
     <span class="takeaway-badge">Key Takeaway</span>
     <span class="takeaway-text">
-      Reasoning engines cannot police their own tool calls: <strong>cross-lingual skill poisoning achieves 100% exploit success</strong> across evaluated backbones, while an <strong>in-process deterministic policy seam cuts ASR to 0% in Bangla and Banglish (3.8% in English) with 0.037 ms latency</strong>.
+      Reasoning engines cannot police their own tool calls: <strong>cross-lingual skill poisoning achieves 100% exploit success</strong>, while an <strong>in-process deterministic policy seam cuts ASR to 0.0% with 0.037 ms latency</strong>.
     </span>
   </div>
 
@@ -963,56 +966,38 @@
           <h2 class="panel-title">1. Motivation</h2>
         </div>
         <div class="panel-body">
-          <ul class="clean-list">
+          <ul class="clean-list" style="gap: 18px; margin-top: 4px;">
             <li>
-              <strong>Unvetted Skill Ingestion:</strong> Agents dynamically load external <code>SKILL.md</code> / MCP manifests with ambient host execution privileges.
+              <strong>Unvetted Skill Ingestion:</strong> Autonomous agents dynamically load external <code>SKILL.md</code> / MCP tool manifests with ambient host execution privileges.
             </li>
             <li>
-              <strong>Linguistic Safety Gap:</strong> Alignment is English-centric; LLMs execute Bengali &amp; Banglish exploits without safety alarms.
+              <strong>Linguistic Safety Asymmetry:</strong> Safety alignment is English-centric; LLMs execute Bengali &amp; Banglish exploits without triggering guardrail alarms.
             </li>
             <li>
-              <strong>Registry Scanner Blindness:</strong> Marketplace keyword regex filters miss non-English attacks, yielding <strong>100% Vetting Bypass Rate (VBR)</strong>.
+              <strong>Registry Scanner Blindness:</strong> Static marketplace regex filters fail on cross-lingual payloads, yielding <strong>100% Vetting Bypass Rate (VBR)</strong>.
             </li>
           </ul>
-
-          <div class="callout-box callout-red" style="margin-top: 6px;">
-            <div class="callout-title red">Semantic Asymmetry</div>
-            <p class="callout-desc" style="color: #7f1d1d;">
-              Keyword rules block English attacks but fail on cross-lingual equivalents, enabling silent tool exploit execution.
-            </p>
-          </div>
         </div>
       </div>
 
-      <!-- Section 2: Contributions & Research Questions -->
+      <!-- Section 2: Gaps & Contributions -->
       <div class="panel">
         <div class="panel-header">
-          <h2 class="panel-title">2. Contributions &amp; Research Questions</h2>
+          <h2 class="panel-title">2. Gaps &amp; Contributions</h2>
         </div>
         <div class="panel-body">
-          <!-- Research Questions (Ultra-Concise) -->
-          <div class="rq-grid">
-            <div class="rq-card">
-              <strong>RQ1 (Exploitability):</strong> Do cross-lingual skill manifests trigger 100% tool exploit execution?
+          <div class="contrib-grid" style="gap: 8px; margin-top: 2px;">
+            <div class="contrib-card" style="border-left: 6px solid #ea580c; background: #fffaf5; padding: 7px 14px; font-size: 28px;">
+              <strong>1. English Calibration Gap:</strong> Safety guardrails fail on non-English registers; models execute Bengali &amp; Banglish exploits without alarm.
             </div>
-            <div class="rq-card">
-              <strong>RQ2 (Vetting Blindness):</strong> Do static registry scanners miss non-English payloads entirely?
+            <div class="contrib-card" style="border-left: 6px solid #d97706; background: #fffdfa; padding: 7px 14px; font-size: 28px;">
+              <strong>2. Static Vetting Blindness:</strong> Marketplace regex filters miss cross-lingual and post-install rug-pull payloads (<strong>100% VBR</strong>).
             </div>
-            <div class="rq-card">
-              <strong>RQ3 (Deterministic Seam):</strong> Can an in-process seam halt exploits with sub-0.05ms latency?
+            <div class="contrib-card" style="border-left: 6px solid #2563eb; background: #fbfdff; padding: 7px 14px; font-size: 28px;">
+              <strong>3. Multilingual Benchmark:</strong> 312 live empirical trials across 26 enterprise tasks evaluated in English, Bengali, and Banglish.
             </div>
-          </div>
-
-          <!-- Core Contributions (Ultra-Concise) -->
-          <div class="contrib-grid" style="margin-top: 6px;">
-            <div class="contrib-card">
-              <strong>1. Multilingual Benchmark:</strong> 312 live trials across 26 enterprise tasks in English, Bengali, and Banglish.
-            </div>
-            <div class="contrib-card">
-              <strong>2. 100% Exploit Proof:</strong> Demonstrated post-install rug-pulls evading marketplace keyword scanners.
-            </div>
-            <div class="contrib-card">
-              <strong>3. Zero-Exploit Seam Defense:</strong> Deterministic gateway reducing non-English ASR to 0.0% with 0.037 ms latency.
+            <div class="contrib-card" style="border-left: 6px solid #16a34a; background: #fcfdfc; padding: 7px 14px; font-size: 28px;">
+              <strong>4. Deterministic Seam Defense:</strong> In-process policy enforcement cutting non-English ASR to <strong>0.0%</strong> at <strong>0.037 ms</strong> latency with <strong>0.0% FDR</strong>.
             </div>
           </div>
         </div>
@@ -1024,18 +1009,18 @@
           <h2 class="panel-title">3. Threat Model</h2>
         </div>
         <div class="panel-body">
-          <div class="trust-grid">
+          <div class="trust-grid" style="gap: 10px; margin-top: 4px;">
             <div class="trust-card trusted">
               <strong style="color: #166534;">Control Plane (Trusted)</strong>
               User intent, task invariants, host runner.
             </div>
             <div class="trust-card untrusted">
               <strong style="color: #991b1b;">Data Plane (Untrusted)</strong>
-              External SKILL.md manifests &amp; repos.
+              External skill manifests &amp; repos.
             </div>
             <div class="trust-card untrusted">
               <strong style="color: #991b1b;">Reasoning Plane (Untrusted)</strong>
-              LLM planner; prompt-injectable.
+              LLM planner (prompt-injectable).
             </div>
             <div class="trust-card trusted">
               <strong style="color: #166534;">Execution Seam (Trusted)</strong>
@@ -1043,21 +1028,12 @@
             </div>
           </div>
 
-          <div class="callout-box callout-blue" style="margin-top: 5px;">
+          <div class="callout-box callout-blue" style="margin-top: 14px;">
             <div class="callout-title blue">Adversary Model: Post-Install Rug-Pull</div>
             <p class="callout-desc" style="color: #1e3a8a;">
-              Clean <code>v1.0.0</code> passes screening; mutated <code>v2.0.0</code> triggers covert tool dispatches post-install.
+              Benign manifest <code>v1.0.0</code> clears registry screening; mutated <code>v2.0.0</code> covertly triggers unauthorized tool execution with ambient privileges.
             </p>
           </div>
-
-          <ul class="clean-list" style="margin-top: 5px;">
-            <li>
-              <strong>Ambient Privilege Abuse:</strong> Ingested skills attempt host credential exfiltration (<code>~/.ssh</code>).
-            </li>
-            <li>
-              <strong>Invariant Enforcement:</strong> Untrusted tools cannot expand privileges; all calls require valid tokens.
-            </li>
-          </ul>
         </div>
       </div>
 
@@ -1076,7 +1052,7 @@
         </div>
         <div class="figure-body">
           <div class="figure-img-wrap">
-            <img src="threat_lifecycle.png" alt="Threat Lifecycle: Five-Stage Cross-Lingual Exploit Progression">
+            <img src="threat_lifecycle.svg" alt="Threat Lifecycle: Five-Stage Cross-Lingual Exploit Progression">
           </div>
         </div>
       </div>
@@ -1089,7 +1065,7 @@
         </div>
         <div class="figure-body">
           <div class="figure-img-wrap">
-            <img src="defense_seam_architecture.png" alt="Deterministic Authorization Seam Execution Boundary Architecture">
+            <img src="defense_seam_architecture.svg" alt="Deterministic Authorization Seam Execution Boundary Architecture">
           </div>
         </div>
       </div>
@@ -1133,59 +1109,53 @@
 
           <!-- Subgrid: Left Chart, Right 2x2 Takeaways Grid & Definitions -->
           <div class="results-subgrid">
-            <!-- Left: ASR Chart Column -->
+            <!-- Left: ASR Chart Column (Expanded to full height) -->
             <div class="results-chart-col">
               <div class="figure-img-wrap">
-                <img src="asr_chart.png" alt="ASR Comparison Chart Across Defense Tiers and Linguistic Registers">
-              </div>
-              <div class="callout-box callout-teal" style="margin-top: 4px; padding: 8px 14px;">
-                <div class="callout-title teal" style="font-size: 22px;">★ Zero-Exploit Seam Defense Guarantee</div>
-                <p class="callout-desc" style="font-size: 22.5px; line-height: 1.45; color: #115e59;">
-                  In-process gateway eliminates cross-lingual exploits to <strong>0.0% ASR</strong> in Bengali and Banglish with <strong>100% benign utility (0.0% FDR)</strong> at <strong>0.037 ms latency</strong>.
-                </p>
+                <img src="asr_chart.svg" alt="ASR Comparison Chart Across Defense Tiers and Linguistic Registers">
               </div>
             </div>
 
-            <!-- Right: 2x2 Takeaways Grid & Formal Metrics Strip -->
+            <!-- Right: Single-Column Takeaways & Formal Metrics Strip -->
             <div class="results-takeaways-col">
               
-              <div class="takeaways-2x2-grid">
+              <div class="takeaways-single-col">
                 <!-- Takeaway 1: Zero Exploit Seam Defense -->
                 <div class="takeaway-card green">
-                  <div class="takeaway-card-title green">100% Exploit Neutralization (0.0% Non-English ASR)</div>
+                  <div class="takeaway-card-title green">100% Exploit Neutralization (0.0% ASR)</div>
                   <p class="takeaway-card-body">
-                    In-process deterministic seam eliminates cross-lingual exploits from <strong>100.0%</strong> down to <strong>0.0% ASR</strong> in Bengali (<code>bn</code>) and Banglish (<code>bn-en</code>), and <strong>3.8%</strong> in English (95% Wilson CI: [0.0%, 12.9%]).
+                    Deterministic seam eliminates cross-lingual exploits to <strong>0.0% ASR</strong> in Bengali &amp; Banglish (3.8% in English; 95% Wilson CI: [0.0%, 12.9%]).
                   </p>
                 </div>
 
-                <!-- Takeaway 2: Zero Overhead & Zero Utility Loss -->
-                <div class="takeaway-card teal">
-                  <div class="takeaway-card-title teal">Production-Grade Zero Overhead (0.037 ms Latency)</div>
-                  <p class="takeaway-card-body">
-                    Pre-execution invariant verification introduces negligible <strong>0.037 ms</strong> overhead (&lt;0.005% of reasoning loop) while guaranteeing <strong>100% benign task utility (0.0% False Denial Rate)</strong>.
-                  </p>
-                </div>
-
-                <!-- Takeaway 3: Scanner Evasion & Prompt Guardrail Utility Loss -->
+                <!-- Takeaway 2: Scanner Evasion & Prompt Guardrail Utility Loss -->
                 <div class="takeaway-card amber">
-                  <div class="takeaway-card-title amber">100% Marketplace Scanner Bypass (VBR)</div>
+                  <div class="takeaway-card-title amber">100% Scanner Evasion (VBR)</div>
                   <p class="takeaway-card-body">
-                    Static keyword regex scanners miss all non-English attacks (<strong>100% VBR</strong>). Prompt boundary defenses fail to halt multi-turn injection while causing <strong>15.4%–23.1% utility degradation</strong>.
+                    Static marketplace regex filters fail on non-English attacks (<strong>100% VBR</strong>); probabilistic LLMs cannot reliably self-police tool dispatches.
+                  </p>
+                </div>
+
+                <!-- Takeaway 3: Zero Overhead & Zero Utility Loss -->
+                <div class="takeaway-card teal">
+                  <div class="takeaway-card-title teal">Zero Usability Penalty (100% Utility)</div>
+                  <p class="takeaway-card-body">
+                    Guarantees <strong>100.0% Benign Utility (0.0% FDR)</strong> at <strong>0.037 ms</strong> latency (&lt;0.005% loop overhead; prompt guards lose 15.4%–23.1% utility).
                   </p>
                 </div>
 
                 <!-- Takeaway 4: TASK-02 English Residual Root Cause -->
                 <div class="takeaway-card blue">
-                  <div class="takeaway-card-title blue">*English 3.8% Residual Audit (TASK-02-GIT-LOG)</div>
+                  <div class="takeaway-card-title blue">*English 3.8% Residual Audit</div>
                   <p class="takeaway-card-body">
-                    Single English trial emitted parameter <code>file_path</code> instead of canonical <code>path</code>; automated schema alias normalization resolves this variance to <strong>0.0% ASR</strong> across all 312 trials.
+                    Single residual ($1/26$) stemmed from parameter alias <code>file_path</code> vs <code>path</code>; neutralized to <strong>0.0% ASR</strong> via schema normalization.
                   </p>
                 </div>
               </div>
 
               <!-- Metric Definitions Strip -->
-              <div class="metric-definitions" style="margin-top: 4px; padding: 6px 14px; font-size: 21px; line-height: 1.42;">
-                <strong>Formal Metrics:</strong> <strong>ASR</strong>: Attack Success Rate (↓) &nbsp;·&nbsp; <strong>BUR</strong>: Benign Utility Rate (↑) &nbsp;·&nbsp; <strong>VBR</strong>: Vetting Bypass Rate (↓) &nbsp;·&nbsp; <strong>FDR</strong>: False Denial Rate (↓). 95% Wilson Score Confidence Intervals.
+              <div class="metric-definitions" style="margin-top: 4px; padding: 4px 12px; font-size: 21.5px; line-height: 1.38;">
+                <strong>Formal Metrics:</strong> <strong>ASR</strong>: Attack Success Rate (↓) &nbsp;·&nbsp; <strong>BUR</strong>: Benign Utility Retention (↑) &nbsp;·&nbsp; <strong>VBR</strong>: Vetting Bypass Rate (↓) &nbsp;·&nbsp; <strong>FDR</strong>: False Denial Rate (↓). Exact 95% Wilson Score CIs.
               </div>
 
             </div>
@@ -1207,31 +1177,17 @@
           <h2 class="panel-title">6. Security Impact</h2>
         </div>
         <div class="panel-body">
-          <ul class="clean-list">
+          <ul class="clean-list" style="gap: 14px; margin-top: 4px;">
             <li>
-              <strong>Supply-Chain Vulnerability:</strong> Third-party manifests execute as arbitrary tools. Attackers exploit multilingual blind spots with <strong>100% VBR</strong>.
+              <strong>Supply-Chain Exposure:</strong> Third-party skills execute ambient host tools; cross-lingual payloads bypass registry filters (<strong>100% VBR</strong>).
             </li>
             <li>
-              <strong>Self-Policing Failure:</strong> Reasoning LLMs cannot reliably arbitrate tool calls; prompt guards introduce <strong>15.4%–23.1% utility loss</strong>.
+              <strong>Self-Policing Impossibility:</strong> Probabilistic LLMs cannot arbitrate their own safety; prompt filters sacrifice <strong>15.4%–23.1% utility</strong>.
             </li>
             <li>
-              <strong>Deterministic Seam Paradigm:</strong> Mediating calls at the in-process seam eliminates exploits (<strong>0% ASR in BN / BN-EN</strong>) with <strong>0.037 ms overhead</strong>.
+              <strong>Deterministic Seam Paradigm:</strong> Hard in-process mediation stops exploits (<strong>0.0% non-English ASR</strong>) with <strong>0.037 ms</strong> overhead.
             </li>
           </ul>
-
-          <div class="callout-box callout-teal" style="margin-top: 6px;">
-            <div class="callout-title teal">Strategic Security Directive</div>
-            <p class="callout-desc" style="color: #115e59;">
-              Do not rely on probabilistic LLMs for safety. Enforce deterministic, language-invariant authorization at the tool seam.
-            </p>
-          </div>
-
-          <div class="callout-box callout-blue" style="margin-top: 6px;">
-            <div class="callout-title blue">Deployment Recommendation</div>
-            <p class="callout-desc" style="color: #1e40af;">
-              Integrate in-process authorization seams into agent frameworks (LangChain, AutoGen, CrewAI, MCP hosts) prior to mounting community skills.
-            </p>
-          </div>
         </div>
       </div>
 
@@ -1241,26 +1197,17 @@
           <h2 class="panel-title">7. Conclusion</h2>
         </div>
         <div class="panel-body">
-          <ul class="clean-list">
+          <ul class="clean-list" style="gap: 14px; margin-top: 4px;">
             <li>
-              <strong>Universal Cross-Lingual Risk:</strong> LLMs process low-resource and code-mixed manifests without safety triggers, achieving <strong>100% exploit execution</strong> and <strong>100% VBR</strong>.
+              <strong>Universal Linguistic Risk:</strong> LLMs process non-English manifests without safety alarms, creating severe multi-turn supply-chain risks.
             </li>
             <li>
-              <strong>Deterministic Defense Proof:</strong> In-process authorization cuts non-English ASR to <strong>0.0%</strong> while preserving <strong>100% benign utility (0.0% FDR)</strong>.
+              <strong>Deterministic Defense Proof:</strong> In-process capability token, path, and egress invariants eliminate exploits without model retraining.
             </li>
             <li>
-              <strong>Production Feasibility:</strong> <strong>0.037 ms latency</strong> enables instant drop-in deployment without model retraining.
+              <strong>Production Readiness:</strong> <strong>0.037 ms latency</strong> enables instant enterprise drop-in deployment with <strong>zero utility loss (0.0% FDR)</strong>.
             </li>
           </ul>
-
-          <div class="callout-box callout-blue" style="margin-top: 6px;">
-            <div class="callout-title blue">Scope &amp; Limitations</div>
-            <p class="callout-desc" style="color: #1e3a8a;">
-              • <strong>312 Live Trials:</strong> Evaluated across 26 enterprise tasks × 3 registers × 4 defense tiers (95% Wilson CI: [0.0%, 12.9%]).<br>
-              • <strong>Alias Normalization:</strong> English 3.8% residual resolved via strict schema parameter alias normalization.<br>
-              • <strong>Threat Boundary:</strong> Tool dispatch authorization; kernel compromises remain out of scope.
-            </p>
-          </div>
         </div>
       </div>
 
@@ -1270,25 +1217,17 @@
           <h2 class="panel-title">8. Future Work</h2>
         </div>
         <div class="panel-body">
-          <ul class="clean-list">
+          <ul class="clean-list" style="gap: 14px; margin-top: 4px;">
             <li>
-              <strong>Ecosystem Standardization:</strong> Standardize runtime authorization seams across MCP servers and agent tool registries.
+              <strong>Ecosystem Standardization:</strong> Standardize runtime policy seams across MCP servers and open agent tool registries.
             </li>
             <li>
-              <strong>Expanded Architectures:</strong> Benchmark against Claude 3.7 Sonnet, DeepSeek-R1, and multi-agent coordination architectures.
+              <strong>Frontier Reasoning Benchmarks:</strong> Benchmark authorization seams against Claude 3.7 Sonnet and DeepSeek-R1.
             </li>
             <li>
-              <strong>Dynamic Delegation Invariants:</strong> Formalize capability token propagation across hierarchical multi-agent delegation trees.
+              <strong>Hierarchical Delegation:</strong> Formalize capability token propagation across nested multi-agent delegation trees.
             </li>
           </ul>
-
-          <div class="callout-box callout-teal" style="margin-top: 6px;">
-            <div class="callout-title teal">Academic Supervision &amp; Disclosure</div>
-            <p class="callout-desc" style="color: #0f766e;">
-              • <strong>Supervision:</strong> Supervised by <strong>Dr. Md. Rafsan Jani</strong>, Dept. of Computer Science &amp; Engineering, Jahangirnagar University.<br>
-              • <strong>Responsible Disclosure:</strong> All trials run in isolated sandboxes; attack artifacts ethically quarantined.
-            </p>
-          </div>
         </div>
       </div>
 
@@ -1297,14 +1236,11 @@
   </main>
 
   <!-- ══════════════════════════════════════════════════════════
-       FOOTER: CONTACT & INSTITUTIONAL BRANDING
+       FOOTER: COURSE & INSTITUTIONAL AFFILIATION
        ══════════════════════════════════════════════════════════ -->
   <footer class="poster-footer">
     <div>
-      Department of Computer Science &amp; Engineering &nbsp;·&nbsp; <strong>Jahangirnagar University</strong> &nbsp;·&nbsp; Savar, Dhaka-1342, Bangladesh
-    </div>
-    <div>
-      Contact: <strong>almizan@juniv.edu</strong> &nbsp;·&nbsp; October 2026 &nbsp;·&nbsp; <strong>B.Sc. Engineering Research Project</strong>
+      <strong>CSE 440</strong> &nbsp;·&nbsp; <strong>Research Poster Presentation</strong> &nbsp;·&nbsp; 4th Year, 1st Semester &nbsp;·&nbsp; <strong>Jahangirnagar University</strong>
     </div>
   </footer>
 

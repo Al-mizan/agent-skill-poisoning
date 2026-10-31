@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cross-Lingual Agent Skill Poisoning: Interactive Research Poster Viewer</title>
+  <title>Cross-Lingual Agent Skill Poisoning: Interactive Research Poster & Architecture Workbench</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -35,7 +35,7 @@
       align-items: center;
       gap: 12px;
       background: rgba(15, 23, 42, 0.94);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
       border: 1px solid #334155;
       padding: 10px 20px;
       border-radius: 9999px;
@@ -72,7 +72,7 @@
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
     }
 
     .btn:hover {
@@ -96,6 +96,19 @@
 
     .btn-primary:hover {
       background: #0369a1;
+    }
+
+    .btn-interactive {
+      background: #0f766e;
+      border-color: #14b8a6;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .btn-interactive:hover {
+      background: #0d9488;
+      border-color: #5eead4;
+      box-shadow: 0 0 15px rgba(20, 184, 166, 0.4);
     }
 
     /* Outer poster stage */
@@ -123,18 +136,241 @@
       border: none;
       display: block;
     }
+
+    /* ══════════════════════════════════════════════════════════
+       INTERACTIVE DIAGRAM MODAL WORKBENCH
+       ══════════════════════════════════════════════════════════ */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(4, 9, 20, 0.88);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 95vw;
+      max-width: 1720px;
+      height: 92vh;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(37, 99, 235, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .modal-title-box h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: -0.2px;
+    }
+
+    .modal-title-box p {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    .modal-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .fig-tab-group {
+      display: flex;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .fig-tab {
+      background: transparent;
+      color: #94a3b8;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .fig-tab:hover {
+      color: #f8fafc;
+    }
+
+    .fig-tab.active {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .trace-btn-group {
+      display: flex;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .trace-btn {
+      background: transparent;
+      color: #94a3b8;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .trace-btn:hover {
+      color: #f8fafc;
+    }
+
+    .trace-btn.active-all {
+      background: #3b82f6;
+      color: #ffffff;
+    }
+
+    .trace-btn.active-attack {
+      background: #dc2626;
+      color: #ffffff;
+    }
+
+    .trace-btn.active-benign {
+      background: #16a34a;
+      color: #ffffff;
+    }
+
+    .close-btn {
+      background: #334155;
+      color: #cbd5e1;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .close-btn:hover {
+      background: #ef4444;
+      color: #ffffff;
+    }
+
+    .modal-body {
+      flex: 1;
+      position: relative;
+      background: #ffffff;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .svg-viewer {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 12px;
+    }
+
+    .svg-viewer object, .svg-viewer img {
+      width: 100%;
+      height: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Modal footer bar */
+    .modal-footer {
+      background: #0f172a;
+      border-top: 1px solid #1e293b;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: #64748b;
+    }
+
+    .modal-footer .legend-strip {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Top Fixed Navigation Toolbar -->
   <div class="toolbar">
-    <div class="toolbar-title">27" × 36" Academic Poster (v2)</div>
+    <div class="toolbar-title">27" × 36" Academic Poster</div>
     <div class="btn-group">
       <button class="btn active" id="btnFit" onclick="fitToScreen()">Fit Screen</button>
       <button class="btn" id="btn40" onclick="setScale(0.40)">40%</button>
       <button class="btn" id="btn60" onclick="setScale(0.60)">60%</button>
       <button class="btn" id="btn100" onclick="setScale(1.0)">100% (1:1 Print)</button>
     </div>
+
+    <!-- Interactive Diagram Modals -->
+    <div class="btn-group" style="padding-left: 8px; border-left: 1px solid #334155;">
+      <button class="btn btn-interactive" onclick="openDiagramModal('fig1')">⚡ Explore Fig. 1 (Threat Flow)</button>
+      <button class="btn btn-interactive" onclick="openDiagramModal('fig2')">🛡 Explore Fig. 2 (Seam Kernel)</button>
+      <button class="btn btn-interactive" onclick="openDiagramModal('fig3')">📊 Explore Fig. 3 (Key Results)</button>
+    </div>
+
+    <!-- Export Deliverables -->
     <div class="btn-group" style="padding-left: 8px; border-left: 1px solid #334155;">
       <a class="btn btn-primary" href="research_poster_print.html" target="_blank">Full Canvas ↗</a>
       <a class="btn" href="research_poster_27x36.png" download>Download PNG</a>
@@ -142,9 +378,59 @@
     </div>
   </div>
 
+  <!-- Stage Canvas Container -->
   <div class="stage" id="stage">
     <div class="poster-container" id="posterContainer">
       <iframe src="research_poster_print.html" title="Poster Print Canvas"></iframe>
+    </div>
+  </div>
+
+  <!-- Interactive Diagram Modal -->
+  <div class="modal-backdrop" id="diagramModal" onclick="handleBackdropClick(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <h3 id="modalTitle">Figure 1 · Cross-Lingual Threat Progression &amp; Seam Interception</h3>
+          <p id="modalSubtitle">Interactive 16:9 Architectural Vector Explorer · Click stages to inspect invariant logic</p>
+        </div>
+
+        <div class="modal-controls">
+          <!-- Figure Switcher Tabs -->
+          <div class="fig-tab-group">
+            <button class="fig-tab active" id="tabFig1" onclick="openDiagramModal('fig1')">Fig. 1 Threat Flow</button>
+            <button class="fig-tab" id="tabFig2" onclick="openDiagramModal('fig2')">Fig. 2 Seam Kernel</button>
+            <button class="fig-tab" id="tabFig3" onclick="openDiagramModal('fig3')">Fig. 3 Key Results</button>
+          </div>
+
+          <!-- Flow trace switcher (Figures 1 & 2) -->
+          <div class="trace-btn-group" id="traceGroup">
+            <button class="trace-btn active-all" id="traceAll" onclick="setTrace('all')">All Elements</button>
+            <button class="trace-btn" id="traceAttack" onclick="setTrace('attack')">🔴 Trace Exploit Flow</button>
+            <button class="trace-btn" id="traceBenign" onclick="setTrace('benign')">🟢 Trace Benign Flow</button>
+          </div>
+
+          <button class="close-btn" onclick="closeDiagramModal()" title="Close Explorer">&times;</button>
+        </div>
+      </div>
+
+      <div class="modal-body" id="svgModalBody">
+        <div class="svg-viewer" id="svgViewer">
+          <!-- Dynamically Injected SVG Object / Image -->
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="legend-strip" id="modalLegend">
+          <span class="legend-item"><span class="dot" style="background:#ea580c;"></span> Supply Chain / Attack Plane</span>
+          <span class="legend-item"><span class="dot" style="background:#0f2b5c;"></span> Candidate Proposal</span>
+          <span class="legend-item"><span class="dot" style="background:#0d9488;"></span> Policy Enforcement Seam</span>
+          <span class="legend-item"><span class="dot" style="background:#16a34a;"></span> Authorized Worker</span>
+          <span class="legend-item"><span class="dot" style="background:#dc2626;"></span> Deterministic Denial</span>
+        </div>
+        <div>
+          <span>Press <strong>ESC</strong> to close · Strict 16:9 Aspect Ratio (1920 × 1080 px)</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -152,17 +438,22 @@
     const container = document.getElementById('posterContainer');
     const stage = document.getElementById('stage');
     let currentScale = 1.0;
+    let currentFig = 'fig1';
+    let currentTrace = 'all';
 
     function setScale(scale) {
       currentScale = scale;
       container.style.transform = 'scale(' + scale + ')';
       
-      // Update wrapper dimensions so scrolling works naturally
       const scaledWidth = 2700 * scale;
       const scaledHeight = 3600 * scale;
       stage.style.height = (scaledHeight + 120) + 'px';
 
-      document.querySelectorAll('.btn-group .btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.btn-group .btn').forEach(b => {
+        if (!b.classList.contains('btn-interactive') && !b.classList.contains('btn-primary')) {
+          b.classList.remove('active');
+        }
+      });
       if (Math.abs(scale - 0.40) < 0.01) document.getElementById('btn40').classList.add('active');
       else if (Math.abs(scale - 0.60) < 0.01) document.getElementById('btn60').classList.add('active');
       else if (Math.abs(scale - 1.0) < 0.01) document.getElementById('btn100').classList.add('active');
@@ -184,8 +475,122 @@
       }
     });
 
-    // Auto-fit on load
     window.addEventListener('load', fitToScreen);
+
+    /* ══════════════════════════════════════════════════════════
+       MODAL CONTROLS & SVG INJECTION
+       ══════════════════════════════════════════════════════════ */
+    function openDiagramModal(figId) {
+      currentFig = figId;
+      const modal = document.getElementById('diagramModal');
+      const title = document.getElementById('modalTitle');
+      const subtitle = document.getElementById('modalSubtitle');
+      const viewer = document.getElementById('svgViewer');
+      const traceGroup = document.getElementById('traceGroup');
+      const legend = document.getElementById('modalLegend');
+
+      // Update active tab buttons
+      document.querySelectorAll('.fig-tab').forEach(t => t.classList.remove('active'));
+      const activeTab = document.getElementById('tab' + figId.charAt(0).toUpperCase() + figId.slice(1));
+      if (activeTab) activeTab.classList.add('active');
+
+      if (figId === 'fig1') {
+        title.innerHTML = 'Figure 1 · Cross-Lingual Threat Progression &amp; Seam Interception';
+        subtitle.innerHTML = 'Macro Exploit Lifecycle: Supply-Chain Evasion  —  Runtime Reasoning  —  Deterministic Seam Interception';
+        traceGroup.style.display = 'flex';
+        viewer.innerHTML = '<object id="svgObj" data="threat_lifecycle.svg" type="image/svg+xml" style="width:100%; height:100%;"></object>';
+        legend.innerHTML = `
+          <span class="legend-item"><span class="dot" style="background:#ea580c;"></span> Supply Chain / Attack Plane</span>
+          <span class="legend-item"><span class="dot" style="background:#0f2b5c;"></span> Candidate Proposal</span>
+          <span class="legend-item"><span class="dot" style="background:#0d9488;"></span> Policy Enforcement Seam</span>
+          <span class="legend-item"><span class="dot" style="background:#16a34a;"></span> Authorized Worker</span>
+          <span class="legend-item"><span class="dot" style="background:#dc2626;"></span> Deterministic Denial</span>
+        `;
+        setTrace('all');
+      } else if (figId === 'fig2') {
+        title.innerHTML = 'Figure 2 · Deterministic Authorization Seam: Execution Boundary Architecture';
+        subtitle.innerHTML = 'Micro Seam Architecture: Pre-Dispatch Hook  —  Capability Tokens  —  Realpath Clamping  —  Sandbox Jail';
+        traceGroup.style.display = 'flex';
+        viewer.innerHTML = '<object id="svgObj" data="defense_seam_architecture.svg" type="image/svg+xml" style="width:100%; height:100%;"></object>';
+        legend.innerHTML = `
+          <span class="legend-item"><span class="dot" style="background:#0f2b5c;"></span> Candidate Proposal</span>
+          <span class="legend-item"><span class="dot" style="background:#0d9488;"></span> Deterministic Authorization Seam</span>
+          <span class="legend-item"><span class="dot" style="background:#16a34a;"></span> Authorized Sandboxed Pass</span>
+          <span class="legend-item"><span class="dot" style="background:#dc2626;"></span> Deterministic Invariant Block</span>
+        `;
+        setTrace('all');
+      } else if (figId === 'fig3') {
+        title.innerHTML = 'Figure 3 · Empirical Defense Evaluation: Security vs. Usability Trade-Offs (N = 312)';
+        subtitle.innerHTML = 'Dual-Panel Realistic Benchmark: (a) Attack Success Rate (ASR)  vs.  (b) Benign Utility Retention (BUR) &amp; Latency Overhead';
+        traceGroup.style.display = 'none';
+        viewer.innerHTML = '<img src="asr_chart.png" alt="Empirical ASR and Utility Chart" style="width:100%; height:100%; object-fit:contain;">';
+        legend.innerHTML = `
+          <span class="legend-item"><span class="dot" style="background:#2563eb;"></span> English (en) [n=26]</span>
+          <span class="legend-item"><span class="dot" style="background:#d97706;"></span> Bengali native (bn) [n=26]</span>
+          <span class="legend-item"><span class="dot" style="background:#059669;"></span> Banglish mixed (bn-en) [n=26]</span>
+          <span class="legend-item"><span class="dot" style="background:#10b981;"></span> Zero-Exploit Seam Zone (0.0% ASR, 100% BUR, 0.037 ms)</span>
+        `;
+      }
+
+      modal.classList.add('open');
+    }
+
+    function closeDiagramModal() {
+      document.getElementById('diagramModal').classList.remove('open');
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target.id === 'diagramModal') {
+        closeDiagramModal();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDiagramModal();
+    });
+
+    function setTrace(traceMode) {
+      currentTrace = traceMode;
+      const traceAll = document.getElementById('traceAll');
+      const traceAttack = document.getElementById('traceAttack');
+      const traceBenign = document.getElementById('traceBenign');
+
+      [traceAll, traceAttack, traceBenign].forEach(b => b.className = 'trace-btn');
+
+      if (traceMode === 'all') traceAll.classList.add('active-all');
+      else if (traceMode === 'attack') traceAttack.classList.add('active-attack');
+      else if (traceMode === 'benign') traceBenign.classList.add('active-benign');
+
+      try {
+        const svgObj = document.getElementById('svgObj');
+        if (svgObj && svgObj.contentDocument) {
+          const doc = svgObj.contentDocument;
+          const allGroups = doc.querySelectorAll('g[filter]');
+          allGroups.forEach(g => {
+            if (traceMode === 'all') {
+              g.style.opacity = '1.0';
+              g.style.filter = '';
+            } else if (traceMode === 'attack') {
+              const text = g.innerText || g.textContent || '';
+              if (text.includes('Benign') || text.includes('Authorized') || text.includes('Worker sandbox')) {
+                g.style.opacity = '0.20';
+              } else {
+                g.style.opacity = '1.0';
+              }
+            } else if (traceMode === 'benign') {
+              const text = g.innerText || g.textContent || '';
+              if (text.includes('Attack') || text.includes('Poison') || text.includes('Denial') || text.includes('Rug-Pull')) {
+                g.style.opacity = '0.20';
+              } else {
+                g.style.opacity = '1.0';
+              }
+            }
+          });
+        }
+      } catch (e) {
+        // Handled
+      }
+    }
   </script>
 
 </body>
